@@ -52,7 +52,7 @@ body {
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
   z-index: 10;
-  color: #424242;  
+  color: #424242;
 }
 
 
@@ -63,7 +63,7 @@ body {
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   margin: auto;
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 .carousel .img {
