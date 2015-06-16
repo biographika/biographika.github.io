@@ -32,6 +32,10 @@ body {
 .navbar-wrapper .navbar .container {
   width: auto;
 }
+.navbar-custom {
+    color: #FFFFFF;
+    background-color: #CC3333;
+}
 
 
 /* CUSTOMIZE THE CAROUSEL
