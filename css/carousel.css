@@ -63,7 +63,7 @@ body {
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   margin: auto;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .carousel .img {
