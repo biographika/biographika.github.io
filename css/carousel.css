@@ -53,7 +53,9 @@ body {
 .carousel-caption {
   z-index: 10;
   color: #424242;
+  background: rgba(0, 0, 0, 0.35);
 }
+
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
@@ -62,7 +64,7 @@ body {
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   margin: auto;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .carousel .img {
