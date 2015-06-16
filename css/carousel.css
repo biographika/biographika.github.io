@@ -45,7 +45,6 @@ body {
 .carousel {
   height: 500px;
   margin-bottom: 60px;
-  margin: auto;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
@@ -55,13 +54,22 @@ body {
 /* Declare heights because of positioning of img element */
 .carousel .item {
   height: 500px;
+  opacity: 0.4;
 }
 .carousel-inner > .item > img {
-  opacity: 0.4;  
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
   height: 500px;
   margin: 0 auto;
+  opacity: 0.4;
 }
 
+.carousel .img {
+  height: 500px;
+  opacity: 0.4;
+}
 
 
 /* MARKETING CONTENT
