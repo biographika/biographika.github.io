@@ -61,6 +61,7 @@ body {
   left: 0;
   max-width: none;
   height: 500px;
+  margin: 0 auto;
 }
 
 .carousel .img {
