@@ -54,7 +54,6 @@ body {
 /* Declare heights because of positioning of img element */
 .carousel .item {
   height: 500px;
-  opacity: 0.4;
 }
 .carousel-inner > .item > img {
   position: absolute;
@@ -63,12 +62,11 @@ body {
   max-width: none;
   height: 500px;
   margin: 0 auto;
-  opacity: 0.4;
 }
 
 .carousel .img {
   height: 500px;
-  opacity: 0.4;
+  opacity: 0.8;
 }
 
 
