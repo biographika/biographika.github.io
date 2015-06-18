@@ -22,6 +22,7 @@
     margin-right: 10px;
   	margin-left: 10px;
   	margin-top: 10px;
+    height: 100%;
   }
 
   #wrapper {
@@ -114,7 +115,7 @@
     </nav>
     <div id="page-wrapper">
       <div class="row" style="min-height:400px">
-        <div class="col-md-12" style="height:100%">
+        <div class="col-md-12">
           <div class="panel panel-info">
             <div class="panel-heading">
               <i class="fa fa-fw">
@@ -165,8 +166,6 @@
 	    <span id="tooltipValueText"></span>
 	</div>
 <script type="text/javascript">
-
-  window.addEventListener('resize', onWindowResize, true);
 
 	var speciesBarGroupPrefix = "speciesBarGroup";
 	var barPrefix = "bar";
@@ -520,17 +519,6 @@
       };
     }
 
-    function onWindowResize(){
-
-      var chart = document.getElementById("x3d-container");
-      var parent = chart.parentElement;
-
-      d3.select("#x3d")
-            .attr("width",parent.offsetWidth - 40)
-            .attr("height", parent.offsetHeight -40);
-
-
-    }
 
 	</script>
 </body>
