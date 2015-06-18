@@ -162,7 +162,7 @@
               <div id="slider-container">
                 <div class="col-md-12">
                   <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel-heading ">
                       <i class="fa fa-fw">
                       </i>
                       Color range slider
@@ -190,7 +190,7 @@
 	</div>
 <script type="text/javascript">
 
-  //window.addEventListener('resize', onWindowResize, true);
+  window.addEventListener('resize', onWindowResize, true);
 
 	var speciesBarGroupPrefix = "speciesBarGroup";
 	var barPrefix = "bar";
@@ -504,6 +504,9 @@
       var tempHeight = document.getElementById("bar-chart-row").getAttribute("height");
       document.getElementById("x3d").setAttribute("width",tempWidth);
       document.getElementById("x3d").setAttribute("height",tempHeight);
+
+      console.log(tempWidth);
+      console.log(tempHeight);
     }
 
     function loader(config) {
