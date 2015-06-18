@@ -265,11 +265,11 @@
 
 
 	function updateViewpoint(){
-		var xPoint = ((numberOfSamples * barSquareSideValue) + ((numberOfSamples - 1) * gapBetweenBars))/2;
+		var xPoint = ((numberOfSamples * barSquareSideValue) + ((numberOfSamples - 1) * gapBetweenBars))/2 - 50;
 		var yPoint = ((numberOfSpecies * barSquareSideValue) + ((numberOfSpecies - 1) * gapBetweenBars))/2;
 		viewpoint
 			.attr("centerOfRotation", xPoint + " " + yPoint + " 0")
-			.attr("position", xPoint + " " + (-(yPoint*2)) + " " + 30);
+			.attr("position", xPoint + " " + (-(yPoint*2)) + " " + 10);
 	}
 
 	function createRowsOfShapes(data){
