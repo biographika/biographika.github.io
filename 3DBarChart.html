@@ -168,7 +168,7 @@
                       Color range slider
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body">
+                    <div class="panel-info">
                       Current value: <strong><span id="sliderValueText">0</span></strong><i>  (Move the slider to highlight bars above/below the threshold specified by the slider)</i>
                       <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)">
                     </div>
@@ -189,6 +189,8 @@
 	    <span id="tooltipValueText"></span>
 	</div>
 <script type="text/javascript">
+
+  window.addEventListener('resize', onWindowResize, true);
 
 	var speciesBarGroupPrefix = "speciesBarGroup";
 	var barPrefix = "bar";
@@ -277,11 +279,11 @@
 
 
 	function updateViewpoint(){
-		var xPoint = ((numberOfSamples * barSquareSideValue) + ((numberOfSamples - 1) * gapBetweenBars))/2 - 50;
+		var xPoint = ((numberOfSamples * barSquareSideValue) + ((numberOfSamples - 1) * gapBetweenBars))/2;
 		var yPoint = ((numberOfSpecies * barSquareSideValue) + ((numberOfSpecies - 1) * gapBetweenBars))/2;
 		viewpoint
 			.attr("centerOfRotation", xPoint + " " + yPoint + " 0")
-			.attr("position", xPoint + " " + (-(yPoint*2)) + " " + 10);
+			.attr("position", xPoint + " " + (-(yPoint*2)) + " " + 20);
 	}
 
 	function createRowsOfShapes(data){
