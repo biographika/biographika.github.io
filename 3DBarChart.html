@@ -488,8 +488,8 @@
     function onWindowResize(){
       var tempWidth = d3.select("#x3d-panel").style("width");
       var tempHeight = d3.select("#x3d-container").style("height");
-      d3.select("#x3d").width(tempWidth);
-      d3.select("#x3d").height(tempHeight);
+      d3.select("#x3d").style("width",tempWidth);
+      d3.select("#x3d").style("height",tempHeight);
     }
 
     function loader(config) {
