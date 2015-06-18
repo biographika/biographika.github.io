@@ -160,20 +160,8 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
               <div id="slider-container">
-                <div class="col-md-12">
-                  <div class="panel panel-default">
-                    <div class="panel-heading ">
-                      <i class="fa fa-fw">
-                      </i>
-                      Color range slider
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                      Current value: <strong><span id="sliderValueText">0</span></strong><i>  (Move the slider to highlight bars above/below the threshold specified by the slider)</i>
-                      <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)">
-                    </div>
-                  </div>
-                </div>
+                Current value: <strong><span id="sliderValueText">0</span></strong><i>  (Move the slider to highlight bars above/below the threshold specified by the slider)</i>
+                <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)" style="margin-botton:10px">
             		<input type="button" value="Take screenshot!" onclick="takeScreenshot()"/>
             		<input type="checkbox" checked="true" id="tooltips-checkbox">Tooltips activated</input>
             	</div>
