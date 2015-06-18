@@ -500,8 +500,8 @@
     }
 
     function onWindowResize(){
-      var tempWidth = document.getElementById("bar-chart-row").getAttribute("width") - 20;
-      var tempHeight = document.getElementById("bar-chart-row").getAttribute("height");
+      var tempWidth = document.getElementById("bar-chart-row").offsetWidth - 20;
+      var tempHeight = document.getElementById("bar-chart-row").offsetHeight;
       document.getElementById("x3d").setAttribute("width",tempWidth);
       document.getElementById("x3d").setAttribute("height",tempHeight);
 
