@@ -115,7 +115,7 @@
             General charts
           </div>
           <!-- /.panel-heading -->
-          <div class="panel-body">            
+          <div class="panel-body">
               <div id="x3d-container" style="col-md-12">
                 <x3d id="x3d">
                   <scene id="scene" render"false">
@@ -125,24 +125,25 @@
               </div>
           </div>
         </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <i class="fa fa-fw">
-            </i>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <i class="fa fa-fw">
+              </i>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+              <div id="slider-container">
+            		<h2>Current value: <span id="sliderValueText">0</span></h2>
+            		<input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)">
+            		<input type="button" value="Take screenshot!" onclick="takeScreenshot()"/>
+            		<input type="checkbox" checked="true" id="tooltips-checkbox">Tooltips activated</input>
+            	</div>
+            </div>
+            <!-- /.panel-body -->
           </div>
-          <!-- /.panel-heading -->
-          <div class="panel-body">
-            <div id="slider-container">
-          		<h2>Current value: <span id="sliderValueText">0</span></h2>
-          		<input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)">
-          		<input type="button" value="Take screenshot!" onclick="takeScreenshot()"/>
-          		<input type="checkbox" checked="true" id="tooltips-checkbox">Tooltips activated</input>
-          	</div>
-          </div>
-          <!-- /.panel-body -->
         </div>
       </div>
     </div>
