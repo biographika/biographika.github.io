@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="utf-8">
+<title>
+  3D Bar Chart
+</title>
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
 <style type="text/css">
+
+  body {
+      background-color: #f8f8f8;
+  }
 
   .node {
     cursor: pointer;
@@ -71,23 +80,73 @@
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
 <body onload="onLoad()">
-	<div id="leftDiv">
-	</div>
-	<div id="rightDiv">
-	</div>
-	<div id="x3d-container" style="display:none">
-		<x3d id="x3d">
-			<scene id="scene" render"false">
-				<viewpoint id="viewpoint"/>
-			</scene>
-		</x3d>
-	</div>
-	<div id="slider-container" width="800px" style="display:none">
-		<h2>Current value: <span id="sliderValueText">0</span></h2>
-		<input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)">
-		<input type="button" value="Take screenshot!" onclick="takeScreenshot()"/>
-		<input type="checkbox" checked="true" id="tooltips-checkbox">Tooltips activated</input>
-	</div>
+  <div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+      <div class="navbar-header">
+        <a class="navbar-brand" >
+          3D Bar chart
+        </a>
+      </div>
+      <!-- /.navbar-static-side -->
+    </nav>
+    <div id="page-wrapper">
+      <div class="row">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <i class="fa fa-fw">
+            </i>
+            General charts
+          </div>
+          <!-- /.panel-heading -->
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <i class="fa fa-fw">
+                    </i>
+                  </div>
+                  <!-- /.panel-heading -->
+                  <div class="panel-body">
+                    <div id="x3d-container" style="display:none">
+                  		<x3d id="x3d">
+                  			<scene id="scene" render"false">
+                  				<viewpoint id="viewpoint"/>
+                  			</scene>
+                  		</x3d>
+                  	</div>
+                  </div>
+                  <!-- /.panel-body -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <i class="fa fa-fw">
+            </i>
+          </div>
+          <!-- /.panel-heading -->
+          <div class="panel-body">
+            <div id="slider-container">
+          		<h2>Current value: <span id="sliderValueText">0</span></h2>
+          		<input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)">
+          		<input type="button" value="Take screenshot!" onclick="takeScreenshot()"/>
+          		<input type="checkbox" checked="true" id="tooltips-checkbox">Tooltips activated</input>
+          	</div>
+          </div>
+          <!-- /.panel-body -->
+        </div>
+      </div>
+    </div>
+    <!-- page-wrapper -->
+  </div>
+
 	<div id="loader_container" class="loaderDiv">
 	</div>
 	<div id="tooltip-container" class="tooltipDivHidden">
