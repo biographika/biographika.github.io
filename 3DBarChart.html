@@ -99,6 +99,12 @@
     min-height: 400px;
   }
 
+  .x3d-container {
+    width: 100%;
+    height: 100%;
+    display:none;
+  }
+
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
@@ -130,7 +136,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body x3d-panel">
-                <div id="x3d-container" style="display:none">
+                <div id="x3d-container" class="x3d-container">
                   <x3d id="x3d">
                     <scene id="scene" render"false">
                       <viewpoint id="viewpoint"/>
