@@ -93,6 +93,11 @@
     border-radius: 8px;
   }
 
+  .x3d-panel {
+    width: 100%;
+    height: 100%;
+  }
+
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
@@ -116,8 +121,6 @@
     <div id="page-wrapper">
       <div class="row" style="min-height:400px">
         <div class="col-md-12">
-          <div id="loader_container" class="loaderDiv">
-        	</div>
           <div class="panel panel-info">
             <div class="panel-heading">
               <i class="fa fa-fw">
@@ -125,7 +128,7 @@
               Species-Samples values
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body">
+            <div class="panel-body x3d-panel">
                 <div id="x3d-container" style="display:none">
                   <x3d id="x3d">
                     <scene id="scene" render"false">
@@ -133,6 +136,8 @@
                     </scene>
                   </x3d>
                 </div>
+                <div id="loader_container" class="loaderDiv">
+              	</div>
             </div>
           </div>
         </div>
