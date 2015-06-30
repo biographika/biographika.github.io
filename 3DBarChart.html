@@ -116,7 +116,16 @@
 
   .modal-header {
     background-color: #d9edf7;
- }
+  }
+
+ .push {
+    height: 63px;
+  }
+  footer {
+      background: #d9edf7;
+      padding: 5px 0 5px 0px;
+      border-top: 1px solid #4C8DAD;
+  }
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
@@ -186,6 +195,12 @@
     </div>
     <!-- page-wrapper -->
   </div>
+  <div class="push"></div>
+  <footer>
+    <div class="container">
+      <p>This example is part of <a href="http://www.biographika.com/" rel="author">Biographika</a> project.  100% of the code is open source and released under <a href="http://www.gnu.org/licenses/agpl-3.0.en.html" rel="external">AGPLv3</a> license.</p>
+    </div>
+  </footer>
   <div id="tooltip-container" class="tooltipDivHidden">
 	 <span id="tooltipValueText"></span>
   </div>
@@ -414,7 +429,6 @@
 	}
 
 	function onBarTransformClick(element){
-		alert("Value: " + element.getAttribute("value"));
 	}
 	function onBarMouseOver(event){
 
