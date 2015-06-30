@@ -119,7 +119,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
       <div class="navbar-header">
-		<a href="index.html" class="pull-left"><img src="images/biographika_logo_tiny.svg"></a>
+		<a href="index.html" class="pull-left"><img src="images/biographika_logo_tiny.svg" height="50"></a>
         <a class="navbar-brand">
           <a href="index.html"><strong>Biographika: </strong></a>3D Bar visualization
         </a>
@@ -161,10 +161,10 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
               <div id="slider-container">
-                Current value: <strong><span id="sliderValueText">0</span></strong><i>  (Move the slider to highlight bars above/below the threshold specified by the slider)</i>
-                <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)" style="margin-botton:10px">
-            		<input type="button" value="Take screenshot!" onclick="takeScreenshot()"/>
-            		<input type="checkbox" checked="true" id="tooltips-checkbox">Tooltips activated</input>
+                  Current value: <strong><span id="sliderValueText">0</span></strong><i>  (Move the slider to highlight bars above/below the threshold specified by the slider)</i>
+                  <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)" style="margin-botton:10px">
+            	  <input type="button" value="Take screenshot!" onclick="takeScreenshot()" class="pull-left"/>
+                  <input type="checkbox" checked="true" id="tooltips-checkbox" class="pull-right">Tooltips activated</input>
             	</div>
             </div>
             <!-- /.panel-body -->
