@@ -12,12 +12,6 @@
       background-color: #f8f8f8;
   }
 
-  .row
-  {
-      height: 100%;
-      width: 100%;
-  }
-
   .panel {
     margin-right: 10px;
   	margin-left: 10px;
@@ -30,92 +24,20 @@
   }
 
   #page-wrapper {
-      padding: 0 15px;
-      min-height: 568px;
       background-color: #fff;
   }
 
-  .node {
-    cursor: pointer;
-  }
-
-  .overlay{
-      background-color:#EEE;
-  }
-
-  .node circle {
-    fill: #fff;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-  }
-
-  .node text {
-    font-size:10px;
-    font-family:sans-serif;
-  }
-
-  .link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1.5px;
-  }
-
-  .hiddenDiv {
-    display : none;
-  }
-
-  .visibleDiv {
-    display : block;
-  }
-
-  .loaderDiv {
-    display : block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 150;
-    height: 80;
-  }
-
-  .tooltipDivHidden {
-    display : none;
-    opacity: 0;
-  }
-
-  .tooltipDivVisible {
-    display : block;
-    position: absolute;
-    background: white;
-    font: 12px sans-serif;
-    opacity: .9;
-    padding: 2px;
-    border: 0px;
-    border-radius: 8px;
-  }
-
-  .x3d-panel {
-    width: 100%;
-    height: 100%;
-    min-height: 400px;
-  }
-
-  .x3d-container {
-    width: 100%;
-    height: 100%;
-    display:none;
+  #graph-container {
+    min-height: 300px;
   }
 
   .nav-bar-logo{
-	margin-left: 30px;
-	height: 40px;
+  	margin-left: 30px;
+  	height: 40px;
   }
 
   .nav-bar-text{
     width: 100%;
-  }
-
-  .modal-header {
-    background-color: #d9edf7;
   }
 
  .push {
@@ -214,7 +136,7 @@
 
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
-<body onload="onLoad()">
+<body>
   <div id="wrapper">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -224,8 +146,22 @@
       </div>
       <!-- /.navbar-static-side -->
     </nav>
-    <div id="page-wrapper">
-
+    <div>
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <i class="fa fa-fw">
+          </i>
+            Graph explorer
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+          <div class="row">
+            <div id="graph-container" class="col-md-12">
+            </div>
+          </div>
+        </div>
+        <!-- /.panel-body -->
+      </div>
     </div>
     <!-- page-wrapper -->
   </div>
@@ -322,7 +258,7 @@ lasso.bind('selectedNodes', function (event) {
 
 console.log("hola!");
 
-sigma.parsers.gexf('data/bio4jGraphTestPrettyPrinted.gexf',sigma1, function(s) {
+sigma.parsers.gexf('data/outputTest.gexf',sigma1, function(s) {
  s.graph.nodes().forEach(function (n) {
    if (!s.graph.degree(n.id)) {
      s.graph.dropNode(n.id);
