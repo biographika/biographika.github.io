@@ -55,6 +55,26 @@
       border-top: 1px solid #4C8DAD;
   }
 
+  .btn-file {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+  }
+
 </style>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 <script src="js/jquery-1.9.1.min.js"></script>
@@ -178,6 +198,10 @@
             <!--<button class="btn btn-default" type="button">Left 2</button>
             <button class="btn btn-default" type="button">Left 3</button>-->
             <div class="btn-group">
+              <button class="btn btn-default" type="button" onclick="loadSample()">Load sample</button>
+              <span class="btn btn-default btn-file">
+                  Load file... <input type="file">
+              </span>
               <button type="button" class="btn btn-default dropdown-toggle"
                 data-toggle="dropdown">
                 Export to...
@@ -205,6 +229,16 @@
   </footer>
 <script type="text/javascript">
 
+
+<!-- LOAD GRAPH BUTTON... -->
+$(document).on('change', '.btn-file :file', function() {
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    console.log(input.get(0).files[0]);
+});
+
+<!-- EXPORT BUTTONS... -->
 $("#exportDropDownMenu").on("click", "li", function(event){
 
   var buttonClicked = event.currentTarget.getElementsByTagName("a")[0].getAttribute("id");
@@ -307,20 +341,9 @@ lasso.bind('selectedNodes', function (event) {
 
 console.log("hola!");
 
-sigma.parsers.gexf('data/outputTest.gexf',sigma1, function(s) {
- s.graph.nodes().forEach(function (n) {
-   if (!s.graph.degree(n.id)) {
-     s.graph.dropNode(n.id);
-   }
-   else {
-     n.x = Math.random();
-     n.y = Math.random();
-   }
- });
- s.refresh();
 
  // Configure the ForceLink algorithm:
- var fa = sigma.layouts.configForceLink(s, {
+ var fa = sigma.layouts.configForceLink(sigma1, {
    worker: true,
    autoStop: true,
    background: true,
@@ -329,15 +352,8 @@ sigma.parsers.gexf('data/outputTest.gexf',sigma1, function(s) {
    easing: 'cubicInOut'
  });
 
- // Bind the events:
- fa.bind('start stop', function(e) {
-   console.log(e.type);
 
- });
 
- // Start the ForceLink algorithm:
- sigma.layouts.startForceLink();
-});
 
 sigma1.bind('clickNode', function(e) {
  var node = e.data.node;
@@ -404,6 +420,29 @@ sigma1.bind('clickNode', function(e) {
       download: true,
       filename: 'bio4jGraphExplorer.svg'
     });
+ }
+
+ function loadSample(){
+   sigma.parsers.gexf("/data/outputTest.gexf",sigma1, function(s) {
+      s.graph.nodes().forEach(function (n) {
+        if (!s.graph.degree(n.id)) {
+          s.graph.dropNode(n.id);
+        }
+        else {
+          n.x = Math.random();
+          n.y = Math.random();
+        }
+      });
+      s.refresh();
+      // Start the ForceLink algorithm:
+      sigma.layouts.startForceLink();
+     });
+
+     // Bind the events:
+     fa.bind('start stop', function(e) {
+       console.log(e.type);
+
+     });
  }
 
 
