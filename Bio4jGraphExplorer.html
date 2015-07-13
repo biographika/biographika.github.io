@@ -31,6 +31,12 @@
     min-height: 300px;
   }
 
+  #toolbar {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
   .nav-bar-logo{
   	margin-left: 30px;
   	height: 40px;
@@ -56,6 +62,7 @@
 <script src="js/x3dom.js"></script>
 <script src="js/jquery-ui.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/xlsx.core.min.js"></script>
 <!-- START SIGMA IMPORTS -->
 <script src="js/sigma/src/sigma.core.js"></script>
 <script src="js/sigma/src/conrad.js"></script>
@@ -132,6 +139,10 @@
 <script src="js/sigma/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.arrow.js"></script>
 <script src="js/sigma/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.curvedArrow.js"></script>
 <script src="js/sigma/plugins/sigma.exporters.gexf/sigma.exporters.gexf.js"></script>
+<script src="js/sigma/plugins/sigma.exporters.xlsx/sigma.exporters.xlsx.js"></script>
+<script src="js/sigma/plugins/sigma.exporters.spreadsheet/sigma.exporters.spreadsheet.js"></script>
+<script src="js/sigma/plugins/sigma.exporters.svg/sigma.exporters.svg.js"></script>
+
 <!-- END SIGMA PLUGINS IMPORTS -->
 
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
@@ -146,7 +157,7 @@
       </div>
       <!-- /.navbar-static-side -->
     </nav>
-    <div>
+    <div id="page-wrapper">
       <div class="panel panel-info">
         <div class="panel-heading">
           <i class="fa fa-fw">
@@ -162,6 +173,27 @@
         </div>
         <!-- /.panel-body -->
       </div>
+      <div id="toolbar">
+        <div class="btn-group btn-block" >
+            <!--<button class="btn btn-default" type="button">Left 2</button>
+            <button class="btn btn-default" type="button">Left 3</button>-->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown">
+                Export to...
+                <span class="caret"></span>
+              </button>
+              <ul id="exportDropDownMenu" class="dropdown-menu" >
+                <li><a id="exportToGexfButton" role="button" data-toggle="modal" >Gexf</a></li>
+                <li><a id="exportToCSVNodesButton" role="button" data-toggle="modal">CSV (nodes)</a></li>
+                <li><a id="exportToCSVEdgesButton" role="button" data-toggle="modal">CSV (edges)</a></li>
+                <li><a id="exportToXLSXButton" role="button" data-toggle="modal">Excel file (XLSX)</a></li>
+                <li><a id="exportToSVGButton" role="button" data-toggle="modal" >SVG</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+      <!-- toolbar -->
     </div>
     <!-- page-wrapper -->
   </div>
@@ -172,6 +204,23 @@
     </div>
   </footer>
 <script type="text/javascript">
+
+$("#exportDropDownMenu").on("click", "li", function(event){
+
+  var buttonClicked = event.currentTarget.getElementsByTagName("a")[0].getAttribute("id");
+  if(buttonClicked == "exportToGexfButton"){
+      exportToGexf();
+  }else if(buttonClicked == "exportToCSVNodesButton"){
+      exportToCSVNodes();
+  }else if(buttonClicked == "exportToCSVEdgesButton"){
+      exportToCSVEdges();
+  }else if(buttonClicked == "exportToXLSXButton"){
+      exportToXLSX();
+  }else if(buttonClicked == "exportToSVGButton"){
+      exportToSVG();
+  }
+
+});
 
 var sigma1 = new sigma({
   renderer: {
@@ -309,14 +358,55 @@ sigma1.bind('clickNode', function(e) {
  function exportToGexf(){
      sigma1.toGEXF({
        download: true,
-       filename: 'bio4jGraphTest.gexf',
-       nodeAttributes: 'data',
-       edgeAttributes: 'data',
+       filename: 'bio4jGraphExplorer.gexf',
+       nodeAttributes: 'attributes',
+       edgeAttributes: 'attributes',
        renderer: sigma1.renderers[0],
        creator: 'Biographika',
-       description: 'Testing the feature of exporting graphs to gexf format'
+       description: 'Bio4j graph explorer'
      });
  }
+
+ function exportToCSVNodes(){
+     sigma1.toSpreadsheet({
+       what: 'nodes',
+       download: true,
+       filename: 'bio4jGraphExplorerNodes.csv',
+       attributes: 'attributes',
+       separator: ',',
+       textSeparator: '"'
+     });
+ }
+ function exportToCSVEdges(){
+     sigma1.toSpreadsheet({
+       what: 'edges',
+       download: true,
+       filename: 'bio4jGraphExplorerEdges.csv',
+       attributes: 'attributes',
+       separator: ',',
+       textSeparator: '"'
+     });
+ }
+
+ function exportToXLSX(){
+     sigma1.toXLSX({
+      nodesAttributes: 'attributes',
+      edgesAttributes: 'attributes',
+      filename: 'bio4jGraphExplorer.xlsx'
+    });
+ }
+
+ function exportToSVG(){
+    sigma1.toSVG({
+      labels: false,
+      classes: false,
+      data: true,
+      download: true,
+      filename: 'bio4jGraphExplorer.svg'
+    });
+ }
+
+
 
 
 	</script>
