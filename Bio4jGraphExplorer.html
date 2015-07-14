@@ -200,7 +200,7 @@
             <div class="btn-group">
               <button class="btn btn-default" type="button" onclick="loadSample()">Load sample</button>
               <span class="btn btn-default btn-file">
-                  Load file... <input type="file">
+                  Load file... <input type="file" accept=".gexf">
               </span>
               <button type="button" class="btn btn-default dropdown-toggle"
                 data-toggle="dropdown">
@@ -214,6 +214,9 @@
                 <li><a id="exportToXLSXButton" role="button" data-toggle="modal">Excel file (XLSX)</a></li>
                 <li><a id="exportToSVGButton" role="button" data-toggle="modal" >SVG</a></li>
               </ul>
+            </div>
+            <div class="checkbox">
+              <label><input id="goToSiteOnClickCheckBox" type="checkbox" checked="checked">Go to website on click</label>
             </div>
         </div>
       </div>
@@ -232,10 +235,39 @@
 
 <!-- LOAD GRAPH BUTTON... -->
 $(document).on('change', '.btn-file :file', function() {
-    var input = $(this),
-        numFiles = input.get(0).files ? input.get(0).files.length : 1,
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    console.log(input.get(0).files[0]);
+    var input = $(this);
+    var file = input.get(0).files[0];
+    var fileNameSplit = file.name.split(".");
+    var fileType = fileNameSplit[fileNameSplit.length - 1];
+
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+	      var contents = e.target.result;
+        console.log(fileType);
+        if(fileType != "gexf"){
+            alert("Please select a .gexf file");
+        }else{
+          var parser = new DOMParser();
+          var domElement = parser.parseFromString(contents, "text/xml");
+          sigma.parsers.gexf(domElement,sigma1, function(s) {
+             s.graph.nodes().forEach(function (n) {
+               if (!s.graph.degree(n.id)) {
+                 s.graph.dropNode(n.id);
+               }
+               else {
+                 n.x = Math.random();
+                 n.y = Math.random();
+               }
+             });
+             s.refresh();
+            });
+        }
+      }
+      reader.readAsText(file);
+    } else {
+      alert("Failed to load file");
+    }
 });
 
 <!-- EXPORT BUTTONS... -->
@@ -356,16 +388,21 @@ console.log("hola!");
 
 
 sigma1.bind('clickNode', function(e) {
- var node = e.data.node;
- var nodeType = node.attributes[2];
 
- if(nodeType == "Organism"){
-     window.open("http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=" + node.attributes[0],'_blank');
- }else if(nodeType == "Protein"){
-     window.location.href = "http://www.uniprot.org/uniprot/" + node.attributes[0];
- }else if(nodeType == "GenomeElement"){
-     window.location.href = "http://www.ncbi.nlm.nih.gov/nuccore/" + node.attributes[0];
- }
+   if(document.getElementById("goToSiteOnClickCheckBox").checked == true){
+       var node = e.data.node;
+       var nodeType = node.attributes[2];
+
+       if(nodeType == "Organism"){
+           window.open("http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=" + node.attributes[0],'_blank');
+       }else if(nodeType == "Protein"){
+           window.location.href = "http://www.uniprot.org/uniprot/" + node.attributes[0];
+       }else if(nodeType == "GenomeElement"){
+           window.location.href = "http://www.ncbi.nlm.nih.gov/nuccore/" + node.attributes[0];
+       }
+   }
+
+
 });
 
  console.log("adios!");
@@ -423,7 +460,7 @@ sigma1.bind('clickNode', function(e) {
  }
 
  function loadSample(){
-   sigma.parsers.gexf("/data/outputTest.gexf",sigma1, function(s) {
+   sigma.parsers.gexf("/data/bio4jGraphExplorer.gexf",sigma1, function(s) {
       s.graph.nodes().forEach(function (n) {
         if (!s.graph.degree(n.id)) {
           s.graph.dropNode(n.id);
