@@ -75,6 +75,9 @@
       display: block;
   }
 
+
+
+
 </style>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 <script src="js/jquery-1.9.1.min.js"></script>
@@ -215,6 +218,17 @@
                 <li><a id="exportToSVGButton" role="button" data-toggle="modal" >SVG</a></li>
               </ul>
             </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown">
+                Apply layout...
+                <span class="caret"></span>
+              </button>
+              <ul id="applyLayoutDropDownMenu" class="dropdown-menu" >
+                <li><a id="fruchtLayoutButton" role="button">Fruchterman Reingold</a></li>
+                <li><a id="forceLayoutButton" role="button">Force</a></li>
+              </ul>
+            </div>
             <div class="checkbox">
               <label><input id="goToSiteOnClickCheckBox" type="checkbox" checked="checked">Go to website on click</label>
             </div>
@@ -251,15 +265,6 @@ $(document).on('change', '.btn-file :file', function() {
           var parser = new DOMParser();
           var domElement = parser.parseFromString(contents, "text/xml");
           sigma.parsers.gexf(domElement,sigma1, function(s) {
-             s.graph.nodes().forEach(function (n) {
-               if (!s.graph.degree(n.id)) {
-                 s.graph.dropNode(n.id);
-               }
-               else {
-                 n.x = Math.random();
-                 n.y = Math.random();
-               }
-             });
              s.refresh();
             });
         }
@@ -288,6 +293,18 @@ $("#exportDropDownMenu").on("click", "li", function(event){
 
 });
 
+<!-- APPLY LAYOUT... -->
+$("#applyLayoutDropDownMenu").on("click", "li", function(event){
+
+  var buttonClicked = event.currentTarget.getElementsByTagName("a")[0].getAttribute("id");
+  if(buttonClicked == "fruchtLayoutButton"){
+      applyFruchtermanReingoldLayout();
+  }else if(buttonClicked == "forceLayoutButton"){
+      applyForceLayout();
+  }
+
+});
+
 var sigma1 = new sigma({
   renderer: {
     container: document.getElementById('graph-container'),
@@ -308,7 +325,9 @@ var sigma1 = new sigma({
     defaultNodeBorderColor: '#fff',
     defaultNodeOuterBorderColor: 'rgb(236, 81, 72)',
     nodeHaloColor: 'rgba(236, 81, 72, 0.2)',
-    nodeHaloSize: 50
+    nodeHaloSize: 10,
+    zoomMin: 0.001,
+    zoomMax: 5
   }
   });
 
@@ -331,6 +350,27 @@ var lasso = new sigma.plugins.lasso(sigma1, sigma1.renderers[0], {
   'fillWhileDrawing': true,
   'fillStyle': 'rgba(236, 81, 72, 0.2)',
   'cursor': 'crosshair'
+});
+
+// Configure the Fruchterman-Reingold algorithm:
+var frListener = sigma.layouts.fruchtermanReingold.configure(sigma1, {
+  iterations: 500,
+  easing: 'quadraticInOut',
+  duration: 800
+});
+
+frListener.bind('start stop interpolate', function(e) {
+  console.log("frucht: " + e.type);
+});
+
+
+// Configure the ForceLink algorithm:
+var fa = sigma.layouts.configForceLink(sigma1, {
+  worker: true,
+  barnesHutOptimize: false,
+  autoStop: true,
+  background: true,
+  easing: 'cubicInOut'
 });
 
 // halo on active nodes:
@@ -369,21 +409,6 @@ lasso.bind('selectedNodes', function (event) {
     sigma1.refresh({ skipIdexation: true });
   }, 0);
 });
-
-
-console.log("hola!");
-
-
- // Configure the ForceLink algorithm:
- var fa = sigma.layouts.configForceLink(sigma1, {
-   worker: true,
-   autoStop: true,
-   background: true,
-   scaleRatio: 40,
-   gravity: 4,
-   easing: 'cubicInOut'
- });
-
 
 
 
@@ -471,19 +496,16 @@ sigma1.bind('clickNode', function(e) {
         }
       });
       s.refresh();
-      // Start the ForceLink algorithm:
-      sigma.layouts.startForceLink();
-     });
-
-     // Bind the events:
-     fa.bind('start stop', function(e) {
-       console.log(e.type);
-
      });
  }
 
+ function applyFruchtermanReingoldLayout(){
+   sigma.layouts.fruchtermanReingold.start(sigma1);
+ }
 
-
+ function applyForceLayout(){
+   sigma.layouts.startForceLink();
+ }
 
 	</script>
 </body>
