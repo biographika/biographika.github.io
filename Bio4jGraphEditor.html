@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<title>
+  Bio4j graph example
+</title>
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
+<style type="text/css">
+
+  body {
+      background-color: #f8f8f8;
+  }
+
+  .panel {
+    margin-right: 10px;
+  	margin-left: 10px;
+  	margin-top: 10px;
+    height: 100%;
+  }
+
+  #wrapper {
+      width: 100%;
+  }
+
+  #page-wrapper {
+      background-color: #fff;
+  }
+
+  #graph-container {
+    min-height: 300px;
+  }
+
+  #toolbar {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .nav-bar-logo{
+  	margin-left: 30px;
+  	height: 40px;
+  }
+
+  .nav-bar-text{
+    width: 100%;
+  }
+
+ .push {
+    height: 63px;
+  }
+  footer {
+      background: #d9edf7;
+      padding: 5px 0 5px 0px;
+      border-top: 1px solid #4C8DAD;
+  }
+
+  .btn-file {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+  }
+
+  #node_types_list{
+    background-color: #F0F0F0;
+  }
+
+
+
+</style>
+<link rel="stylesheet" type="text/css" href="css/joint.css" />
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/joint.js"></script>
+
+<!-- END SIGMA PLUGINS IMPORTS -->
+
+<script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
+<script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
+<body>
+  <div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+      <div class="navbar-header">
+		<a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
+          <a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>
+      </div>
+      <!-- /.navbar-static-side -->
+    </nav>
+    <div id="page-wrapper">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <i class="fa fa-fw">
+          </i>
+            Graph explorer
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+          <div class="row">
+            <div id="graph-container" class="col-md-10">
+            </div>
+            <div id="node_types_list" class="col-md-2">
+              <!--
+              <ul class="list-group">
+                <li class="list-group-item">Protein</li>
+                <li class="list-group-item">Taxon</li>
+                <li class="list-group-item">Genome Element</li>
+              </ul>
+            -->
+            </div>
+          </div>
+        </div>
+        <!-- /.panel-body -->
+      </div>
+      <div id="toolbar">
+        <div class="btn-group btn-block" >
+            <!--<button class="btn btn-default" type="button">Left 2</button>
+            <button class="btn btn-default" type="button">Left 3</button>-->
+            <div class="btn-group">
+              <button class="btn btn-default" type="button" onclick="loadSample()">Load sample</button>
+              <span class="btn btn-default btn-file">
+                  Load file... <input type="file" accept=".gexf">
+              </span>
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown">
+                Export to...
+                <span class="caret"></span>
+              </button>
+              <ul id="exportDropDownMenu" class="dropdown-menu" >
+                <li><a id="exportToGexfButton" role="button" data-toggle="modal" >Gexf</a></li>
+                <li><a id="exportToCSVNodesButton" role="button" data-toggle="modal">CSV (nodes)</a></li>
+                <li><a id="exportToCSVEdgesButton" role="button" data-toggle="modal">CSV (edges)</a></li>
+                <li><a id="exportToXLSXButton" role="button" data-toggle="modal">Excel file (XLSX)</a></li>
+                <li><a id="exportToSVGButton" role="button" data-toggle="modal" >SVG</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+      <!-- toolbar -->
+    </div>
+    <!-- page-wrapper -->
+  </div>
+  <div class="push"></div>
+  <footer>
+    <div class="container">
+      <p>This example is part of <a href="http://www.biographika.com/" rel="author">Biographika</a> project.  100% of the code is open source and released under <a href="http://www.gnu.org/licenses/agpl-3.0.en.html" rel="external">AGPLv3</a> license.</p>
+    </div>
+  </footer>
+  <script type="text/javascript">
+
+
+ <!-- +++++++++++++++++++ MAIN VARS ++++++++++++++++++++++++ -->
+ var graph, node_types_graph, paper, node_types_paper, node_types_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
+ // Shortcuts.
+ var rect = joint.shapes.basic.Rect;
+ var path = joint.shapes.basic.Path;
+ var circle = joint.shapes.basic.Circle;
+ var ellipse = joint.shapes.basic.Ellipse;
+ var polygon = joint.shapes.basic.Polygon;
+ var polyline = joint.shapes.basic.Polyline;
+ var text = joint.shapes.basic.Text;
+ var link = joint.dia.Link;
+ <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+ initializeJoint();
+ test();
+
+  <!-- LOAD GRAPH BUTTON... -->
+  $(document).on('change', '.btn-file :file', function() {
+      var input = $(this);
+      var file = input.get(0).files[0];
+      var fileNameSplit = file.name.split(".");
+      var fileType = fileNameSplit[fileNameSplit.length - 1];
+
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+  	      var contents = e.target.result;
+          console.log(fileType);
+          if(fileType != "gexf"){
+              alert("Please select a .gexf file");
+          }else{
+            var parser = new DOMParser();
+            var domElement = parser.parseFromString(contents, "text/xml");
+            sigma.parsers.gexf(domElement,sigma1, function(s) {
+               s.refresh();
+              });
+          }
+        }
+        reader.readAsText(file);
+      } else {
+        alert("Failed to load file");
+      }
+  });
+
+  <!-- EXPORT BUTTONS... -->
+  $("#exportDropDownMenu").on("click", "li", function(event){
+
+    var buttonClicked = event.currentTarget.getElementsByTagName("a")[0].getAttribute("id");
+    if(buttonClicked == "exportToJSONButton"){
+        exportToJSON();
+    }
+
+  });
+
+  <!-- MAKING NODE TYPES LIST ELEMENTS SELECTABLE -->
+  $("ul li").click(function() {
+    $(this).parent().children().removeClass("active");
+    $(this).addClass("active");
+  });
+
+
+  function initializeJoint(){
+      initializeGraphPaper();
+      initializeNodeTypesPaper();
+  }
+
+  function initializeGraphPaper(){
+    graph = new joint.dia.Graph;
+    //-----------EVENTS-----------------
+    graph.on('all', function(eventName, cell) {
+      console.log(arguments);
+    });
+
+    paper = new joint.dia.Paper({
+      el: $('#graph-container'),
+      gridSize: 1,
+      model: graph,
+      width: '100%',
+      height: '100%',
+      defaultLink: function(elementView, magnet) {
+           return new joint.dia.Link;
+       }
+    });
+
+    paper.on("blank:pointerdown",
+      function(evt, x, y){
+          if(selected_node_type == 'Protein'){
+              var protein = createProtein(x, y);
+              console.log(protein);
+          }else if(selected_node_type == 'Organism'){
+              createOrganism(x, y);
+          }
+      }
+    );
+  }
+
+  function initializeNodeTypesPaper(){
+
+    node_types_graph = new joint.dia.Graph;
+
+    node_types_paper = new joint.dia.Paper({
+      el: $('#node_types_list'),
+      gridSize: 1,
+      model: node_types_graph,
+      width: '100%',
+      height: '100%',
+      interactive: false      });
+
+      node_types_paper.on('cell:pointerclick',
+        function(cellView, evt, x, y) {
+            selectCell(cellView);
+        }
+      );
+  }
+
+  function test(){
+    protein_node_type = new rect({
+        position: { x: 10, y: 10 },
+        size: { width: 100, height: 40 },
+        attrs: {
+            rect: { rx: 2, ry: 2, fill: '#2ECC71', stroke: '#27AE60', 'stroke-width': 2 },
+            text: { 'font-size': 10, fill: '#333', text: 'Protein' },
+            name: 'Protein'
+        }
+    });
+
+    organism_node_type = new rect({
+        position: { x: 10, y: 60 },
+        size: { width: 100, height: 40 },
+        attrs: {
+            rect: { rx: 2, ry: 2, fill: '#FFC72E', stroke: '#FFA42E', 'stroke-width': 2 },
+            text: { 'font-size': 10, fill: '#333', text: 'Organism' },
+            name: 'Organism'
+        }
+    });
+
+    node_types_graph.addCell(protein_node_type);
+    node_types_graph.addCell(organism_node_type);
+
+  }
+
+  function exportToJSON(){
+
+  }
+
+  function selectCell(cellView){
+    var nodeTypeCells = node_types_graph.getElements();
+    for (var i = 0; i < nodeTypeCells.length; i++) {
+      var currentCell = nodeTypeCells[i];
+      if(currentCell.attributes.id == cellView.model.id){
+          var nodeTypeName = currentCell.attributes.attrs.name;
+          currentCell.attr('rect/stroke-width',4);
+          selected_node_type = nodeTypeName;
+      }else {
+          currentCell.attr('rect/stroke-width',2);
+      }
+    }
+  }
+
+  <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
+  var createNodeRect = function(elm, x, y, label, widthValue, heightValue, rxValue, ryValue, fillValue, strokeValue, strokeWidthValue) {
+      var cell = new elm({
+        position: { x: x, y: y },
+        size: { width: widthValue, height: heightValue},
+        attrs: {
+          rect: { rx: rxValue, ry: ryValue, fill: fillValue, stroke: strokeValue, 'stroke-width': strokeWidthValue, magnet: true},
+          text: { 'font-size': 10, fill: '#333', text: label},
+          name: label
+
+          }
+      });
+      graph.addCell(cell);
+      return cell;
+  };
+  var createNodeEllipse = function(elm, x, y, label, widthValue) {
+      var cell = new elm({
+        position: { x: x, y: y },
+        attrs: {
+          size: { width: widthValue},
+          text: { 'font-size': 10, fill: '#333', text: label , magnet: true},
+          name: label,
+          magnet: true
+          }
+      });
+      graph.addCell(cell);
+      return cell;
+  };
+  var createProtein = function(x, y) {
+      return createNodeRect(rect, x, y, 'Protein', 80, 30, 2, 2, '#2ECC71', '#27AE60', 2);
+  };
+  var createOrganism = function(x, y) {
+      return createNodeEllipse(ellipse, x, y, 'Organism', 100);
+  };
+
+
+	</script>
+</body>
+</html>
