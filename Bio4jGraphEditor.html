@@ -134,7 +134,7 @@
             <div class="btn-group">
               <button class="btn btn-default" type="button" onclick="loadSample()">Load sample</button>
               <span class="btn btn-default btn-file">
-                  Load file... <input type="file" accept=".gexf">
+                  Load file... <input type="file" accept=".json">
               </span>
               <button type="button" class="btn btn-default dropdown-toggle"
                 data-toggle="dropdown">
@@ -142,11 +142,7 @@
                 <span class="caret"></span>
               </button>
               <ul id="exportDropDownMenu" class="dropdown-menu" >
-                <li><a id="exportToGexfButton" role="button" data-toggle="modal" >Gexf</a></li>
-                <li><a id="exportToCSVNodesButton" role="button" data-toggle="modal">CSV (nodes)</a></li>
-                <li><a id="exportToCSVEdgesButton" role="button" data-toggle="modal">CSV (edges)</a></li>
-                <li><a id="exportToXLSXButton" role="button" data-toggle="modal">Excel file (XLSX)</a></li>
-                <li><a id="exportToSVGButton" role="button" data-toggle="modal" >SVG</a></li>
+                <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
               </ul>
             </div>
         </div>
@@ -193,14 +189,10 @@
         reader.onload = function(e) {
   	      var contents = e.target.result;
           console.log(fileType);
-          if(fileType != "gexf"){
-              alert("Please select a .gexf file");
+          if(fileType != "json"){
+              alert("Please select a .json file");
           }else{
-            var parser = new DOMParser();
-            var domElement = parser.parseFromString(contents, "text/xml");
-            sigma.parsers.gexf(domElement,sigma1, function(s) {
-               s.refresh();
-              });
+             graph.fromJSON(JSON.parse(contents));
           }
         }
         reader.readAsText(file);
@@ -307,7 +299,7 @@
   }
 
   function exportToJSON(){
-
+    downloadJSON(JSON.stringify(graph.toJSON()));
   }
 
   function selectCell(cellView){
@@ -358,6 +350,49 @@
   var createOrganism = function(x, y) {
       return createNodeEllipse(ellipse, x, y, 'Organism', 100);
   };
+
+
+  function downloadJSON(jsonContent){
+
+    var blob = null,
+        objectUrl = null,
+        dataUrl = null,
+        filename = "diagram.json";
+
+
+    if(window.Blob){
+      // use Blob if available
+      blob = new Blob([jsonContent], {type: 'text/xml'});
+      objectUrl = window.URL.createObjectURL(blob);
+    }
+    else {
+      // else use dataURI
+      dataUrl = 'data:text/csv;charset=UTF-8,' + encodeURIComponent(jsonContent);
+    }
+
+    if (navigator.msSaveBlob) { // IE11+ : (has Blob, but not a[download])
+      navigator.msSaveBlob(blob, filename);
+    } else if (navigator.msSaveOrOpenBlob) { // IE10+ : (has Blob, but not a[download])
+      navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      // A-download
+      var anchor = document.createElement('a');
+      anchor.setAttribute('href', (window.Blob) ? objectUrl : dataUrl);
+      anchor.setAttribute('download', filename || 'graph.' + extension);
+
+      // Firefox requires the link to be added to the DOM before it can be clicked.
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    }
+
+    if (objectUrl) {
+      setTimeout(function() { // Firefox needs a timeout
+        window.URL.revokeObjectURL(objectUrl);
+      }, 0);
+    }
+
+  }
 
 
 	</script>
