@@ -92,7 +92,7 @@
 
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
-<body>
+<body onload="onBodyLoad()">
   <div id="wrapper">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -112,7 +112,7 @@
         <!-- /.panel-heading -->
         <div class="panel-body">
           <div class="row">
-            <div id="graph-container" class="col-md-10">
+            <div id="graph-container" class="col-md-10" height="100%">
             </div>
             <div id="node_types_list" class="col-md-2">
               <!--
@@ -171,6 +171,23 @@
  var polyline = joint.shapes.basic.Polyline;
  var text = joint.shapes.basic.Text;
  var link = joint.dia.Link;
+ joint.shapes.basic.DecoratedRect = joint.shapes.basic.Generic.extend({
+
+    markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+
+    defaults: joint.util.deepSupplement({
+
+        type: 'basic.DecoratedRect',
+        size: { width: 100, height: 60 },
+        attrs: {
+            'rect': { fill: '#FFFFFF', stroke: 'black', width: 100, height: 60},
+            'text': { 'font-size': 14, text: '', 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle', fill: 'black'  },
+
+        }
+
+    }, joint.shapes.basic.Generic.prototype.defaults)
+  });
+ var decoratedRect = joint.shapes.basic.DecoratedRect;
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
@@ -344,11 +361,32 @@
       graph.addCell(cell);
       return cell;
   };
+  var createNodeImage = function(imgURI, x, y, widthValue, heightValue, label){
+    var cell = new joint.shapes.basic.Image({
+      position: { x: x, y: y },
+      size: { width: widthValue, height: heightValue},
+      attrs: {
+        name: label,
+        text: {text: label},
+        magnet: true,
+        image : {
+            "xlink:href" : imgURI,
+            width : widthValue,
+            height : heightValue,
+            magnet: true
+          }
+        }
+    });
+    graph.addCell(cell);
+    return cell;
+  }
   var createProtein = function(x, y) {
-      return createNodeRect(rect, x, y, 'Protein', 80, 30, 2, 2, '#2ECC71', '#27AE60', 2);
+    return createNodeImage("images/protein.png", x, y, 100, 60, 'Protein');
+      //return createNodeRect(rect, x, y, 'Protein', 80, 30, 2, 2, '#2ECC71', '#27AE60', 2);
   };
   var createOrganism = function(x, y) {
-      return createNodeEllipse(ellipse, x, y, 'Organism', 100);
+    return createNodeImage("images/biographika_logo_tiny.svg", x, y, 60, 60, 'Organism');
+      //return createNodeEllipse(ellipse, x, y, 'Organism', 100);
   };
 
 
@@ -392,6 +430,13 @@
       }, 0);
     }
 
+  }
+
+  function onBodyLoad(){
+     var tempHeight = document.getElementById("graph-container").offsetHeight;
+     var tempWidth = document.getElementById("graph-container").offsetWidth;
+     paper.setDimensions(tempWidth,tempHeight);
+     console.log(tempHeight, tempWidth);
   }
 
 
