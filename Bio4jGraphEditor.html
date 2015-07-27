@@ -79,6 +79,10 @@
     background-color: #F0F0F0;
   }
 
+  #graph-container{
+    overflow: auto;
+  }
+
 
 
 </style>
@@ -87,6 +91,7 @@
 <script src="js/d3.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/joint.js"></script>
+<script src="js/jquery.mousewheel.js"></script>
 
 <!-- END SIGMA PLUGINS IMPORTS -->
 
@@ -145,7 +150,15 @@
                 <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
               </ul>
             </div>
+            <div class="checkbox">
+              <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
+            </div>
+            <!-- lock diagram checkbox -->
+            <button id="zoomInButton" onclick="zoomIn()" type="button" class="btn btn-default">Zoom in</button>
+            <button id="zoomOutButton" onclick="zoomOut()" type="button" class="btn btn-default">Zoom out</button>
+            <button id="resetZoomButton" onclick="resetZoom()" type="button" class="btn btn-default">Reset zoom</button>
         </div>
+        <!-- button group -->
       </div>
       <!-- toolbar -->
     </div>
@@ -188,7 +201,41 @@
     }, joint.shapes.basic.Generic.prototype.defaults)
   });
  var decoratedRect = joint.shapes.basic.DecoratedRect;
+
+ //.......paper panning related vars........
+ var paperIsPanning = false;
+ var pointerDownClientX;
+ var pointerDownClientY;
+ //.........................................
+ //.......paper zooming related vars........
+ var paperScale = 1;
+ var paperScaleFactor = 0.2;
+ //.........................................
+
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+ <!--===================DOCUMENT EVENT HANDLERS======================== -->
+ $(document).mousemove(function( event ) {
+   if(paperIsPanning){
+     var tempClientX = event.clientX;
+     var tempClientY = event.clientY;
+
+     $("#graph-container").scrollLeft(tempClientX - pointerDownClientX);
+     $("#graph-container").scrollTop(tempClientY - pointerDownClientY);
+
+     console.log("mouse move!", pointerDownClientX, tempClientX, pointerDownClientY, tempClientY);
+   }
+  });
+ $(document).mouseup(function( event ) {
+    console.log("mouse up!");
+    paperIsPanning = false;
+ });
+
+ <!--===================================================================-->
+
+
+
 
 
  initializeJoint();
@@ -260,11 +307,20 @@
 
     paper.on("blank:pointerdown",
       function(evt, x, y){
-          if(selected_node_type == 'Protein'){
-              var protein = createProtein(x, y);
-              console.log(protein);
-          }else if(selected_node_type == 'Organism'){
-              createOrganism(x, y);
+          pointerDownClientX = evt.clientX;
+          pointerDownClientY = evt.clientY;
+
+          console.log(evt);
+
+          if(document.getElementById("lockDiagramCheckBox").checked != true){
+            if(selected_node_type == 'Protein'){
+                var protein = createProtein(x, y);
+                //console.log(protein);
+            }else if(selected_node_type == 'Organism'){
+                createOrganism(x, y);
+            }
+          }else{
+             paperIsPanning = true;
           }
       }
     );
@@ -439,6 +495,18 @@
      console.log(tempHeight, tempWidth);
   }
 
+  function zoomIn(){
+      paperScale = paperScale + paperScaleFactor;
+      paper.scale(paperScale, paperScale);
+  }
+  function zoomOut(){
+    paperScale = paperScale - paperScaleFactor;
+    paper.scale(paperScale, paperScale);
+  }
+  function resetZoom(){
+    paperScale = 1;
+    paper.scale(paperScale, paperScale);
+  }
 
 	</script>
 </body>
