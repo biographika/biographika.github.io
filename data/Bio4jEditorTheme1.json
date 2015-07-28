@@ -2,6 +2,7 @@
   "nodes":[
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -13,6 +14,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":65},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -25,6 +27,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":130},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -36,6 +39,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":195},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -47,7 +51,7 @@
     },
     {
       "type":"basic.Image",
-      "node_type":"fibroblast",
+      "position":{"x":0,"y":260},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -59,6 +63,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":325},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -70,6 +75,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":390},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -81,6 +87,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":455},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -92,6 +99,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":520},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -103,6 +111,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":585},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -114,6 +123,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":650},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -125,6 +135,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":715},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
@@ -136,6 +147,7 @@
     },
     {
       "type":"basic.Image",
+      "position":{"x":0,"y":780},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
