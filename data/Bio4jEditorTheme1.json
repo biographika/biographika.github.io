@@ -1,5 +1,5 @@
 {
-  "nodes":[
+  "cells":[
     {
       "type":"basic.Image",
       "position":{"x":0,"y":0},
@@ -31,10 +31,10 @@
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{
-          "text":"Eosinophil"
+          "text":"Eosinophile"
           },
-        "node_type":"eosinophil",
-        "image":{"xlink:href":"images/EOSINOPHIL.png","width":60,"height":60,"magnet":false}
+        "node_type":"eosinophile",
+        "image":{"xlink:href":"images/EOSINOPHILE.png","width":60,"height":60,"magnet":false}
       }
     },
     {
@@ -154,12 +154,9 @@
           "text":"Tyrosin kinase receptor"
           },
         "node_type":"tyrosin_kinase_receptor",
-        "image":{"xlink:href":"images/TYROSIN_KINASE_RECEPTOR.png","width":60,"height":60,"magnet":false}
+        "image":{"xlink:href":"images/TYROSIN-KINASE RECEPTOR.png","width":60,"height":60,"magnet":false}
       }
 
-    },
-  ],
-  "relationships":[
-
+    }
   ]
 }
