@@ -16,19 +16,15 @@
     margin-right: 10px;
   	margin-left: 10px;
   	margin-top: 10px;
-    height: 100%;
   }
 
   #wrapper {
       width: 100%;
+      height: 100$;
   }
 
   #page-wrapper {
       background-color: #fff;
-  }
-
-  #graph-container {
-    min-height: 300px;
   }
 
   #toolbar {
@@ -81,6 +77,12 @@
 
   #graph-container{
     overflow: auto;
+    max-height: 450px;
+    min-height: 500px;
+  }
+  #node_types_list{
+    overflow-x: auto;
+    overflow-y: auto;
   }
 
 
@@ -117,16 +119,9 @@
         <!-- /.panel-heading -->
         <div class="panel-body">
           <div class="row">
-            <div id="graph-container" class="col-md-10" height="100%">
+            <div id="graph-container" class="col-xs-10" >
             </div>
-            <div id="node_types_list" class="col-md-2">
-              <!--
-              <ul class="list-group">
-                <li class="list-group-item">Protein</li>
-                <li class="list-group-item">Taxon</li>
-                <li class="list-group-item">Genome Element</li>
-              </ul>
-            -->
+            <div id="node_types_list" class="col-xs-2">
             </div>
           </div>
         </div>
@@ -210,6 +205,8 @@
  //.......paper zooming related vars........
  var paperScale = 1;
  var paperScaleFactor = 0.2;
+ var paperInitialWidth;
+ var paperInitialHeight;
  //.........................................
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -234,13 +231,6 @@
 
  <!--===================================================================-->
 
-
-
-
-
- initializeJoint();
- test();
-
   <!-- LOAD GRAPH BUTTON... -->
   $(document).on('change', '.btn-file :file', function() {
       var input = $(this);
@@ -257,6 +247,14 @@
               alert("Please select a .json file");
           }else{
              graph.fromJSON(JSON.parse(contents));
+
+             var bbox = graph.getBBox(graph.getElements());
+             paperInitialWidth = bbox.width;
+             paperInitialHeight = bbox.height;
+
+             console.log("graph loaded!");
+             paper.setDimensions(bbox.width,bbox.height);
+             paper.render();
           }
         }
         reader.readAsText(file);
@@ -298,8 +296,8 @@
       el: $('#graph-container'),
       gridSize: 1,
       model: graph,
-      width: '100%',
-      height: '100%',
+      width: $('#graph-container').width(),
+      height: $('#graph-container').height(),
       defaultLink: function(elementView, magnet) {
            return new joint.dia.Link;
        }
@@ -330,12 +328,26 @@
 
     node_types_graph = new joint.dia.Graph;
 
+    //----loading JSON WITH THEME-----------------------
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    xobj.open('GET', 'data/Bio4jEditorTheme1.json', true);
+
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+          node_types_graph.fromJSON(JSON.parse(xobj.responseText));
+          calculateSizeOfNodeTypesGraph();
+        }
+    };
+    xobj.send(null);
+    //------------------------------------------------
+
     node_types_paper = new joint.dia.Paper({
       el: $('#node_types_list'),
       gridSize: 1,
       model: node_types_graph,
-      width: '100%',
-      height: '100%',
+      width: $('#node_types_list').width(),
+      height: $('#node_types_list').height(),
       interactive: false      });
 
       node_types_paper.on('cell:pointerclick',
@@ -343,6 +355,11 @@
             selectCell(cellView);
         }
       );
+  }
+
+  function calculateSizeOfNodeTypesGraph(){
+    var numberOfTypes = node_types_graph.getElements().length;
+    node_types_paper.setDimensions(65*numberOfTypes, 100);
   }
 
   function test(){
@@ -489,23 +506,27 @@
   }
 
   function onBodyLoad(){
-     var tempHeight = document.getElementById("graph-container").offsetHeight;
-     var tempWidth = document.getElementById("graph-container").offsetWidth;
-     paper.setDimensions(tempWidth,tempHeight);
-     console.log(tempHeight, tempWidth);
+    initializeJoint();
+     //var tempHeight = document.getElementById("graph-container").offsetHeight;
+     //var tempWidth = document.getElementById("graph-container").offsetWidth;
+     //paper.setDimensions(tempWidth,tempHeight);
+     //console.log(tempHeight, tempWidth);
   }
 
   function zoomIn(){
       paperScale = paperScale + paperScaleFactor;
       paper.scale(paperScale, paperScale);
+      paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
   function zoomOut(){
     paperScale = paperScale - paperScaleFactor;
     paper.scale(paperScale, paperScale);
+    paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
   function resetZoom(){
     paperScale = 1;
     paper.scale(paperScale, paperScale);
+    paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
 
 	</script>
