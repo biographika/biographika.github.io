@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <title>
-  Bio4j graph example
+  Bio4j Graph Editor
 </title>
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
@@ -81,9 +81,10 @@
     min-height: 450px;
   }
   #node_types_list{
-    overflow-x: auto;
     overflow-y: auto;
-
+    overflow-x: hidden;
+    max-height: 450px;
+    min-height: 450px;
   }
 
 
@@ -211,6 +212,12 @@
  var paperInitialWidth;
  var paperInitialHeight;
  //.........................................
+
+ //-----node types cells------------------------
+ var nodeTypeCellHeight = 100;
+ var nodeTypeCellDefaultX = 15;
+ var nodeTypeCellMaxWidth = 80;
+ //----------------------------------------------
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -357,7 +364,8 @@
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
           node_types_graph.fromJSON(JSON.parse(xobj.responseText));
-          calculateSizeOfNodeTypesGraph();
+          calculateSizeOfNodeTypesPaper();
+          positionNodeTypesOnPaper();
         }
     };
     xobj.send(null);
@@ -378,9 +386,25 @@
       );
   }
 
-  function calculateSizeOfNodeTypesGraph(){
+  function calculateSizeOfNodeTypesPaper(){
     var numberOfTypes = node_types_graph.getElements().length;
-    node_types_paper.setDimensions(65*numberOfTypes, 100);
+    node_types_paper.setDimensions(100, nodeTypeCellHeight*numberOfTypes);
+    node_types_paper.render();
+  }
+
+  function positionNodeTypesOnPaper(){
+
+    var nodeTypes = node_types_graph.getElements();
+    for(var i=0; i<nodeTypes.length;i++){
+      var currentNodeType = nodeTypes[i];
+      var currentY = nodeTypeCellHeight * i;
+      currentNodeType.prop("position", {"x":nodeTypeCellDefaultX,"y":currentY});
+      var currentText = currentNodeType.attr("text/text");
+      var brokenText = joint.util.breakText(currentText, { width: nodeTypeCellMaxWidth });
+      console.log(currentText,brokenText);
+      currentNodeType.attr("text/text", brokenText);
+    }
+    node_types_paper.render();
   }
 
   function test(){
