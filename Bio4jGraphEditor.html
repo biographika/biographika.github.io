@@ -275,12 +275,16 @@
           }else{
              graph.fromJSON(JSON.parse(contents));
 
-             var bbox = graph.getBBox(graph.getElements());
-             paperInitialWidth = bbox.width;
-             paperInitialHeight = bbox.height;
+             //var bbox = graph.getBBox(graph.getElements());
+             var contentBBox = paper.getContentBBox();
+             paperInitialWidth = contentBBox.width + contentBBox.x;
+             paperInitialHeight = contentBBox.height + contentBBox.y;
+
+             //console.log(paperInitialWidth, paperInitialHeight);
+             //console.log(contentBBox.width, contentBBox.height, contentBBox.x, contentBBox.y);
 
              console.log("graph loaded!");
-             paper.setDimensions(bbox.width,bbox.height);
+             paper.setDimensions(paperInitialWidth,paperInitialHeight);
              paper.render();
           }
         }
@@ -363,6 +367,8 @@
           node_types_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfNodeTypesPaper();
           positionNodeTypesOnPaper();
+          //select first node type
+          selectCell(node_types_graph.getElements()[0].findView(node_types_paper));
         }
     };
     xobj.send(null);
