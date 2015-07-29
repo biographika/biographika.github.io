@@ -78,11 +78,12 @@
   #graph-container{
     overflow: auto;
     max-height: 450px;
-    min-height: 500px;
+    min-height: 450px;
   }
   #node_types_list{
     overflow-x: auto;
     overflow-y: auto;
+
   }
 
 
@@ -201,6 +202,8 @@
  var paperIsPanning = false;
  var pointerDownClientX;
  var pointerDownClientY;
+ var lastPositionMouseX;
+ var lastPositionMouseY;
  //.........................................
  //.......paper zooming related vars........
  var paperScale = 1;
@@ -214,12 +217,27 @@
 
  <!--===================DOCUMENT EVENT HANDLERS======================== -->
  $(document).mousemove(function( event ) {
+
    if(paperIsPanning){
+
      var tempClientX = event.clientX;
      var tempClientY = event.clientY;
+     var differenceX = tempClientX - lastPositionMouseX;
+     var differenceY = tempClientY - lastPositionMouseY;
+     var currentScrollLeft = $("#graph-container").scrollLeft();
+     var currentScrollTop = $("#graph-container").scrollTop();
 
-     $("#graph-container").scrollLeft(tempClientX - pointerDownClientX);
-     $("#graph-container").scrollTop(tempClientY - pointerDownClientY);
+     lastPositionMouseX += differenceX;
+     lastPositionMouseY += differenceY;
+
+     /*console.log("tempClientX: ",tempClientX,"tempClientY: ",tempClientY,"currentScrollLeft: ",
+          currentScrollLeft,"currentScrollTop: ",currentScrollTop,
+          "differenceX: " ,differenceX,"differenceY: " ,differenceY,
+          "lastPositionMouseX: " + lastPositionMouseX,
+          "lastPositionMousey: " + lastPositionMouseY);*/
+
+     $("#graph-container").scrollLeft(currentScrollLeft + differenceX);
+     $("#graph-container").scrollTop(currentScrollTop + differenceY);
 
      console.log("mouse move!", pointerDownClientX, tempClientX, pointerDownClientY, tempClientY);
    }
@@ -307,6 +325,9 @@
       function(evt, x, y){
           pointerDownClientX = evt.clientX;
           pointerDownClientY = evt.clientY;
+
+          lastPositionMouseX = pointerDownClientX;
+          lastPositionMouseY = pointerDownClientY;
 
           console.log(evt);
 
