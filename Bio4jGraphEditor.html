@@ -219,6 +219,8 @@
  var nodeTypeCellMaxWidth = 80;
  //----------------------------------------------
 
+ var selectedNodeTypeCell;
+
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
@@ -339,12 +341,7 @@
           console.log(evt);
 
           if(document.getElementById("lockDiagramCheckBox").checked != true){
-            if(selected_node_type == 'Protein'){
-                var protein = createProtein(x, y);
-                //console.log(protein);
-            }else if(selected_node_type == 'Organism'){
-                createOrganism(x, y);
-            }
+            cloneCellAt(selectedNodeTypeCell,x,y);
           }else{
              paperIsPanning = true;
           }
@@ -438,15 +435,16 @@
   }
 
   function selectCell(cellView){
+
     var nodeTypeCells = node_types_graph.getElements();
     for (var i = 0; i < nodeTypeCells.length; i++) {
       var currentCell = nodeTypeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
-          var nodeTypeName = currentCell.attributes.attrs.name;
-          currentCell.attr('rect/stroke-width',4);
-          selected_node_type = nodeTypeName;
+          selectedNodeTypeCell = currentCell;
+          console.log(selectedNodeTypeCell);
+          currentCell.attr('text/font-weight',"bold");
       }else {
-          currentCell.attr('rect/stroke-width',2);
+          currentCell.attr('text/font-weight',"normal");
       }
     }
   }
@@ -506,6 +504,14 @@
     return createNodeImage("images/biographika_logo_tiny.svg", x, y, 60, 60, 'Organism');
       //return createNodeEllipse(ellipse, x, y, 'Organism', 100);
   };
+
+  function cloneCellAt(cell, x, y){
+      var clonedCell = cell.clone();
+      clonedCell.prop("position", {"x":x,"y":y});
+      clonedCell.attr("image/magnet","true");
+      graph.addCell(clonedCell);
+      clonedCell.toFront();
+  }
 
 
   function downloadJSON(jsonContent){
