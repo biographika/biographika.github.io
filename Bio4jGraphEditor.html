@@ -151,6 +151,10 @@
               <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
             </div>
             <!-- lock diagram checkbox -->
+            <div class="checkbox">
+              <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
+            </div>
+            <!-- delete node on click checkbox -->
             <button id="zoomInButton" onclick="zoomIn()" type="button" class="btn btn-default">Zoom in</button>
             <button id="zoomOutButton" onclick="zoomOut()" type="button" class="btn btn-default">Zoom out</button>
             <button id="resetZoomButton" onclick="resetZoom()" type="button" class="btn btn-default">Reset zoom</button>
@@ -349,6 +353,28 @@
           }else{
              paperIsPanning = true;
           }
+      }
+    );
+
+    paper.on("cell:mouseover",
+      function(evt, x, y){
+        console.log("cell mouse over!");
+      }
+    );
+    paper.on("cell:mouseout",
+      function(evt, x, y){
+        console.log("cell mouse out!");
+      }
+    );
+    paper.on('cell:pointerclick',
+      function(cellView, evt, x, y) {
+
+        console.log("cell:pointerclick!");
+
+        if(document.getElementById("deleteNodeOnClickCheckBox").checked){
+          console.log("remove!");
+          cellView.remove();
+        }
       }
     );
   }
