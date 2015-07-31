@@ -6,12 +6,12 @@
       ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
       ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
       "attrs": {
-        "link_type":"hola_link"
+        "link_type":"is_a_link"
       },
       "labels": [
         { "position": ".5",
           "attrs": {
-            "text": { "text": "Hola!", "fill": "white", "font-family": "sans-serif" },
+            "text": { "text": "is a", "fill": "white", "font-family": "sans-serif" },
             "rect": { "stroke": "#F39C12", "stroke-width": 20, "rx": 5, "ry": 5 } }}
       ]
     },
@@ -21,12 +21,12 @@
       ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
       ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
       "attrs": {
-        "link_type":"adios_link"
+        "link_type":"interacts_link"
       },
       "labels": [
         { "position": ".5",
           "attrs": {
-            "text": { "text": "adios!"}
+            "text": { "text": "interacts"}
           }
         }
       ]
@@ -35,14 +35,14 @@
       "type":"link",
       "smooth": true,
       "attrs": {
-        "link_type":"boh_link",
+        "link_type":"associated_to_link",
         ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
         ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
       },
       "labels": [
         { "position": ".5",
           "attrs": {
-            "text": { "text": "boh"}
+            "text": { "text": "associated to"}
           }
         }
       ]
@@ -51,7 +51,7 @@
       "type":"link",
       "smooth": true,
       "attrs": {
-        "link_type":"lalala_link",
+        "link_type":"part_of_link",
         "connection": { "stroke": "#E74C3C", "stroke-width": 5 },
         ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
         ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
@@ -59,7 +59,7 @@
       "labels": [
         { "position": ".5",
           "attrs": {
-            "text": { "text": "lalala"}
+            "text": { "text": "part of"}
           }
         }
       ]
