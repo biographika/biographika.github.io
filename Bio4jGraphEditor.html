@@ -280,7 +280,7 @@
  var linkTypeCellHeight = 60;
  var linkTypeCellDefaultX = 15;
  var linkTypeCellDefaultY = 30;
- var linkTypeCellMaxWidth = 80;
+ var linkTypeCellMaxWidth = 120;
  //----------------------------------------------
 
  var selectedNodeTypeCell;
@@ -506,7 +506,7 @@
 
   function calculateSizeOfLinkTypesPaper(){
     var numberOfTypes = link_types_graph.getLinks().length;
-    link_types_paper.setDimensions(100, linkTypeCellHeight*numberOfTypes);
+    link_types_paper.setDimensions(linkTypeCellMaxWidth + linkTypeCellDefaultX, linkTypeCellHeight*numberOfTypes);
     link_types_paper.render();
   }
 
@@ -518,7 +518,7 @@
       var currentLinkType = linkTypes[i];
       var currentY = (linkTypeCellHeight * i) + linkTypeCellDefaultY;
       currentLinkType.prop("source", {"x":linkTypeCellDefaultX,"y":currentY});
-      currentLinkType.prop("target", {"x":80,"y":currentY});
+      currentLinkType.prop("target", {"x":120,"y":currentY});
     }
     link_types_paper.render();
   }
