@@ -14,7 +14,7 @@
     },
     {
       "type":"basic.Image",
-      "position":{"x":0,"y":65},
+      "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
       "attrs":{
         "text":{

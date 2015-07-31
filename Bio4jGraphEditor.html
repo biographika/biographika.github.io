@@ -84,10 +84,66 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 450px;
-    min-height: 450px;
+  }
+  #link_types_list{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 450px;
+    min-height: 200px;
   }
 
+/*
+  .html-element label {
+     color: #333;
+     text-shadow: 1px 0 0 lightgray;
+     font-weight: bold;
+   }
 
+   .html-element button.delete:hover {
+       width: 20px;
+       height: 20px;
+       line-height: 20px;
+    }
+
+    .html-element button.delete {
+       color: white;
+       border: none;
+       background-color: #C0392B;
+       border-radius: 20px;
+       width: 15px;
+       height: 15px;
+       line-height: 15px;
+       text-align: middle;
+       position: absolute;
+       top: -15px;
+       left: -15px;
+       padding: 0;
+       margin: 0;
+       font-weight: bold;
+       cursor: pointer;
+    }
+*/
+/*
+    .html-element {
+       position: absolute;
+       background: #3498DB;
+        Make sure events are propagated to the JointJS element so, e.g. dragging works.
+       pointer-events: none;
+       -webkit-user-select: none;
+       border-radius: 4px;
+       border: 2px solid #2980B9;
+       box-shadow: inset 0 0 5px black, 2px 2px 1px gray;
+       padding: 5px;
+       box-sizing: border-box;
+       z-index: 2;
+    }
+    .html-element select,
+    .html-element input,
+    .html-element button {
+        Enable interacting with inputs only.
+       pointer-events: auto;
+    }
+*/
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/joint.css" />
@@ -96,9 +152,6 @@
 <script src="js/bootstrap.js"></script>
 <script src="js/joint.js"></script>
 <script src="js/jquery.mousewheel.js"></script>
-
-<!-- END SIGMA PLUGINS IMPORTS -->
-
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
 <body onload="onBodyLoad()">
@@ -121,7 +174,9 @@
         <!-- /.panel-heading -->
         <div class="panel-body">
           <div class="row">
-            <div id="graph-container" class="col-xs-10" >
+            <div id="link_types_list" class="col-xs-2">
+            </div>
+            <div id="graph-container" class="col-xs-8" >
             </div>
             <div id="node_types_list" class="col-xs-2">
             </div>
@@ -131,8 +186,6 @@
       </div>
       <div id="toolbar">
         <div class="btn-group btn-block" >
-            <!--<button class="btn btn-default" type="button">Left 2</button>
-            <button class="btn btn-default" type="button">Left 3</button>-->
             <div class="btn-group">
               <button class="btn btn-default" type="button" onclick="loadSample()">Load sample</button>
               <span class="btn btn-default btn-file">
@@ -175,7 +228,7 @@
 
 
  <!-- +++++++++++++++++++ MAIN VARS ++++++++++++++++++++++++ -->
- var graph, node_types_graph, paper, node_types_paper, node_types_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
+ var graph, node_types_graph, link_types_graph, paper, node_types_paper, link_types_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
  // Shortcuts.
  var rect = joint.shapes.basic.Rect;
  var path = joint.shapes.basic.Path;
@@ -223,7 +276,15 @@
  var nodeTypeCellMaxWidth = 80;
  //----------------------------------------------
 
+ //-----link types cells------------------------
+ var linkTypeCellHeight = 60;
+ var linkTypeCellDefaultX = 15;
+ var linkTypeCellDefaultY = 30;
+ var linkTypeCellMaxWidth = 80;
+ //----------------------------------------------
+
  var selectedNodeTypeCell;
+ var selectedLinkTypeCell;
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -252,11 +313,11 @@
      $("#graph-container").scrollLeft(currentScrollLeft + differenceX);
      $("#graph-container").scrollTop(currentScrollTop + differenceY);
 
-     console.log("mouse move!", pointerDownClientX, tempClientX, pointerDownClientY, tempClientY);
+     //console.log("mouse move!", pointerDownClientX, tempClientX, pointerDownClientY, tempClientY);
    }
   });
  $(document).mouseup(function( event ) {
-    console.log("mouse up!");
+    //console.log("mouse up!");
     paperIsPanning = false;
  });
 
@@ -273,7 +334,7 @@
         var reader = new FileReader();
         reader.onload = function(e) {
   	      var contents = e.target.result;
-          console.log(fileType);
+          //console.log(fileType);
           if(fileType != "json"){
               alert("Please select a .json file");
           }else{
@@ -298,6 +359,26 @@
       }
   });
 
+  <!-- LOCK DIAGRAM CHECKBOXGRAPH BUTTON... -->
+  $("#lockDiagramCheckBox").click( function(){
+      var nodes = graph.getElements();
+
+      for(var i=0; i<nodes.length;i++){
+        var currentNode = nodes[i];
+        //console.log("antes",currentNode.attr("image/magnet"));
+        if( $(this).is(':checked') ){
+          currentNode.attr("image/magnet","false");
+          currentNode.attr("magnet","false");
+        }else{
+          currentNode.attr("image/magnet","true");
+        }
+        //console.log(currentNode);
+      }
+      paper.render();
+    }
+  );
+
+
   <!-- EXPORT BUTTONS... -->
   $("#exportDropDownMenu").on("click", "li", function(event){
 
@@ -316,16 +397,18 @@
 
 
   function initializeJoint(){
+      //initializeCustomElements();
       initializeGraphPaper();
       initializeNodeTypesPaper();
+      initializeLinkTypesPaper();
   }
 
   function initializeGraphPaper(){
     graph = new joint.dia.Graph;
     //-----------EVENTS-----------------
-    graph.on('all', function(eventName, cell) {
+    /*graph.on('all', function(eventName, cell) {
       console.log(arguments);
-    });
+    });*/
 
     paper = new joint.dia.Paper({
       el: $('#graph-container'),
@@ -333,9 +416,7 @@
       model: graph,
       width: $('#graph-container').width(),
       height: $('#graph-container').height(),
-      defaultLink: function(elementView, magnet) {
-           return new joint.dia.Link;
-       }
+      defaultLink: getDefaultLink
     });
 
     paper.on("blank:pointerdown",
@@ -346,9 +427,14 @@
           lastPositionMouseX = pointerDownClientX;
           lastPositionMouseY = pointerDownClientY;
 
-          console.log(evt);
+          //console.log(evt);
 
           if(document.getElementById("lockDiagramCheckBox").checked != true){
+            /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
+            tempCell.prop("position", {"x":x,"y":y});
+            tempCell.attr("label","lalalala");
+            graph.addCell(tempCell);
+            tempCell.toFront();*/
             cloneCellAt(selectedNodeTypeCell,x,y);
           }else{
              paperIsPanning = true;
@@ -358,25 +444,92 @@
 
     paper.on("cell:mouseover",
       function(evt, x, y){
-        console.log("cell mouse over!");
+        //console.log("cell mouse over!");
       }
     );
     paper.on("cell:mouseout",
       function(evt, x, y){
-        console.log("cell mouse out!");
+        //console.log("cell mouse out!");
       }
     );
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
 
-        console.log("cell:pointerclick!");
+        //console.log("cell:pointerclick!");
 
         if(document.getElementById("deleteNodeOnClickCheckBox").checked){
-          console.log("remove!");
+          //console.log("remove!");
           cellView.remove();
         }
       }
     );
+  }
+
+  function initializeLinkTypesPaper(){
+
+    //console.log("hola initialize links!");
+
+    link_types_graph = new joint.dia.Graph;
+
+    //----loading JSON WITH THEME-----------------------
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    xobj.open('GET', 'data/Bio4jEditorLinksTheme1.json', true);
+
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+          link_types_graph.fromJSON(JSON.parse(xobj.responseText));
+          calculateSizeOfLinkTypesPaper();
+          positionLinkTypesOnPaper();
+          makeLinkTypesNotInteractive();
+          //select first link type
+          selectLink(link_types_graph.getLinks()[0].findView(link_types_paper));
+        }
+    };
+    xobj.send(null);
+    //------------------------------------------------
+
+    link_types_paper = new joint.dia.Paper({
+      el: $('#link_types_list'),
+      gridSize: 1,
+      model: link_types_graph,
+      width: $('#link_types_list').width(),
+      height: $('#link_types_list').height(),
+      interactive: false      });
+
+      link_types_paper.on('cell:pointerclick',
+        function(linkView, evt, x, y) {
+            selectLink(linkView);
+        }
+      );
+  }
+
+  function calculateSizeOfLinkTypesPaper(){
+    var numberOfTypes = link_types_graph.getLinks().length;
+    link_types_paper.setDimensions(100, linkTypeCellHeight*numberOfTypes);
+    link_types_paper.render();
+  }
+
+  function positionLinkTypesOnPaper(){
+
+    var linkTypes = link_types_graph.getLinks();
+
+    for(var i=0; i<linkTypes.length;i++){
+      var currentLinkType = linkTypes[i];
+      var currentY = (linkTypeCellHeight * i) + linkTypeCellDefaultY;
+      currentLinkType.prop("source", {"x":linkTypeCellDefaultX,"y":currentY});
+      currentLinkType.prop("target", {"x":80,"y":currentY});
+    }
+    link_types_paper.render();
+  }
+
+  function makeLinkTypesNotInteractive(){
+    var linkTypes = link_types_graph.getLinks();
+    for(var i=0; i<linkTypes.length;i++){
+      var currentLinkType = linkTypes[i];
+      link_types_paper.findViewByModel(currentLinkType).options.interactive = false
+    }
+    link_types_paper.render();
   }
 
   function initializeNodeTypesPaper(){
@@ -430,7 +583,7 @@
       currentNodeType.prop("position", {"x":nodeTypeCellDefaultX,"y":currentY});
       var currentText = currentNodeType.attr("text/text");
       var brokenText = joint.util.breakText(currentText, { width: nodeTypeCellMaxWidth });
-      console.log(currentText,brokenText);
+      //console.log(currentText,brokenText);
       currentNodeType.attr("text/text", brokenText);
     }
     node_types_paper.render();
@@ -473,12 +626,32 @@
       var currentCell = nodeTypeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
           selectedNodeTypeCell = currentCell;
-          console.log(selectedNodeTypeCell);
+          //console.log(selectedNodeTypeCell);
           currentCell.attr('text/font-weight',"bold");
       }else {
           currentCell.attr('text/font-weight',"normal");
       }
     }
+  }
+
+  function selectLink(cellView){
+    console.log("selectLink!");
+    var linkTypeCells = link_types_graph.getLinks();
+
+    for (var i = 0; i < linkTypeCells.length; i++) {
+      var currentCell = linkTypeCells[i];
+      if(currentCell.attributes.id == cellView.model.id){
+          selectedLinkTypeCell = currentCell;
+          currentCell.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': 16 } } });
+          link_types_paper.defaultLink = selectedLinkTypeCell;
+          //console.log("selected",currentCell.label(0));
+      }else {
+        currentCell.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
+        //console.log("rest",currentCell.label(0));
+      }
+    }
+
+    console.log(link_types_paper.options);
   }
 
   <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
@@ -611,6 +784,73 @@
     paper.scale(paperScale, paperScale);
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
+
+  function initializeCustomElements(){
+    console.log("Initializing custom elements...");
+    // Create a custom element.
+    // ------------------------
+
+    joint.shapes.html = {};
+    joint.shapes.html.Element = joint.shapes.basic.Rect.extend({
+        defaults: joint.util.deepSupplement({
+            type: 'html.Element',
+            attrs: {
+                rect: { stroke: 'none', 'fill-opacity': 0 }
+            }
+        }, joint.shapes.basic.Rect.prototype.defaults)
+    });
+
+    // Create a custom view for that element that displays an HTML div above it.
+    // -------------------------------------------------------------------------
+
+    joint.shapes.html.ElementView = joint.dia.ElementView.extend({
+
+        template: [
+            '<div class="html-element">',
+            '<button class="delete">x</button>',
+            '<img></img>',
+            '<label></label>',
+            '</div>'
+        ].join(''),
+
+        initialize: function() {
+            _.bindAll(this, 'updateBox');
+            joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+
+            this.$box = $(_.template(this.template)());
+            this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+            // Update the box position whenever the underlying model changes.
+            this.model.on('change', this.updateBox, this);
+            // Remove the box when the model gets removed from the graph.
+            this.model.on('remove', this.removeBox, this);
+
+            this.updateBox();
+        },
+        render: function() {
+            joint.dia.ElementView.prototype.render.apply(this, arguments);
+            this.paper.$el.prepend(this.$box);
+            this.updateBox();
+            return this;
+        },
+        updateBox: function() {
+            // Set the position and dimension of the box so that it covers the JointJS element.
+            var bbox = this.model.getBBox();
+            // Example of updating the HTML with a data stored in the cell model.
+            this.$box.find('label').text(this.model.get('label'));
+            this.$box.css({ width: bbox.width, height: bbox.height, left: bbox.x, top: bbox.y, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
+        },
+        removeBox: function(evt) {
+            this.$box.remove();
+        }
+    });
+
+    console.log("Done!");
+  }
+
+  function getDefaultLink(){
+    return selectedLinkTypeCell.clone();
+  }
+
 
 	</script>
 </body>
