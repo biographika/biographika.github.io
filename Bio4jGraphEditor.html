@@ -93,6 +93,7 @@
   }
 
 /*
+
   .html-element label {
      color: #333;
      text-shadow: 1px 0 0 lightgray;
@@ -285,6 +286,7 @@
 
  var selectedNodeTypeCell;
  var selectedLinkTypeCell;
+ var readOnlyMode = false;
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -361,19 +363,15 @@
 
   <!-- LOCK DIAGRAM CHECKBOXGRAPH BUTTON... -->
   $("#lockDiagramCheckBox").click( function(){
-      var nodes = graph.getElements();
-
-      for(var i=0; i<nodes.length;i++){
-        var currentNode = nodes[i];
-        //console.log("antes",currentNode.attr("image/magnet"));
-        if( $(this).is(':checked') ){
-          currentNode.attr("image/magnet","false");
-          currentNode.attr("magnet","false");
-        }else{
-          currentNode.attr("image/magnet","true");
-        }
-        //console.log(currentNode);
+      if( $(this).is(':checked') ){
+        readOnlyMode = true;
+      }else{
+        readOnlyMode = false;
       }
+
+      makeLinksInteractive(!readOnlyMode);
+      makeElementsInteractive(!readOnlyMode);
+
       paper.render();
     }
   );
@@ -849,6 +847,49 @@
 
   function getDefaultLink(){
     return selectedLinkTypeCell.clone();
+  }
+
+  function makeLinksInteractive(flag){
+
+    var links = graph.getLinks();
+
+    if(!flag){
+      $('.link-tools .tool-remove').css({"display":"none"});
+      $('.link-tools .tool-options').css({"display":"none"});
+    }else{
+      $('.link-tools .tool-remove').css({"display":""});
+      $('.link-tools .tool-options').css({"display":""});
+    }
+
+    //making links not editable
+    for(var i=0; i<links.length;i++){
+      var currentLink = links[i];
+      var currentView = currentLink.findView(paper);
+      if(!flag){
+        currentView.options.interactive = false;
+      }else{
+        currentView.options.interactive = true;
+      }
+    }
+  }
+
+  function makeElementsInteractive(flag){
+
+    var nodes = graph.getElements();
+
+    for(var i=0; i<nodes.length;i++){
+      var currentNode = nodes[i];
+      var currentView = currentNode.findView(paper);
+      if( !flag ){
+        currentView.options.interactive = false;
+        currentNode.attr("image/magnet","false");
+        currentNode.attr("magnet","false");
+      }else{
+        currentNode.attr("image/magnet","true");
+        currentView.options.interactive = true;
+      }
+    }
+
   }
 
 
