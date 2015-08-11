@@ -1,0 +1,37 @@
+{
+  "cells":[
+    {
+      "type":"link",
+      "smooth": true,
+      "attrs": {
+        "link_type":"message_to_link",
+        "connection": { "stroke": "#E74C3C", "stroke-width": 5 },
+        ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "message to"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
+      ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
+      "attrs": {
+        "link_type":"belongs_to_area_link"
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "belongs to area"}
+          }
+        }
+      ]
+    }
+  ]
+}
