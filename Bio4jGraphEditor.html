@@ -79,6 +79,7 @@
     overflow: auto;
     max-height: 450px;
     min-height: 450px;
+    border: 1px solid gray;
   }
   #node_types_list{
     overflow-y: auto;
@@ -160,7 +161,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
       <div class="navbar-header">
-		<a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
+		      <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
           <a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>
       </div>
       <!-- /.navbar-static-side -->
@@ -179,7 +180,17 @@
             </div>
             <div id="graph-container" class="col-xs-8" >
             </div>
-            <div id="node_types_list" class="col-xs-2">
+            <div class="col-xs-2">
+              <div class="btn-group">
+                  <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
+                  <ul id="themesDropDownMenu" class="dropdown-menu">
+                      <li class="dropdown-header">BIOLOGY</li>
+                      <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
+                      <li class="dropdown-header">GENERAL</li>
+                      <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
+                  </ul>
+              </div>
+              <div id="node_types_list" />
             </div>
           </div>
         </div>
@@ -288,6 +299,15 @@
  var selectedLinkTypeCell;
  var readOnlyMode = false;
 
+ //-----THEMES URLs------------------------
+ var proteinsLinksThemeURL = "data/Bio4jEditorLinksTheme1.json";
+ var proteinsElementsThemeURL = "'data/Bio4jEditorTheme1.json'.json";
+ var doPlanningLinksThemeURL = "data/Bio4jEditorLinksTheme1.json";
+ var doPlanningElementsThemeURL = "data/Bio4jEditorLinksTheme1.json";
+ var defaultLinksThemeURL = proteinsLinksThemeURL;
+ var defaultElementsThemeURL = proteinsElementsThemeURL;
+ //----------------------------------------------
+
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
@@ -387,6 +407,18 @@
 
   });
 
+  <!-- THEMES DROPDOWN... -->
+  $("#themesDropDownMenu").on("click", "li", function(event){
+
+    var buttonClicked = event.currentTarget.getElementsByTagName("a")[0].getAttribute("id");
+    if(buttonClicked == "proteinsThemeButton"){
+        exportToJSON();
+    }else if(buttonClicked == "doPlanningThemeButton"){
+
+    }
+
+  });
+
   <!-- MAKING NODE TYPES LIST ELEMENTS SELECTABLE -->
   $("ul li").click(function() {
     $(this).parent().children().removeClass("active");
@@ -464,15 +496,16 @@
   }
 
   function initializeLinkTypesPaper(){
+    loadLinksTheme(defaultLinksThemeURL);
+  }
 
-    //console.log("hola initialize links!");
-
+  function loadLinksTheme(url){
     link_types_graph = new joint.dia.Graph;
 
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'data/Bio4jEditorLinksTheme1.json', true);
+    xobj.open('GET', url, true);
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
@@ -531,13 +564,15 @@
   }
 
   function initializeNodeTypesPaper(){
-
     node_types_graph = new joint.dia.Graph;
+    loadNodeTypesTheme(defaultElementsThemeURL);
+  }
 
+  function loadNodeTypesTheme(url){
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'data/Bio4jEditorTheme1.json', true);
+    xobj.open('GET', url, true);
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
@@ -882,8 +917,7 @@
       var currentView = currentNode.findView(paper);
       if( !flag ){
         currentView.options.interactive = false;
-        currentNode.attr("image/magnet","false");
-        currentNode.attr("magnet","false");
+        currentNode.attr("image/magnet","");
       }else{
         currentNode.attr("image/magnet","true");
         currentView.options.interactive = true;
