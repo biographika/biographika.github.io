@@ -163,6 +163,16 @@
       <div class="navbar-header">
 		      <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
           <a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>
+          <div class="btn-group pull-right">
+              <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
+              <ul id="themesDropDownMenu" class="dropdown-menu">
+                  <li class="dropdown-header">BIOLOGY</li>
+                  <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
+                  <li class="dropdown-header">GENERAL</li>
+                  <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
+              </ul>
+          </div>
+          <!-- button group -->
       </div>
       <!-- /.navbar-static-side -->
     </nav>
@@ -180,17 +190,7 @@
             </div>
             <div id="graph-container" class="col-xs-8" >
             </div>
-            <div class="col-xs-2">
-              <div class="btn-group">
-                  <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
-                  <ul id="themesDropDownMenu" class="dropdown-menu">
-                      <li class="dropdown-header">BIOLOGY</li>
-                      <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
-                      <li class="dropdown-header">GENERAL</li>
-                      <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
-                  </ul>
-              </div>
-              <div id="node_types_list" />
+            <div id="node_types_list" class="col-xs-2">
             </div>
           </div>
         </div>
@@ -583,7 +583,7 @@
             selectCell(cellView);
         }
       );
-      
+
     loadNodeTypesTheme(defaultElementsThemeURL);
   }
 
