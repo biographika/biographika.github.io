@@ -163,16 +163,6 @@
       <div class="navbar-header">
 		      <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
           <a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>
-          <div class="btn-group pull-right">
-              <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
-              <ul id="themesDropDownMenu" class="dropdown-menu">
-                  <li class="dropdown-header">BIOLOGY</li>
-                  <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
-                  <li class="dropdown-header">GENERAL</li>
-                  <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
-              </ul>
-          </div>
-          <!-- button group -->
       </div>
       <!-- /.navbar-static-side -->
     </nav>
@@ -184,6 +174,46 @@
             Graph explorer
         </div>
         <!-- /.panel-heading -->
+        <div id="toolbar">
+          <div class="btn-group btn-block" >
+                <span class="btn btn-default btn-file">
+                    Load file... <input type="file" accept=".json">
+                </span>
+                <button type="button" class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown">
+                  Export to...
+                  <span class="caret"></span>
+                </button>
+                <ul id="exportDropDownMenu" class="dropdown-menu" >
+                  <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
+                </ul>
+                <button id="zoomInButton" onclick="zoomIn()" type="button" class="btn btn-default">Zoom in</button>
+                <button id="zoomOutButton" onclick="zoomOut()" type="button" class="btn btn-default">Zoom out</button>
+                <button id="resetZoomButton" onclick="resetZoom()" type="button" class="btn btn-default">Reset zoom</button>
+                <div class="checkbox">
+                  <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
+                </div>
+                <!-- delete node on click checkbox -->
+                <div class="btn-group">
+                    <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
+                    <ul id="themesDropDownMenu" class="dropdown-menu">
+                        <li class="dropdown-header">BIOLOGY</li>
+                        <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
+                        <li class="dropdown-header">GENERAL</li>
+                        <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
+                    </ul>
+                    <button id="rotateRightButton" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">Rotate to right</button>
+                    <button id="rotateLeftButton" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">Rotate to left</button>
+                    <div class="checkbox">
+                      <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
+                    </div>
+                    <!-- lock diagram checkbox -->
+                </div>
+                <!-- button group -->
+          </div>
+          <!-- button group -->
+        </div>
+        <!-- toolbar -->
         <div class="panel-body">
           <div class="row">
             <div id="link_types_list" class="col-xs-2">
@@ -196,37 +226,7 @@
         </div>
         <!-- /.panel-body -->
       </div>
-      <div id="toolbar">
-        <div class="btn-group btn-block" >
-            <div class="btn-group">
-              <button class="btn btn-default" type="button" onclick="loadSample()">Load sample</button>
-              <span class="btn btn-default btn-file">
-                  Load file... <input type="file" accept=".json">
-              </span>
-              <button type="button" class="btn btn-default dropdown-toggle"
-                data-toggle="dropdown">
-                Export to...
-                <span class="caret"></span>
-              </button>
-              <ul id="exportDropDownMenu" class="dropdown-menu" >
-                <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
-              </ul>
-            </div>
-            <div class="checkbox">
-              <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
-            </div>
-            <!-- lock diagram checkbox -->
-            <div class="checkbox">
-              <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
-            </div>
-            <!-- delete node on click checkbox -->
-            <button id="zoomInButton" onclick="zoomIn()" type="button" class="btn btn-default">Zoom in</button>
-            <button id="zoomOutButton" onclick="zoomOut()" type="button" class="btn btn-default">Zoom out</button>
-            <button id="resetZoomButton" onclick="resetZoom()" type="button" class="btn btn-default">Reset zoom</button>
-        </div>
-        <!-- button group -->
-      </div>
-      <!-- toolbar -->
+
     </div>
     <!-- page-wrapper -->
   </div>
@@ -297,7 +297,10 @@
 
  var selectedNodeTypeCell;
  var selectedLinkTypeCell;
+ var selectedCell;
  var readOnlyMode = false;
+
+ var rotateCellFactor = 10;
 
  //-----THEMES URLs------------------------
  var proteinsLinksThemeURL = "data/ProteinsLinksTheme.json";
@@ -459,8 +462,6 @@
           lastPositionMouseX = pointerDownClientX;
           lastPositionMouseY = pointerDownClientY;
 
-          //console.log(evt);
-
           if(document.getElementById("lockDiagramCheckBox").checked != true){
             /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
             tempCell.prop("position", {"x":x,"y":y});
@@ -470,6 +471,12 @@
             cloneCellAt(selectedNodeTypeCell,x,y);
           }else{
              paperIsPanning = true;
+          }
+
+          if(readOnlyMode){
+            console.log("selectNodeCell(selectedNodeCell, false);");
+            console.log("selectedNodeCell",selectedNodeCell);
+            selectNodeCell(selectedNodeCell, false);
           }
       }
     );
@@ -487,14 +494,28 @@
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
 
-        //console.log("cell:pointerclick!");
+        console.log("cell:pointerclick!");
 
         if(document.getElementById("deleteNodeOnClickCheckBox").checked){
           //console.log("remove!");
           cellView.remove();
         }
+
+        if(readOnlyMode){
+          selectNodeCell(cellView, true);
+        }
       }
     );
+
+    paper.on('cell:pointerup', function(cellView) {
+        if (cellView.model instanceof joint.dia.Link){
+          var tempLink = cellView.model;
+          if(isLinkInvalid(tempLink)){
+            tempLink.remove();
+          }
+        }
+    });
+
   }
 
   function initializeLinkTypesPaper(){
@@ -580,7 +601,7 @@
 
       node_types_paper.on('cell:pointerclick',
         function(cellView, evt, x, y) {
-            selectCell(cellView);
+            selectNodeTypeCell(cellView);
         }
       );
 
@@ -599,7 +620,7 @@
           calculateSizeOfNodeTypesPaper();
           positionNodeTypesOnPaper();
           //select first node type
-          selectCell(node_types_graph.getElements()[0].findView(node_types_paper));
+          selectNodeTypeCell(node_types_graph.getElements()[0].findView(node_types_paper));
         }
     };
     xobj.send(null);
@@ -657,7 +678,31 @@
     downloadJSON(JSON.stringify(graph.toJSON()));
   }
 
-  function selectCell(cellView){
+  function selectNodeCell(cellView, flag){
+
+    console.log("selectNodeTypeCell");
+
+
+    var nodeCells = graph.getElements();
+
+    for (var i = 0; i < nodeCells.length; i++) {
+      var currentCell = nodeCells[i];
+      console.log("currentCell.attributes.id", currentCell.attributes.id);
+      console.log("cellView",cellView);
+      console.log("cellView.model",cellView.model);
+      console.log("cellView.model.id",cellView.model.id);
+      if(currentCell.attributes.id == cellView.model.id){
+          selectedNodeCell = currentCell.findView(paper);
+          if(flag){
+            currentCell.attr('text/font-weight',"bold");
+          }else{
+            currentCell.attr('text/font-weight',"normal");
+          }
+        }
+    }
+  }
+
+  function selectNodeTypeCell(cellView){
 
     var nodeTypeCells = node_types_graph.getElements();
     for (var i = 0; i < nodeTypeCells.length; i++) {
@@ -752,6 +797,7 @@
       var clonedCell = cell.clone();
       clonedCell.prop("position", {"x":x,"y":y});
       clonedCell.attr("image/magnet","true");
+      clonedCell.attr('text/font-weight',"normal");
       graph.addCell(clonedCell);
       clonedCell.toFront();
   }
@@ -929,6 +975,31 @@
       }
     }
 
+  }
+
+
+  function isLinkInvalid(link){
+    console.log(link);
+    return (!link.prop('source/id') || !link.prop('target/id'));
+  }
+
+  function rotateCellToTheRight(){
+    console.log("rotateCellToTheRight");
+     if(selectedNodeCell){
+       console.log(selectedNodeCell.model);
+       console.log("before",selectedNodeCell.angle);
+       selectedNodeCell.model.rotate(rotateCellFactor);
+       console.log("after",selectedNodeCell.angle);
+     }
+  }
+
+  function rotateCellToTheLeft(){
+    console.log("rotateCellToTheLeft");
+    if(selectedNodeCell){
+      console.log("before",selectedNodeCell.angle);
+      selectedNodeCell.model.rotate(-rotateCellFactor);
+      console.log("after",selectedNodeCell.angle);
+    }
   }
 
 
