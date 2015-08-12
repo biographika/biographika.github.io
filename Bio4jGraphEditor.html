@@ -204,6 +204,7 @@
                     </ul>
                     <button id="rotateRightButton" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">Rotate to right</button>
                     <button id="rotateLeftButton" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">Rotate to left</button>
+                    <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
                     <div class="checkbox">
                       <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
                     </div>
@@ -474,9 +475,7 @@
           }
 
           if(readOnlyMode){
-            console.log("selectNodeCell(selectedNodeCell, false);");
-            console.log("selectedNodeCell",selectedNodeCell);
-            selectNodeCell(selectedNodeCell, false);
+            selectNodeCell(selectedCell, false);
           }
       }
     );
@@ -502,6 +501,9 @@
         }
 
         if(readOnlyMode){
+          if(selectedCell){
+              selectNodeCell(selectedCell, false);
+          }
           selectNodeCell(cellView, true);
         }
       }
@@ -692,7 +694,7 @@
       console.log("cellView.model",cellView.model);
       console.log("cellView.model.id",cellView.model.id);
       if(currentCell.attributes.id == cellView.model.id){
-          selectedNodeCell = currentCell.findView(paper);
+          selectedCell = currentCell.findView(paper);
           if(flag){
             currentCell.attr('text/font-weight',"bold");
           }else{
@@ -985,20 +987,26 @@
 
   function rotateCellToTheRight(){
     console.log("rotateCellToTheRight");
-     if(selectedNodeCell){
-       console.log(selectedNodeCell.model);
-       console.log("before",selectedNodeCell.angle);
-       selectedNodeCell.model.rotate(rotateCellFactor);
-       console.log("after",selectedNodeCell.angle);
+     if(selectedCell){
+       console.log(selectedCell.model);
+       console.log("before",selectedCell.angle);
+       selectedCell.model.rotate(rotateCellFactor);
+       console.log("after",selectedCell.angle);
      }
   }
 
   function rotateCellToTheLeft(){
     console.log("rotateCellToTheLeft");
-    if(selectedNodeCell){
-      console.log("before",selectedNodeCell.angle);
-      selectedNodeCell.model.rotate(-rotateCellFactor);
-      console.log("after",selectedNodeCell.angle);
+    if(selectedCell){
+      console.log("before",selectedCell.model.angle);
+      selectedCell.model.rotate(-rotateCellFactor);
+      console.log("after",selectedCell.model.angle);
+    }
+  }
+
+  function bringSelectedCellToFront(){
+    if(selectedCell){
+      selectedCell.model.toFront();
     }
   }
 
