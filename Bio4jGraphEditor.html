@@ -205,6 +205,7 @@
                     <button id="rotateRightButton" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">Rotate to right</button>
                     <button id="rotateLeftButton" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">Rotate to left</button>
                     <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
+                    <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
                     <div class="checkbox">
                       <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
                     </div>
@@ -1010,6 +1011,11 @@
     }
   }
 
+  function bringSelectedCellToBack(){
+    if(selectedCell){
+      selectedCell.model.toBack();
+    }
+  }
 
 	</script>
 </body>
