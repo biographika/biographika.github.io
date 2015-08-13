@@ -80,6 +80,7 @@
     max-height: 450px;
     min-height: 450px;
     border: 1px solid gray;
+    background-color: #dbdbdb;
   }
   #node_types_list{
     overflow-y: auto;
@@ -206,6 +207,17 @@
                     <button id="rotateLeftButton" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">Rotate to left</button>
                     <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
                     <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <span class="control-label">Stage dimensions</span>
+                        <div class="controls form-inline">
+                            <label for="inputWidth">Width</label>
+                            <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="200" type="number" class="input-small" placeholder="Width" id="inputWidth" min="200" max="2000">
+                            <label for="inputHeight">Height</label>
+                            <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="100" type="number" class="input-small" placeholder="Height" id="inputHeight" min="100" max="1500">
+                        </div>
+                      </div>
+                    </form>
                     <div class="checkbox">
                       <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
                     </div>
@@ -220,7 +232,7 @@
           <div class="row">
             <div id="link_types_list" class="col-xs-2">
             </div>
-            <div id="graph-container" class="col-xs-8" >
+            <div id="graph-container" class="col-xs-8">
             </div>
             <div id="node_types_list" class="col-xs-2">
             </div>
@@ -243,32 +255,6 @@
 
  <!-- +++++++++++++++++++ MAIN VARS ++++++++++++++++++++++++ -->
  var graph, node_types_graph, link_types_graph, paper, node_types_paper, link_types_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
- // Shortcuts.
- var rect = joint.shapes.basic.Rect;
- var path = joint.shapes.basic.Path;
- var circle = joint.shapes.basic.Circle;
- var ellipse = joint.shapes.basic.Ellipse;
- var polygon = joint.shapes.basic.Polygon;
- var polyline = joint.shapes.basic.Polyline;
- var text = joint.shapes.basic.Text;
- var link = joint.dia.Link;
- joint.shapes.basic.DecoratedRect = joint.shapes.basic.Generic.extend({
-
-    markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
-
-    defaults: joint.util.deepSupplement({
-
-        type: 'basic.DecoratedRect',
-        size: { width: 100, height: 60 },
-        attrs: {
-            'rect': { fill: '#FFFFFF', stroke: 'black', width: 100, height: 60},
-            'text': { 'font-size': 14, text: '', 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle', fill: 'black'  },
-
-        }
-
-    }, joint.shapes.basic.Generic.prototype.defaults)
-  });
- var decoratedRect = joint.shapes.basic.DecoratedRect;
 
  //.......paper panning related vars........
  var paperIsPanning = false;
@@ -280,8 +266,8 @@
  //.......paper zooming related vars........
  var paperScale = 1;
  var paperScaleFactor = 0.2;
- var paperInitialWidth;
- var paperInitialHeight;
+ var paperInitialWidth = 500;
+ var paperInitialHeight = 200;
  //.........................................
 
  //-----node types cells------------------------
@@ -312,6 +298,35 @@
  var defaultLinksThemeURL = proteinsLinksThemeURL;
  var defaultElementsThemeURL = proteinsElementsThemeURL;
  //----------------------------------------------
+
+ // Shortcuts.
+ var rect = joint.shapes.basic.Rect;
+ var path = joint.shapes.basic.Path;
+ var circle = joint.shapes.basic.Circle;
+ var ellipse = joint.shapes.basic.Ellipse;
+ var polygon = joint.shapes.basic.Polygon;
+ var polyline = joint.shapes.basic.Polyline;
+ var text = joint.shapes.basic.Text;
+ var link = joint.dia.Link;
+ joint.shapes.basic.DecoratedRect = joint.shapes.basic.Generic.extend({
+
+    markup: '<g class="rotatable"><g class="scalable"><rect/></g><image/><text/></g>',
+
+    defaults: joint.util.deepSupplement({
+
+        type: 'basic.DecoratedRect',
+        size: { width: 100, height: 60 },
+        attrs: {
+            'rect': { fill: '#FFFFFF', stroke: 'black', width: 100, height: 60},
+            'text': { 'font-size': 14, text: '', 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle', fill: 'black'  },
+
+        }
+
+    }, joint.shapes.basic.Generic.prototype.defaults)
+  });
+ var decoratedRect = joint.shapes.basic.DecoratedRect;
+
+ var backgroundBox;
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -441,43 +456,26 @@
   }
 
   function initializeGraphPaper(){
+    console.log("initializeGraphPaper");
+
     graph = new joint.dia.Graph;
-    //-----------EVENTS-----------------
-    /*graph.on('all', function(eventName, cell) {
-      console.log(arguments);
-    });*/
 
     paper = new joint.dia.Paper({
       el: $('#graph-container'),
       gridSize: 1,
       model: graph,
-      width: $('#graph-container').width(),
-      height: $('#graph-container').height(),
+      width: paperInitialWidth,
+      height: paperInitialHeight,
       defaultLink: getDefaultLink
     });
 
+    //---update dimension values on text inputs
+    $('#inputWidth').attr('value', paperInitialWidth);
+    $('#inputHeight').attr('value', paperInitialHeight);
+
     paper.on("blank:pointerdown",
       function(evt, x, y){
-          pointerDownClientX = evt.clientX;
-          pointerDownClientY = evt.clientY;
-
-          lastPositionMouseX = pointerDownClientX;
-          lastPositionMouseY = pointerDownClientY;
-
-          if(document.getElementById("lockDiagramCheckBox").checked != true){
-            /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
-            tempCell.prop("position", {"x":x,"y":y});
-            tempCell.attr("label","lalalala");
-            graph.addCell(tempCell);
-            tempCell.toFront();*/
-            cloneCellAt(selectedNodeTypeCell,x,y);
-          }else{
-             paperIsPanning = true;
-          }
-
-          if(readOnlyMode){
-            selectNodeCell(selectedCell, false);
-          }
+          onStageClick(evt,x,y);
       }
     );
 
@@ -494,18 +492,22 @@
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
 
-        console.log("cell:pointerclick!");
+        if(cellView.model == backgroundBox){
+          onStageClick(evt,x,y);
+        }else{
+          console.log("cell:pointerclick!");
 
-        if(document.getElementById("deleteNodeOnClickCheckBox").checked){
-          //console.log("remove!");
-          cellView.remove();
-        }
-
-        if(readOnlyMode){
-          if(selectedCell){
-              selectNodeCell(selectedCell, false);
+          if(document.getElementById("deleteNodeOnClickCheckBox").checked){
+            //console.log("remove!");
+            cellView.remove();
           }
-          selectNodeCell(cellView, true);
+
+          if(readOnlyMode){
+            if(selectedCell){
+                selectNodeCell(selectedCell, false);
+            }
+            selectNodeCell(cellView, true);
+          }
         }
       }
     );
@@ -518,6 +520,14 @@
           }
         }
     });
+
+
+    backgroundBox  = createBackgroundBox(0, 0, paperInitialWidth, paperInitialHeight, '#FFFFFF');
+    backgroundBox.findView(paper).options.interactive = false
+    //backgroundBox.toBack();
+
+    console.log(backgroundBox);
+    console.log(graph.getElements().length);
 
   }
 
@@ -749,6 +759,18 @@
           rect: { rx: rxValue, ry: ryValue, fill: fillValue, stroke: strokeValue, 'stroke-width': strokeWidthValue, magnet: true},
           text: { 'font-size': 10, fill: '#333', text: label},
           name: label
+
+          }
+      });
+      graph.addCell(cell);
+      return cell;
+  };
+  var createBackgroundBox = function(x, y, widthValue, heightValue, fillValue) {
+      var cell = new rect({
+        position: { x: x, y: y },
+        size: { width: widthValue, height: heightValue},
+        attrs: {
+          rect: { fill: fillValue}
 
           }
       });
@@ -987,7 +1009,7 @@
   }
 
   function rotateCellToTheRight(){
-    console.log("rotateCellToTheRight");
+     console.log("rotateCellToTheRight");
      if(selectedCell){
        console.log(selectedCell.model);
        console.log("before",selectedCell.angle);
@@ -1014,6 +1036,50 @@
   function bringSelectedCellToBack(){
     if(selectedCell){
       selectedCell.model.toBack();
+    }
+  }
+
+  function updatePaperDimensionsBasedOnTextInputs(){
+    //---update dimension values on text inputs
+    var tempWidth = $('#inputWidth').prop('value');
+    var tempHeight = $('#inputHeight').prop('value');
+    updatePaperDimensions(tempWidth, tempHeight);
+  }
+
+  function updatePaperDimensions(tempWidth, tempHeight){
+    console.log("updatePaperDimensions");
+    paper.setDimensions(tempWidth,tempHeight);
+    updateBackgroundBoxDimensions(tempWidth, tempHeight);
+    paper.render();
+  }
+
+  function updateBackgroundBoxDimensions(widthValue, heightValue){
+      backgroundBox.prop("size", {"width":widthValue,"height":heightValue});
+  }
+
+  function onStageClick(evt, x, y){
+
+    console.log("onStageClick");
+
+    pointerDownClientX = evt.clientX;
+    pointerDownClientY = evt.clientY;
+
+    lastPositionMouseX = pointerDownClientX;
+    lastPositionMouseY = pointerDownClientY;
+
+    if(document.getElementById("lockDiagramCheckBox").checked != true){
+      /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
+      tempCell.prop("position", {"x":x,"y":y});
+      tempCell.attr("label","lalalala");
+      graph.addCell(tempCell);
+      tempCell.toFront();*/
+      cloneCellAt(selectedNodeTypeCell,x,y);
+    }else{
+       paperIsPanning = true;
+    }
+
+    if(readOnlyMode){
+      selectNodeCell(selectedCell, false);
     }
   }
 
