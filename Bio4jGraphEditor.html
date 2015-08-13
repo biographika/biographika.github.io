@@ -391,7 +391,12 @@
              //console.log(contentBBox.width, contentBBox.height, contentBBox.x, contentBBox.y);
 
              console.log("graph loaded!");
-             paper.setDimensions(paperInitialWidth,paperInitialHeight);
+
+             updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
+
+             initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
+             backgroundBox.toBack();
+             updatePaperDimensions(paperInitialWidth,paperInitialHeight);
              paper.render();
           }
         }
@@ -521,14 +526,13 @@
         }
     });
 
+    initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
 
-    backgroundBox  = createBackgroundBox(0, 0, paperInitialWidth, paperInitialHeight, '#FFFFFF');
-    backgroundBox.findView(paper).options.interactive = false
-    //backgroundBox.toBack();
+  }
 
-    console.log(backgroundBox);
-    console.log(graph.getElements().length);
-
+  function initializeBackgroundBox(width, height){
+    backgroundBox  = createBackgroundBox(0, 0, width, height, '#FFFFFF');
+    backgroundBox.findView(paper).options.interactive = false;
   }
 
   function initializeLinkTypesPaper(){
@@ -1081,6 +1085,11 @@
     if(readOnlyMode){
       selectNodeCell(selectedCell, false);
     }
+  }
+
+  function updatePaperDimensionsTextInputs(width, height){
+    $('#inputWidth').prop('value',width);
+    $('#inputHeight').prop('value',height);
   }
 
 	</script>
