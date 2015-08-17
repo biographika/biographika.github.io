@@ -160,6 +160,7 @@
                     <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
                     <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
                     <button id="setBackgroundButton" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">Set background</button>
+                    <button id="fitPaperToContentsButton" onclick="fitPaperToContents()" type="button" class="btn btn-default">Fit paper to contents</button>
                     <form class="form-horizontal">
                       <div class="control-group">
                         <span class="control-label">Stage dimensions</span>
@@ -1238,6 +1239,18 @@
     paper.render();
     console.log("done!");
 
+  }
+
+  function fitPaperToContents(){
+    var bbox = paper.getContentBBox();
+    var tempWidth = bbox.width;
+    var tempHeight = bbox.height;
+    //console.log(tempWidth, tempHeight);
+    $('#inputWidth').prop('value', tempWidth);
+    $('#inputHeight').prop('value', tempHeight);
+    paperInitialWidth = tempWidth;
+    paperInitialHeight = tempHeight;
+    updatePaperDimensions(tempWidth, tempHeight);
   }
 
 	</script>
