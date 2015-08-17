@@ -475,7 +475,7 @@
 
     paper.on("blank:pointerdown",
       function(evt, x, y){
-          onStageClick(evt,x,y);
+          onStageDown(evt,x,y);
       }
     );
 
@@ -489,6 +489,13 @@
     paper.on("cell:mouseout",
       function(evt, x, y){
         //console.log("cell mouse out!");
+      }
+    );
+    paper.on('cell:pointerdown',
+      function(cellView, evt, x, y){
+        if(cellView.model == backgroundBox || cellView.model == currentBackgroundCell){
+          onStageDown(evt,x,y);
+        }
       }
     );
     paper.on('cell:pointerclick',
@@ -1149,15 +1156,23 @@
       backgroundBox.prop("size", {"width":widthValue,"height":heightValue});
   }
 
-  function onStageClick(evt, x, y){
-
-    console.log("onStageClick");
+  function onStageDown(evt, x, y){
+    console.log("onStageDown");
 
     pointerDownClientX = evt.clientX;
     pointerDownClientY = evt.clientY;
 
     lastPositionMouseX = pointerDownClientX;
     lastPositionMouseY = pointerDownClientY;
+
+    if(document.getElementById("lockDiagramCheckBox").checked == true){
+      paperIsPanning = true;
+    }
+  }
+
+  function onStageClick(evt, x, y){
+
+    console.log("onStageClick");
 
     if(document.getElementById("lockDiagramCheckBox").checked != true){
       /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
