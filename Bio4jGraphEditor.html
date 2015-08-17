@@ -391,7 +391,7 @@
       }
   });
 
-  <!-- LOCK DIAGRAM CHECKBOXGRAPH BUTTON... -->
+  <!-- LOCK DIAGRAM CHECKBOX... -->
   $("#lockDiagramCheckBox").click( function(){
       if( $(this).is(':checked') ){
         readOnlyMode = true;
@@ -444,7 +444,6 @@
       console.log("!backgrounds_graph");
       initializeBackgroundsPaper();
     }
-
   })
 
 
@@ -508,7 +507,7 @@
         }else{
           console.log("cell:pointerclick!");
 
-          if(document.getElementById("deleteNodeOnClickCheckBox").checked){
+          if(document.getElementById("deleteNodeOnClickCheckBox").checked && !readOnlyMode){
             //console.log("remove!");
             cellView.remove();
           }
@@ -772,10 +771,10 @@
 
     for (var i = 0; i < nodeCells.length; i++) {
       var currentCell = nodeCells[i];
-      console.log("currentCell.attributes.id", currentCell.attributes.id);
-      console.log("cellView",cellView);
-      console.log("cellView.model",cellView.model);
-      console.log("cellView.model.id",cellView.model.id);
+      // console.log("currentCell.attributes.id", currentCell.attributes.id);
+      // console.log("cellView",cellView);
+      // console.log("cellView.model",cellView.model);
+      // console.log("cellView.model.id",cellView.model.id);
       if(currentCell.attributes.id == cellView.model.id){
           selectedCell = currentCell.findView(paper);
           if(flag){
@@ -1133,6 +1132,9 @@
   function bringSelectedCellToBack(){
     if(selectedCell){
       selectedCell.model.toBack();
+
+      currentBackgroundCell.toBack();
+      backgroundBox.toBack();
     }
   }
 
