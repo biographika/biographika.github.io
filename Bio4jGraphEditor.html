@@ -269,6 +269,7 @@
  var selectedBackgroundCell;
  var selectedCell;
  var readOnlyMode = false;
+ var currentBackgroundCell = null;
 
  var rotateCellFactor = 10;
 
@@ -441,7 +442,6 @@
     console.log("shown.bs.modal");
     if(!backgrounds_graph){
       console.log("!backgrounds_graph");
-      initializeBackgroundsDialog();
       initializeBackgroundsPaper();
     }
 
@@ -495,6 +495,8 @@
       function(cellView, evt, x, y) {
 
         if(cellView.model == backgroundBox){
+          onStageClick(evt,x,y);
+        }else if(cellView.model == currentBackgroundCell){
           onStageClick(evt,x,y);
         }else{
           console.log("cell:pointerclick!");
@@ -800,6 +802,7 @@
     for (var i = 0; i < linkTypeCells.length; i++) {
       var currentCell = linkTypeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
+
           selectedLinkTypeCell = currentCell;
           currentCell.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': 16 } } });
           link_types_paper.defaultLink = selectedLinkTypeCell;
@@ -1042,7 +1045,9 @@
   }
 
   function getDefaultLink(){
-    return selectedLinkTypeCell.clone();
+    var tempLink = selectedLinkTypeCell.clone();
+    tempLink.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
+    return tempLink;
   }
 
   function makeLinksInteractive(flag){
@@ -1182,6 +1187,39 @@
   }
 
   function setSelectedBackground(){
+    $('#background_dialog').modal('hide');
+
+    if(currentBackgroundCell){
+      console.log("There already was a background for this diagram...");
+      if(currentBackgroundCell.id != selectedBackgroundCell.id){
+        console.log("The background selected is different from the current one");
+        currentBackgroundCell.remove();
+      }
+    }
+    console.log("let's create the new background cell!");
+
+    var newBackgroundCell = selectedBackgroundCell.clone();
+    var realSize = newBackgroundCell.attr("real_size")
+    var realWidth = realSize.width;
+    var realHeight = realSize.height;
+    //var nodeType = newBackgroundCell.attr("node_type");
+    //console.log(realWidth, realHeight, realSize, nodeType);
+
+    newBackgroundCell.prop("size", {"width":realWidth,"height":realHeight});
+    newBackgroundCell.prop("position", {"x":0,"y":0});
+    newBackgroundCell.attr("image/magnet","");
+    newBackgroundCell.attr("image/width", realWidth);
+    newBackgroundCell.attr("image/height", realHeight);
+    newBackgroundCell.attr('text/font-weight',"normal");
+
+    graph.addCell(newBackgroundCell);
+    newBackgroundCell.toBack();
+    backgroundBox.toBack();
+    console.log(newBackgroundCell);
+    currentBackgroundCell = newBackgroundCell;
+    currentBackgroundCell.findView(paper).options.interactive = false;
+    paper.render();
+    console.log("done!");
 
   }
 
