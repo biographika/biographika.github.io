@@ -1199,7 +1199,7 @@
     console.log("let's create the new background cell!");
 
     var newBackgroundCell = selectedBackgroundCell.clone();
-    var realSize = newBackgroundCell.attr("real_size")
+    var realSize = newBackgroundCell.prop("real_size");
     var realWidth = realSize.width;
     var realHeight = realSize.height;
     //var nodeType = newBackgroundCell.attr("node_type");
