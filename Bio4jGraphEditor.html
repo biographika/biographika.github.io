@@ -6,6 +6,7 @@
 </title>
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
+<link href="css/jquery-ui.css" rel="stylesheet" type='text/css'>
 <style type="text/css">
 
   body {
@@ -93,68 +94,19 @@
     max-height: 450px;
     min-height: 200px;
   }
-
-/*
-
-  .html-element label {
-     color: #333;
-     text-shadow: 1px 0 0 lightgray;
-     font-weight: bold;
-   }
-
-   .html-element button.delete:hover {
-       width: 20px;
-       height: 20px;
-       line-height: 20px;
-    }
-
-    .html-element button.delete {
-       color: white;
-       border: none;
-       background-color: #C0392B;
-       border-radius: 20px;
-       width: 15px;
-       height: 15px;
-       line-height: 15px;
-       text-align: middle;
-       position: absolute;
-       top: -15px;
-       left: -15px;
-       padding: 0;
-       margin: 0;
-       font-weight: bold;
-       cursor: pointer;
-    }
-*/
-/*
-    .html-element {
-       position: absolute;
-       background: #3498DB;
-        Make sure events are propagated to the JointJS element so, e.g. dragging works.
-       pointer-events: none;
-       -webkit-user-select: none;
-       border-radius: 4px;
-       border: 2px solid #2980B9;
-       box-shadow: inset 0 0 5px black, 2px 2px 1px gray;
-       padding: 5px;
-       box-sizing: border-box;
-       z-index: 2;
-    }
-    .html-element select,
-    .html-element input,
-    .html-element button {
-        Enable interacting with inputs only.
-       pointer-events: auto;
-    }
-*/
+  #backgrounds_list{
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 450px;
+  }
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/joint.css" />
+<script src="js/joint.js"></script>
 <script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/jquery-ui.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/joint.js"></script>
-<script src="js/jquery.mousewheel.js"></script>
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
 <body onload="onBodyLoad()">
@@ -207,6 +159,7 @@
                     <button id="rotateLeftButton" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">Rotate to left</button>
                     <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
                     <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
+                    <button id="setBackgroundButton" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">Set background</button>
                     <form class="form-horizontal">
                       <div class="control-group">
                         <span class="control-label">Stage dimensions</span>
@@ -250,11 +203,31 @@
       <p>This example is part of <a href="http://www.biographika.com/" rel="author">Biographika</a> project.  100% of the code is open source and released under <a href="http://www.gnu.org/licenses/agpl-3.0.en.html" rel="external">AGPLv3</a> license.</p>
     </div>
   </footer>
+  <div id="background_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Background selector</h4>
+        </div>
+        <div class="modal-body">
+          <div id="backgrounds_list">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" onclick="setSelectedBackground()" class="btn btn-primary">Set background</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <script type="text/javascript">
 
 
  <!-- +++++++++++++++++++ MAIN VARS ++++++++++++++++++++++++ -->
- var graph, node_types_graph, link_types_graph, paper, node_types_paper, link_types_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
+ var graph, node_types_graph, link_types_graph, backgrounds_graph, paper, node_types_paper, link_types_paper, backgrounds_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
 
  //.......paper panning related vars........
  var paperIsPanning = false;
@@ -283,8 +256,17 @@
  var linkTypeCellMaxWidth = 120;
  //----------------------------------------------
 
+ //-----background cells------------------------
+ var backgroundCellHeight = 250;
+ var backgroundCellDefaultX = 15;
+ var backgroundCellMaxWidth = 500;
+ var backgroundPaperWidth = 500;
+ var backgroundPaperHeight = 300;
+ //----------------------------------------------
+
  var selectedNodeTypeCell;
  var selectedLinkTypeCell;
+ var selectedBackgroundCell;
  var selectedCell;
  var readOnlyMode = false;
 
@@ -293,10 +275,12 @@
  //-----THEMES URLs------------------------
  var proteinsLinksThemeURL = "data/ProteinsLinksTheme.json";
  var proteinsElementsThemeURL = "data/ProteinsElementsTheme.json";
+ var proteinsBackgroundThemeURL = "data/ProteinsBackgroundTheme.json";
  var doPlanningLinksThemeURL = "data/DoPlanningLinksTheme.json";
  var doPlanningElementsThemeURL = "data/DoPlanningElementsTheme.json";
  var defaultLinksThemeURL = proteinsLinksThemeURL;
  var defaultElementsThemeURL = proteinsElementsThemeURL;
+ var defaultBackgroundThemeURL = proteinsBackgroundThemeURL;
  //----------------------------------------------
 
  // Shortcuts.
@@ -452,6 +436,17 @@
     $(this).addClass("active");
   });
 
+  <!-- BACKGROUNDS MODAL DIALOG -->
+  $('#background_dialog').on('shown.bs.modal', function () {
+    console.log("shown.bs.modal");
+    if(!backgrounds_graph){
+      console.log("!backgrounds_graph");
+      initializeBackgroundsDialog();
+      initializeBackgroundsPaper();
+    }
+
+  })
+
 
   function initializeJoint(){
       //initializeCustomElements();
@@ -485,8 +480,10 @@
     );
 
     paper.on("cell:mouseover",
-      function(evt, x, y){
-        //console.log("cell mouse over!");
+      function(cellView, evt, x, y){
+        if(cellView.model == backgroundBox){
+
+        }
       }
     );
     paper.on("cell:mouseout",
@@ -604,6 +601,26 @@
     link_types_paper.render();
   }
 
+  function initializeBackgroundsPaper(){
+    backgrounds_graph = new joint.dia.Graph;
+
+    backgrounds_paper = new joint.dia.Paper({
+      el: $('#backgrounds_list'),
+      gridSize: 1,
+      model: backgrounds_graph,
+      width: backgroundPaperWidth,
+      height: backgroundPaperHeight,
+      interactive: false });
+
+    backgrounds_paper.on('cell:pointerclick',
+      function(cellView, evt, x, y) {
+          selectBackgroundCell(cellView);
+      }
+    );
+
+    loadBackgroundsTheme(defaultBackgroundThemeURL);
+  }
+
   function initializeNodeTypesPaper(){
 
     node_types_graph = new joint.dia.Graph;
@@ -616,13 +633,34 @@
       height: $('#node_types_list').height(),
       interactive: false      });
 
-      node_types_paper.on('cell:pointerclick',
-        function(cellView, evt, x, y) {
-            selectNodeTypeCell(cellView);
-        }
-      );
+    node_types_paper.on('cell:pointerclick',
+      function(cellView, evt, x, y) {
+          selectNodeTypeCell(cellView);
+      }
+    );
 
     loadNodeTypesTheme(defaultElementsThemeURL);
+  }
+
+  function loadBackgroundsTheme(url){
+    //----loading JSON WITH THEME-----------------------
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    xobj.open('GET', url, true);
+
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+          backgrounds_graph.fromJSON(JSON.parse(xobj.responseText));
+          calculateSizeOfBackgroundsPaper();
+          positionBackgroundsOnPaper();
+          //select first node type
+          selectBackgroundCell(backgrounds_graph.getElements()[0].findView(backgrounds_paper));
+          console.log("holaaaaaaaaaaaaaaaaaaaaaa!");
+          backgrounds_paper.render();
+        }
+    };
+    xobj.send(null);
+    //------------------------------------------------
   }
 
   function loadNodeTypesTheme(url){
@@ -663,6 +701,27 @@
       currentNodeType.attr("text/text", brokenText);
     }
     node_types_paper.render();
+  }
+
+  function calculateSizeOfBackgroundsPaper(){
+    var numberOfBackgrounds = backgrounds_graph.getElements().length;
+    backgrounds_paper.setDimensions(500, backgroundCellHeight*numberOfBackgrounds);
+    backgrounds_paper.render();
+  }
+
+  function positionBackgroundsOnPaper(){
+
+    var backgrounds = backgrounds_graph.getElements();
+    for(var i=0; i<backgrounds.length;i++){
+      var currentBackground = backgrounds[i];
+      var currentY = backgroundCellHeight * i;
+      currentBackground.prop("position", {"x":backgroundCellDefaultX,"y":currentY});
+      var currentText = currentBackground.attr("text/text");
+      var brokenText = joint.util.breakText(currentText, { width: backgroundCellMaxWidth });
+      //console.log(currentText,brokenText);
+      currentBackground.attr("text/text", brokenText);
+    }
+    backgrounds_paper.render();
   }
 
   function test(){
@@ -752,6 +811,28 @@
     }
 
     console.log(link_types_paper.options);
+  }
+
+  function selectBackgroundCell(cellView){
+
+    console.log("selectBackgroundCell");
+
+    var backgroundCells = backgrounds_graph.getElements();
+
+    for (var i = 0; i < backgroundCells.length; i++) {
+
+      var currentBackground = backgroundCells[i];
+
+      if(currentBackground.attributes.id == cellView.model.id){
+          selectedBackgroundCell = currentBackground;
+          //console.log(selectedNodeTypeCell);
+          currentBackground.attr('text/font-weight',"bold");
+      }else {
+          currentBackground.attr('text/font-weight',"normal");
+      }
+    }
+
+    console.log("done with select!");
   }
 
   <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
@@ -1047,6 +1128,8 @@
     //---update dimension values on text inputs
     var tempWidth = $('#inputWidth').prop('value');
     var tempHeight = $('#inputHeight').prop('value');
+    paperInitialWidth = tempWidth;
+    paperInitialHeight = tempHeight;
     updatePaperDimensions(tempWidth, tempHeight);
   }
 
@@ -1090,6 +1173,16 @@
   function updatePaperDimensionsTextInputs(width, height){
     $('#inputWidth').prop('value',width);
     $('#inputHeight').prop('value',height);
+  }
+
+  function onSetBackgroundButtonClick(){
+    $('#background_dialog').modal({
+         show: true
+     });
+  }
+
+  function setSelectedBackground(){
+
   }
 
 	</script>
