@@ -278,11 +278,15 @@
  var proteinsLinksThemeURL = "data/ProteinsLinksTheme.json";
  var proteinsElementsThemeURL = "data/ProteinsElementsTheme.json";
  var proteinsBackgroundThemeURL = "data/ProteinsBackgroundTheme.json";
+ var proteinsTypesDefinitionURL = "data/ProteinsTypeDefinitions.json";
  var doPlanningLinksThemeURL = "data/DoPlanningLinksTheme.json";
  var doPlanningElementsThemeURL = "data/DoPlanningElementsTheme.json";
+ var doPlanningBackgroundThemeURL = "data/ProteinsBackgroundTheme.json";
+ var doPlanningTypesDefinitionURL = "data/ProteinsTypeDefinitions.json";
  var defaultLinksThemeURL = proteinsLinksThemeURL;
  var defaultElementsThemeURL = proteinsElementsThemeURL;
  var defaultBackgroundThemeURL = proteinsBackgroundThemeURL;
+ var defaultTypesDefinitionURL = proteinsTypesDefinitionURL;
  //----------------------------------------------
 
  // Shortcuts.
@@ -504,12 +508,11 @@
             cellView.remove();
           }
 
-          if(readOnlyMode){
-            if(selectedCell){
-                selectNodeCell(selectedCell, false);
-            }
-            selectNodeCell(cellView, true);
+          if(selectedCell){
+              selectNodeCell(selectedCell, false);
           }
+          selectNodeCell(cellView, true);
+
         }
       }
     );
@@ -1179,6 +1182,9 @@
 
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
     console.log("onBackgroundOrBackgroundBoxClick");
+    if(selectedCell){
+        selectNodeCell(selectedCell, false);
+    }
     if(document.getElementById("lockDiagramCheckBox").checked != true){
       cloneCellAt(selectedNodeTypeCell,x,y);
     }else{
