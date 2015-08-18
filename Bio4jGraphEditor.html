@@ -502,9 +502,9 @@
       function(cellView, evt, x, y) {
 
         if(cellView.model == backgroundBox){
-          onStageClick(evt,x,y);
+          onBackgroundOrBackgroundBoxClick(evt,x,y);
         }else if(cellView.model == currentBackgroundCell){
-          onStageClick(evt,x,y);
+          onBackgroundOrBackgroundBoxClick(evt,x,y);
         }else{
           console.log("cell:pointerclick!");
 
@@ -1108,19 +1108,31 @@
   function rotateCellToTheRight(){
      console.log("rotateCellToTheRight");
      if(selectedCell){
-       console.log(selectedCell.model);
-       console.log("before",selectedCell.angle);
-       selectedCell.model.rotate(rotateCellFactor);
-       console.log("after",selectedCell.angle);
+
+       var currentDegreesSt = selectedCell.model.attr("image/transform");
+       var currentDegrees = 0;
+
+       if(currentDegreesSt){
+         currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
+       }
+       var newDegrees = currentDegrees - rotateCellFactor;
+       selectedCell.model.attr("image/transform","rotate("+newDegrees+")");
      }
   }
 
   function rotateCellToTheLeft(){
     console.log("rotateCellToTheLeft");
+
     if(selectedCell){
-      console.log("before",selectedCell.model.angle);
-      selectedCell.model.rotate(-rotateCellFactor);
-      console.log("after",selectedCell.model.angle);
+
+      var currentDegreesSt = selectedCell.model.attr("image/transform");
+      var currentDegrees = 0;
+
+      if(currentDegreesSt){
+        currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
+      }
+      var newDegrees = currentDegrees + rotateCellFactor;
+      selectedCell.model.attr("image/transform","rotate("+newDegrees+")");
     }
   }
 
@@ -1173,10 +1185,7 @@
     }
   }
 
-  function onStageClick(evt, x, y){
-
-    console.log("onStageClick");
-
+  function onBackgroundOrBackgroundBoxClick(evt, x, y){
     if(document.getElementById("lockDiagramCheckBox").checked != true){
       /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
       tempCell.prop("position", {"x":x,"y":y});
@@ -1186,10 +1195,6 @@
       cloneCellAt(selectedNodeTypeCell,x,y);
     }else{
        paperIsPanning = true;
-    }
-
-    if(readOnlyMode){
-      selectNodeCell(selectedCell, false);
     }
   }
 
