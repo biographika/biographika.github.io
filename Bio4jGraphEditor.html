@@ -332,16 +332,9 @@
      lastPositionMouseX += differenceX;
      lastPositionMouseY += differenceY;
 
-     /*console.log("tempClientX: ",tempClientX,"tempClientY: ",tempClientY,"currentScrollLeft: ",
-          currentScrollLeft,"currentScrollTop: ",currentScrollTop,
-          "differenceX: " ,differenceX,"differenceY: " ,differenceY,
-          "lastPositionMouseX: " + lastPositionMouseX,
-          "lastPositionMousey: " + lastPositionMouseY);*/
-
      $("#graph-container").scrollLeft(currentScrollLeft + differenceX);
      $("#graph-container").scrollTop(currentScrollTop + differenceY);
 
-     //console.log("mouse move!", pointerDownClientX, tempClientX, pointerDownClientY, tempClientY);
    }
   });
  $(document).mouseup(function( event ) {
@@ -372,9 +365,6 @@
              var contentBBox = paper.getContentBBox();
              paperInitialWidth = contentBBox.width + contentBBox.x;
              paperInitialHeight = contentBBox.height + contentBBox.y;
-
-             //console.log(paperInitialWidth, paperInitialHeight);
-             //console.log(contentBBox.width, contentBBox.height, contentBBox.x, contentBBox.y);
 
              console.log("graph loaded!");
 
@@ -501,12 +491,13 @@
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
 
+        console.log("cell:pointerclick!");
+
         if(cellView.model == backgroundBox){
           onBackgroundOrBackgroundBoxClick(evt,x,y);
         }else if(cellView.model == currentBackgroundCell){
           onBackgroundOrBackgroundBoxClick(evt,x,y);
         }else{
-          console.log("cell:pointerclick!");
 
           if(document.getElementById("deleteNodeOnClickCheckBox").checked && !readOnlyMode){
             //console.log("remove!");
@@ -1088,15 +1079,16 @@
     for(var i=0; i<nodes.length;i++){
       var currentNode = nodes[i];
       var currentView = currentNode.findView(paper);
-      if( !flag ){
-        currentView.options.interactive = false;
-        currentNode.attr("image/magnet","");
-      }else{
-        currentNode.attr("image/magnet","true");
-        currentView.options.interactive = true;
+      if(currentNode != backgroundBox && currentNode != currentBackgroundCell){
+        if( !flag ){
+          currentView.options.interactive = false;
+          currentNode.attr("image/magnet","");
+        }else{
+          currentNode.attr("image/magnet","true");
+          currentView.options.interactive = true;
+        }
       }
     }
-
   }
 
 
@@ -1186,12 +1178,8 @@
   }
 
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
+    console.log("onBackgroundOrBackgroundBoxClick");
     if(document.getElementById("lockDiagramCheckBox").checked != true){
-      /*var tempCell = new joint.shapes.html.Element(selectedNodeTypeCell);
-      tempCell.prop("position", {"x":x,"y":y});
-      tempCell.attr("label","lalalala");
-      graph.addCell(tempCell);
-      tempCell.toFront();*/
       cloneCellAt(selectedNodeTypeCell,x,y);
     }else{
        paperIsPanning = true;
