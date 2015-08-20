@@ -7,6 +7,8 @@
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
 <link href="css/jquery-ui.css" rel="stylesheet" type='text/css'>
+<link type="text/css" href="css/alpaca.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="css/joint.css" />
 <style type="text/css">
 
   body {
@@ -101,12 +103,13 @@
   }
 
 </style>
-<link rel="stylesheet" type="text/css" href="css/joint.css" />
-<script src="js/joint.js"></script>
-<script src="js/jquery-1.9.1.min.js"></script>
-<script src="js/jquery-ui.js"></script>
-<script src="js/d3.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/joint.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/handlebars-v3.0.3.js"></script>
+<script type="text/javascript" src="js/alpaca.min.js"></script>
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
 <body onload="onBodyLoad()">
@@ -194,7 +197,8 @@
         </div>
         <!-- /.panel-body -->
       </div>
-
+      <div id="form">
+      </div>
     </div>
     <!-- page-wrapper -->
   </div>
@@ -221,7 +225,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <script type="text/javascript">
@@ -271,6 +274,8 @@
  var selectedCell;
  var readOnlyMode = false;
  var currentBackgroundCell = null;
+
+ var typeDefinitionsJSON;
 
  var rotateCellFactor = 10;
 
@@ -447,6 +452,7 @@
       initializeGraphPaper();
       initializeNodeTypesPaper();
       initializeLinkTypesPaper();
+      loadTypeDefinitions(defaultTypesDefinitionURL);
   }
 
   function initializeGraphPaper(){
@@ -666,6 +672,24 @@
     //------------------------------------------------
   }
 
+  function loadTypeDefinitions(url){
+    //----loading JSON WITH TYPE DEFINITIONS-----------------------
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    xobj.open('GET', url, true);
+
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+          //console.log(xobj.responseText);
+          typeDefinitionsJSON = JSON.parse(xobj.responseText);
+          console.log(typeDefinitionsJSON);
+
+        }
+    };
+    xobj.send(null);
+    //------------------------------------------------
+  }
+
   function loadNodeTypesTheme(url){
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
@@ -759,17 +783,13 @@
 
   function selectNodeCell(cellView, flag){
 
-    console.log("selectNodeTypeCell");
+    console.log("selectNodeCell");
 
 
     var nodeCells = graph.getElements();
 
     for (var i = 0; i < nodeCells.length; i++) {
       var currentCell = nodeCells[i];
-      // console.log("currentCell.attributes.id", currentCell.attributes.id);
-      // console.log("cellView",cellView);
-      // console.log("cellView.model",cellView.model);
-      // console.log("cellView.model.id",cellView.model.id);
       if(currentCell.attributes.id == cellView.model.id){
           selectedCell = currentCell.findView(paper);
           if(flag){
@@ -779,9 +799,16 @@
           }
         }
     }
+
+    if(flag){
+      loadDataIntoForm();
+    }
+
   }
 
   function selectNodeTypeCell(cellView){
+
+    console.log("selectNodeTypeCell");
 
     var nodeTypeCells = node_types_graph.getElements();
     for (var i = 0; i < nodeTypeCells.length; i++) {
@@ -1096,8 +1123,8 @@
 
 
   function isLinkInvalid(link){
-    console.log(link);
-    return (!link.prop('source/id') || !link.prop('target/id'));
+    var linkToBackgroundBox = link.prop('target/id') == backgroundBox.id;
+    return (!link.prop('source/id') || !link.prop('target/id') || linkToBackgroundBox);
   }
 
   function rotateCellToTheRight(){
@@ -1250,6 +1277,27 @@
     paperInitialWidth = tempWidth;
     paperInitialHeight = tempHeight;
     updatePaperDimensions(tempWidth, tempHeight);
+  }
+
+  function loadDataIntoForm(){
+    console.log("loadDataIntoForm");
+
+    var tempNodeType = selectedCell.model.attr("node_type");
+    console.log("tempNodeType: " + tempNodeType);
+
+    var jsonForSelectedCell = typeDefinitionsJSON.nodes[tempNodeType];
+    //var jsonForSelectedCellSt = JSON.stringify(jsonForSelectedCell);
+    //var jsonForSelectedStTuned = jsonForSelectedCellSt.substr(1,jsonForSelectedCellSt.length-2);
+    //console.log(jsonForSelectedStTuned);
+
+    //cleaning previous form fields..
+    var divContents = document.getElementById("form").childNodes;
+    for(var i=0; i<divContents.length; i++){
+      divContents[i].remove();
+    }
+    $("#form").alpaca(jsonForSelectedCell);
+    console.log(jsonForSelectedCell);
+
   }
 
 	</script>
