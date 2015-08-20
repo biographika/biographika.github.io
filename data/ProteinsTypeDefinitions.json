@@ -1,0 +1,200 @@
+{
+  "nodes":{
+    "cytoplasmic_protein":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "uniprot_id": {
+            "title": "UniProt ID",
+            "description": "UniProt KB database identifier",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name",
+        "uniprot_id"
+      ],
+      "options":{
+        "focus":false
+      },
+      "data":{
+        "name": "Cytoplasmic protein 1",
+        "uniprot_id":"<a href=\"www.uniprot.org\">P1238476</a>"
+      }
+    },
+    "dendritic_cell":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "uniprot_id": {
+            "title": "UniProt ID",
+            "description": "UniProt KB database identifier",
+            "type": "string"
+          },
+          "dendritic_property": {
+            "title": "Dendritic property",
+            "description": "UniProt KB database identifier",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name",
+        "uniprot_id",
+        "dendritic_property"
+      ]
+    },
+    "eosinophile":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "epithelial_cell":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "fibroblast":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "g_protein_coupled_receptor":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "lymphocyte":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "mastocyte":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "monocyte_macrophage":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "neutrophile":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "plasmocyte":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "small_molecule":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+    },
+    "tyrosin_kinase_receptor":{
+      "schema":{
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "uniprot_id": {
+          "title": "UniProt ID",
+          "description": "UniProt KB database identifier",
+          "type": "string"
+        }
+      }
+   }
+  }
+}
