@@ -21,10 +21,6 @@
       ],
       "options":{
         "focus":false
-      },
-      "data":{
-        "name": "Cytoplasmic protein 1",
-        "uniprot_id":"<a href=\"www.uniprot.org\">P1238476</a>"
       }
     },
     "dendritic_cell":{
