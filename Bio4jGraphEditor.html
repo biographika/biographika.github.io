@@ -1272,6 +1272,9 @@
     if(selectedCell){
 
       var tempNodeType = selectedCell.model.prop("node_type");
+      if(!tempNodeType){
+        tempNodeType = selectedCell.model.attr("node_type");
+      }
       console.log("selectedCell.model",selectedCell.model);
       console.log("tempNodeType: " + tempNodeType);
 
