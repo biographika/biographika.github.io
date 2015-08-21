@@ -163,6 +163,7 @@
                     <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
                     <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
                     <button id="setBackgroundButton" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">Set background</button>
+                    <button id="showMetadataButton" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">Show metadata</button>
                     <button id="fitPaperToContentsButton" onclick="fitPaperToContents()" type="button" class="btn btn-default">Fit paper to contents</button>
                     <form class="form-horizontal">
                       <div class="control-group">
@@ -197,8 +198,6 @@
         </div>
         <!-- /.panel-body -->
       </div>
-      <div id="form">
-      </div>
     </div>
     <!-- page-wrapper -->
   </div>
@@ -208,6 +207,24 @@
       <p>This example is part of <a href="http://www.biographika.com/" rel="author">Biographika</a> project.  100% of the code is open source and released under <a href="http://www.gnu.org/licenses/agpl-3.0.en.html" rel="external">AGPLv3</a> license.</p>
     </div>
   </footer>
+  <div id="metadata_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Element Metadata</h4>
+        </div>
+        <div class="modal-body">
+          <div id="metadata_form">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+          <button type="button" onclick="saveMetadataChanges()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="background_dialog" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -322,6 +339,7 @@
  var decoratedRect = joint.shapes.basic.DecoratedRect;
 
  var backgroundBox;
+ var alpacaMetadataFormControl;
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -379,8 +397,9 @@
 
              updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
 
+             deletePreviousBackgroundBox();
              initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
-             backgroundBox.toBack();
+
              updatePaperDimensions(paperInitialWidth,paperInitialHeight);
              paper.render();
           }
@@ -537,8 +556,11 @@
   }
 
   function initializeBackgroundBox(width, height){
+    console.log("initializeBackgroundBox");
     backgroundBox  = createBackgroundBox(0, 0, width, height, '#FFFFFF');
     backgroundBox.findView(paper).options.interactive = false;
+    backgroundBox.prop("background_box","true");
+    backgroundBox.toBack();
   }
 
   function initializeLinkTypesPaper(){
@@ -778,13 +800,15 @@
   }
 
   function exportToJSON(){
+    if(selectedCell){
+      selectNodeCell(selectedCell,false); // so that the selected node is not saved with bold-style text
+    }
     downloadJSON(JSON.stringify(graph.toJSON()));
   }
 
   function selectNodeCell(cellView, flag){
 
     console.log("selectNodeCell");
-
 
     var nodeCells = graph.getElements();
 
@@ -801,7 +825,8 @@
     }
 
     if(flag){
-      loadDataIntoForm();
+    }else{
+
     }
 
   }
@@ -941,6 +966,7 @@
       clonedCell.attr('text/font-weight',"normal");
       graph.addCell(clonedCell);
       clonedCell.toFront();
+      return clonedCell;
   }
 
 
@@ -1213,7 +1239,8 @@
         selectNodeCell(selectedCell, false);
     }
     if(document.getElementById("lockDiagramCheckBox").checked != true){
-      cloneCellAt(selectedNodeTypeCell,x,y);
+      var newCell = cloneCellAt(selectedNodeTypeCell,x,y);
+      selectNodeCell(newCell.findView(paper), true);
     }else{
        paperIsPanning = true;
     }
@@ -1228,6 +1255,52 @@
     $('#background_dialog').modal({
          show: true
      });
+  }
+
+  function onShowMetadataButtonClick(){
+    if(!selectedCell){
+      alert("Please select a cell");
+    }else{
+      loadSelectedCellMetadataIntoDialog();
+      $('#metadata_dialog').modal({
+        show: true
+      })
+    }
+  }
+
+  function loadSelectedCellMetadataIntoDialog(){
+    if(selectedCell){
+
+      var tempNodeType = selectedCell.model.prop("node_type");
+      console.log("selectedCell.model",selectedCell.model);
+      console.log("tempNodeType: " + tempNodeType);
+
+      var jsonForSelectedCell = typeDefinitionsJSON.nodes[tempNodeType];
+
+      //cleaning previous form fields..
+      var divContents = document.getElementById("metadata_form").childNodes;
+      for(var i=0; i<divContents.length; i++){
+        divContents[i].remove();
+      }
+
+      console.log("typeDefinitionsJSON",typeDefinitionsJSON);
+      console.log("jsonForSelectedCell", jsonForSelectedCell);
+
+      var schema = jsonForSelectedCell.schema;
+      var data = selectedCell.model.prop("data");
+
+      alpacaMetadataForm = $("#metadata_form").alpaca({
+      "schema":schema,
+      "data":data,
+      "postRender": function(control) {
+              alpacaMetadataFormControl = control;
+          }
+
+      });
+
+      console.log("selectedCell", selectedCell.model);
+
+    }
   }
 
   function setSelectedBackground(){
@@ -1279,25 +1352,23 @@
     updatePaperDimensions(tempWidth, tempHeight);
   }
 
-  function loadDataIntoForm(){
-    console.log("loadDataIntoForm");
+  function saveMetadataChanges(){
+    $('#metadata_dialog').modal('hide');
+    selectedCell.model.prop("data",alpacaMetadataFormControl.getValue());
+    console.log("saveMetadataChanges", selectedCell.model);
+  }
 
-    var tempNodeType = selectedCell.model.attr("node_type");
-    console.log("tempNodeType: " + tempNodeType);
-
-    var jsonForSelectedCell = typeDefinitionsJSON.nodes[tempNodeType];
-    //var jsonForSelectedCellSt = JSON.stringify(jsonForSelectedCell);
-    //var jsonForSelectedStTuned = jsonForSelectedCellSt.substr(1,jsonForSelectedCellSt.length-2);
-    //console.log(jsonForSelectedStTuned);
-
-    //cleaning previous form fields..
-    var divContents = document.getElementById("form").childNodes;
-    for(var i=0; i<divContents.length; i++){
-      divContents[i].remove();
+  function deletePreviousBackgroundBox(){
+    console.log("deletePreviousBackgroundBox");
+    var nodes = graph.getElements();
+    for(var i=0; i<nodes.length;i++){
+      var currentNode = nodes[i];
+      console.log("currentNode.background_box: " + currentNode.prop("background_box"));
+      if( currentNode.prop("background_box") == "true"){
+        console.log("remove previous background cell!! :D");
+        currentNode.remove();
+      }
     }
-    $("#form").alpaca(jsonForSelectedCell);
-    console.log(jsonForSelectedCell);
-
   }
 
 	</script>
