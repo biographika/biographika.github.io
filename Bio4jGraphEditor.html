@@ -164,6 +164,7 @@
                     <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
                     <button id="setBackgroundButton" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">Set background</button>
                     <button id="showMetadataButton" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">Show metadata</button>
+                    <button id="renameNodeButton" onclick="onRenameNodeButtonClick()" type="button" class="btn btn-default">Rename node</button>
                     <button id="fitPaperToContentsButton" onclick="fitPaperToContents()" type="button" class="btn btn-default">Fit paper to contents</button>
                     <form class="form-horizontal">
                       <div class="control-group">
@@ -237,8 +238,26 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" onclick="setSelectedBackground()" class="btn btn-primary">Set background</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="rename_node_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Rename node</h4>
+        </div>
+        <div class="modal-body">
+          <label for="inputNodeName">New label</label>
+          <input class="input-small" id="inputNodeName" >
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="applyRenameNode()" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -1371,6 +1390,27 @@
         console.log("remove previous background cell!! :D");
         currentNode.remove();
       }
+    }
+  }
+
+  function renameSelectedNode(newLabel){
+    console.log("renameSelectedNode", newLabel);
+    selectedCell.model.attr("text/text",newLabel);
+  }
+
+  function applyRenameNode(){
+    console.log("applyRenameNode");
+    $('#rename_node_dialog').modal('hide');
+    renameSelectedNode(document.getElementById("inputNodeName").value);
+  }
+
+  function onRenameNodeButtonClick(){
+    if(!selectedCell){
+      alert("Please select a cell");
+    }else{
+      $('#rename_node_dialog').modal({
+        show: true
+      })
     }
   }
 
