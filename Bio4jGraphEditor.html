@@ -102,6 +102,11 @@
     max-height: 450px;
   }
 
+  #inputNodeName{
+    resize: none;
+    width: 100%;
+  }
+
 </style>
 <script type="text/javascript" src="js/joint.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
@@ -253,7 +258,8 @@
         </div>
         <div class="modal-body">
           <label for="inputNodeName">New label</label>
-          <input class="input-small" id="inputNodeName" >
+          <br/>
+          <textarea id="inputNodeName" ></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -1411,6 +1417,9 @@
       $('#rename_node_dialog').modal({
         show: true
       })
+      var currentLabel = selectedCell.model.attr("text/text");
+      console.log("currentLabel", currentLabel);
+      document.getElementById("inputNodeName").value = currentLabel;
     }
   }
 
