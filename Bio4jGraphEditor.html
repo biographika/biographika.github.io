@@ -9,6 +9,7 @@
 <link href="css/jquery-ui.css" rel="stylesheet" type='text/css'>
 <link type="text/css" href="css/alpaca.min.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="css/joint.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css">
 <style type="text/css">
 
   body {
@@ -28,6 +29,7 @@
 
   #page-wrapper {
       background-color: #fff;
+      height: 100%;
   }
 
   #toolbar {
@@ -45,9 +47,6 @@
     width: 100%;
   }
 
- .push {
-    height: 63px;
-  }
   footer {
       background: #d9edf7;
       padding: 5px 0 5px 0px;
@@ -107,6 +106,10 @@
     width: 100%;
   }
 
+  #diagram_panel{
+    height: 100%;
+  }
+
 </style>
 <script type="text/javascript" src="js/joint.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
@@ -120,77 +123,130 @@
 <body onload="onBodyLoad()">
   <div id="wrapper">
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <nav class="navbar navbar-default navbar-static-top navbar-transparent" role="navigation"  >
       <div class="navbar-header">
 		      <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
-          <a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>
-      </div>
-      <!-- /.navbar-static-side -->
+          <!--<a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>-->
+          <div class="nav navbar-nav btn-group">
+            <ul class="nav navbar-nav">
+              <li>
+                <div class="dropdown">
+                  <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
+                  <ul id="themesDropDownMenu" class="dropdown-menu">
+                    <li class="dropdown-header">BIOLOGY</li>
+                    <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
+                    <li class="dropdown-header">GENERAL</li>
+                    <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <span class="btn btn-default btn-file" title="Load diagram file">
+                      <i class="fa fa-file-code-o"></i>
+                      <!--Load file...-->
+                      <input type="file" accept=".json" >
+                  </span>
+                </div>
+              </li>
+              <li>
+                <div class="dropdown">
+                  <button type="button" class="btn btn-default" data-toggle="dropdown" title="Export diagram to...">
+                    <i class="fa fa-download"></i>
+                    <!--Export to...-->
+                    <span class="caret"></span>
+                  </button>
+                  <ul id="exportDropDownMenu" class="dropdown-menu" >
+                    <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <button id="zoomInButton" title="Zoom in" onclick="zoomIn()" type="button" class="btn btn-default">
+                  <i class="fa fa-search-plus"></i><!--Zoom in--></button>
+              </li>
+              <li>
+                <button id="zoomOutButton" title="Zoom out" onclick="zoomOut()" type="button" class="btn btn-default">
+                  <i class="fa fa-search-minus"></i><!--Zoom out--></button>
+              </li>
+              <li>
+                <button id="resetZoomButton" title="Reset zoom" onclick="resetZoom()" type="button" class="btn btn-default">
+                  <i class="fa fa-search"></i><!--Reset zoom--></button>
+              </li>
+              <li>
+                <button id="rotateRightButton" title="Rotate node to the right" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">
+                  <i class="fa fa-repeat"></i><!--Rotate to right-->
+                </button>
+              </li>
+              <li>
+                <button id="rotateRightButton" title="Rotate node to the right" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">
+                  <i class="fa fa-repeat"></i><!--Rotate to right-->
+                </button>
+              </li>
+              <li>
+                <button id="rotateLeftButton" title="Rotate node to the left" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">
+                  <i class="fa fa-undo"></i><!--Rotate to left--></button>
+              </li>
+              <li>
+                <button id="bringToFrontButton" title="Bring node to front" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">
+                  <i class="fa fa-clone"></i><i class="fa fa-arrow-right"></i><!--Bring to front--></button>
+              </li>
+              <li>
+                <button id="bringToBackButton" title="Bring node to back" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">
+                  <i class="fa fa-arrow-left"></i><i class="fa fa-clone"></i><!--Bring to back--></button>
+              </li>
+              <li>
+                <button id="setBackgroundButton" title="Set background image" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">
+                  <i class="fa fa-picture-o"></i><!--Set background--></button>
+              </li>
+              <li>
+                <button id="showMetadataButton" title="Show node metadata" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">
+                  <i class="fa fa-newspaper-o"></i><!--Show metadata--></button>
+              </li>
+              <li>
+                <button id="renameNodeButton" title="Rename node" onclick="onRenameNodeButtonClick()" type="button" class="btn btn-default">
+                  <i class="fa fa-pencil-square-o"></i><!--Rename node--></button>
+              </li>
+              <li>
+                <button id="fitPaperToContentsButton" title="Fit stage dimensions to contents" onclick="fitPaperToContents()" type="button" class="btn btn-default">
+                  <i class="fa fa-arrows-alt"></i><!--Fit paper to contents--></button>
+              </li>
+              <li>
+                <form class="navbar-form">
+                  <div class="control-group">
+                    <!--<span class="control-label">Stage dimensions</span>-->
+                    <div class="controls form-inline">
+                        <label for="inputWidth">Width</label>
+                        <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="200" type="number" class="input-small" placeholder="Width" id="inputWidth" min="200" max="2000">
+                        <label for="inputHeight">Height</label>
+                        <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="100" type="number" class="input-small" placeholder="Height" id="inputHeight" min="100" max="1500">
+                    </div>
+                  </div>
+                </form>
+              </li>
+              <li>
+                <div class="checkbox">
+                  <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
+                </div>
+                <!-- lock diagram checkbox -->
+              </li>
+              <li>
+                <div class="checkbox">
+                  <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
+                </div>
+                <!-- delete node on click checkbox -->
+              </li>
+          </ul>
+        </div>
     </nav>
     <div id="page-wrapper">
-      <div class="panel panel-info">
+      <div id="diagram_panel" class="panel panel-info">
         <div class="panel-heading">
           <i class="fa fa-fw">
           </i>
             Graph explorer
         </div>
         <!-- /.panel-heading -->
-        <div id="toolbar">
-          <div class="btn-group btn-block" >
-                <span class="btn btn-default btn-file">
-                    Load file... <input type="file" accept=".json">
-                </span>
-                <button type="button" class="btn btn-default dropdown-toggle"
-                  data-toggle="dropdown">
-                  Export to...
-                  <span class="caret"></span>
-                </button>
-                <ul id="exportDropDownMenu" class="dropdown-menu" >
-                  <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
-                </ul>
-                <button id="zoomInButton" onclick="zoomIn()" type="button" class="btn btn-default">Zoom in</button>
-                <button id="zoomOutButton" onclick="zoomOut()" type="button" class="btn btn-default">Zoom out</button>
-                <button id="resetZoomButton" onclick="resetZoom()" type="button" class="btn btn-default">Reset zoom</button>
-                <div class="checkbox">
-                  <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
-                </div>
-                <!-- delete node on click checkbox -->
-                <div class="btn-group">
-                    <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
-                    <ul id="themesDropDownMenu" class="dropdown-menu">
-                        <li class="dropdown-header">BIOLOGY</li>
-                        <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
-                        <li class="dropdown-header">GENERAL</li>
-                        <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
-                    </ul>
-                    <button id="rotateRightButton" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">Rotate to right</button>
-                    <button id="rotateLeftButton" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">Rotate to left</button>
-                    <button id="bringToFrontButton" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">Bring to front</button>
-                    <button id="bringToBackButton" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">Bring to back</button>
-                    <button id="setBackgroundButton" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">Set background</button>
-                    <button id="showMetadataButton" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">Show metadata</button>
-                    <button id="renameNodeButton" onclick="onRenameNodeButtonClick()" type="button" class="btn btn-default">Rename node</button>
-                    <button id="fitPaperToContentsButton" onclick="fitPaperToContents()" type="button" class="btn btn-default">Fit paper to contents</button>
-                    <form class="form-horizontal">
-                      <div class="control-group">
-                        <span class="control-label">Stage dimensions</span>
-                        <div class="controls form-inline">
-                            <label for="inputWidth">Width</label>
-                            <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="200" type="number" class="input-small" placeholder="Width" id="inputWidth" min="200" max="2000">
-                            <label for="inputHeight">Height</label>
-                            <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="100" type="number" class="input-small" placeholder="Height" id="inputHeight" min="100" max="1500">
-                        </div>
-                      </div>
-                    </form>
-                    <div class="checkbox">
-                      <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
-                    </div>
-                    <!-- lock diagram checkbox -->
-                </div>
-                <!-- button group -->
-          </div>
-          <!-- button group -->
-        </div>
         <!-- toolbar -->
         <div class="panel-body">
           <div class="row">
@@ -207,7 +263,6 @@
     </div>
     <!-- page-wrapper -->
   </div>
-  <div class="push"></div>
   <footer>
     <div class="container">
       <p>This example is part of <a href="http://www.biographika.com/" rel="author">Biographika</a> project.  100% of the code is open source and released under <a href="http://www.gnu.org/licenses/agpl-3.0.en.html" rel="external">AGPLv3</a> license.</p>
