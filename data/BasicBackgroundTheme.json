@@ -1,0 +1,22 @@
+{
+  "cells":[
+    {
+      "type":"basic.Rect",
+      "position":{"x":0,"y":0},
+      "size":{"width":120,"height":150},
+      "attrs":{
+      },
+      "node_type":"rect_background",
+      "real_size":{"width":475,"height":600}
+    },
+    {
+      "type":"basic.Ellipse",
+      "position":{"x":0,"y":0},
+      "size":{"width":120,"height":150},
+      "attrs":{
+      },
+      "node_type":"ellipse_background",
+      "real_size":{"width":475,"height":600}
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "cells":[
+    {
+      "type":"basic.Rect",
+      "position":{"x":0,"y":0},
+      "size":{"width":60,"height":60},
+      "node_type":"basic_rect",
+      "attrs":{
+        "text":{
+          "magnet":true,
+          "text":"Rect"
+          }
+      }
+    },
+    {
+      "type":"basic.Ellipse",
+      "position":{"x":0,"y":0},
+      "size":{"width":60,"height":60},
+      "node_type":"basic_circle",
+      "attrs":{
+        "text":{
+          "magnet":true,
+          "text":"Circle"
+          }
+      }
+
+    }
+  ]
+}

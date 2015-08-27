@@ -16,35 +16,24 @@
       background-color: #f8f8f8;
   }
 
-  .panel {
-    margin-right: 10px;
-  	margin-left: 10px;
-  	margin-top: 10px;
-  }
-
   #wrapper {
       width: 100%;
-      height: 100$;
+      height: 100%;
+      margin-left: 10px;
+      margin-right: 10px;
   }
 
   #page-wrapper {
       background-color: #fff;
       height: 100%;
-  }
-
-  #toolbar {
-    width: 100%;
-    margin-left: 10px;
-    margin-right: 10px;
+      width: 100%;
+      margin-left: 10px;
+      margin-right: 10px;
   }
 
   .nav-bar-logo{
   	margin-left: 30px;
   	height: 40px;
-  }
-
-  .nav-bar-text{
-    width: 100%;
   }
 
   footer {
@@ -106,8 +95,8 @@
     width: 100%;
   }
 
-  #diagram_panel{
-    height: 100%;
+  #nav_bar{
+    width: 100%;
   }
 
 </style>
@@ -123,7 +112,7 @@
 <body onload="onBodyLoad()">
   <div id="wrapper">
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-static-top navbar-transparent" role="navigation"  >
+    <nav id="nav_bar" class="navbar navbar-default navbar-static-top navbar-transparent" role="navigation"  >
       <div class="navbar-header">
 		      <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
           <!--<a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>-->
@@ -136,6 +125,7 @@
                     <li class="dropdown-header">BIOLOGY</li>
                     <li><a id="proteinsThemeButton" role="button">Proteins</a></li>
                     <li class="dropdown-header">GENERAL</li>
+                    <li><a id="basicThemeButton" role="button">Basic elements</a></li>
                     <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
                   </ul>
                 </div>
@@ -240,25 +230,13 @@
         </div>
     </nav>
     <div id="page-wrapper">
-      <div id="diagram_panel" class="panel panel-info">
-        <div class="panel-heading">
-          <i class="fa fa-fw">
-          </i>
-            Graph explorer
+      <div id="diagram_row" class="row">
+        <div id="link_types_list" class="col-xs-2">
         </div>
-        <!-- /.panel-heading -->
-        <!-- toolbar -->
-        <div class="panel-body">
-          <div class="row">
-            <div id="link_types_list" class="col-xs-2">
-            </div>
-            <div id="graph-container" class="col-xs-8">
-            </div>
-            <div id="node_types_list" class="col-xs-2">
-            </div>
-          </div>
+        <div id="graph-container" class="col-xs-8">
         </div>
-        <!-- /.panel-body -->
+        <div id="node_types_list" class="col-xs-2">
+        </div>
       </div>
     </div>
     <!-- page-wrapper -->
@@ -371,6 +349,8 @@
  var selectedCell;
  var readOnlyMode = false;
  var currentBackgroundCell = null;
+ var backgroundsModalFirstTimeShown = true;
+ var currentBackgroundThemeURL;
 
  var typeDefinitionsJSON;
 
@@ -385,6 +365,10 @@
  var doPlanningElementsThemeURL = "data/DoPlanningElementsTheme.json";
  var doPlanningBackgroundThemeURL = "data/ProteinsBackgroundTheme.json";
  var doPlanningTypesDefinitionURL = "data/ProteinsTypeDefinitions.json";
+ var basicLinksThemeURL = "data/BasicLinksTheme.json";
+ var basicElementsThemeURL = "data/BasicElementsTheme.json";
+ var basicBackgroundThemeURL = "data/BasicBackgroundTheme.json";
+ var basicTypesDefinitionURL = "data/BasicTypeDefinitions.json";
  var defaultLinksThemeURL = proteinsLinksThemeURL;
  var defaultElementsThemeURL = proteinsElementsThemeURL;
  var defaultBackgroundThemeURL = proteinsBackgroundThemeURL;
@@ -520,12 +504,30 @@
   $("#themesDropDownMenu").on("click", "li", function(event){
 
     var buttonClicked = event.currentTarget.getElementsByTagName("a")[0].getAttribute("id");
+
     if(buttonClicked == "proteinsThemeButton"){
+
       loadLinksTheme(proteinsLinksThemeURL);
       loadNodeTypesTheme(proteinsElementsThemeURL);
+      //loadBackgroundsTheme(proteinsBackgroundThemeURL);
+
+      currentBackgroundThemeURL = proteinsBackgroundThemeURL;
+
     }else if(buttonClicked == "doPlanningThemeButton"){
+
       loadLinksTheme(doPlanningLinksThemeURL);
       loadNodeTypesTheme(doPlanningElementsThemeURL);
+      //loadBackgroundsTheme(doPlanningBackgroundThemeURL);
+
+      currentBackgroundThemeURL = doPlanningBackgroundThemeURL;
+
+    }else if(buttonClicked == "basicThemeButton"){
+
+      loadLinksTheme(basicLinksThemeURL);
+      loadNodeTypesTheme(basicElementsThemeURL);
+      //loadBackgroundsTheme(basicBackgroundThemeURL);
+
+      currentBackgroundThemeURL = basicBackgroundThemeURL;
     }
 
   });
@@ -539,18 +541,21 @@
   <!-- BACKGROUNDS MODAL DIALOG -->
   $('#background_dialog').on('shown.bs.modal', function () {
     console.log("shown.bs.modal");
-    if(!backgrounds_graph){
-      console.log("!backgrounds_graph");
-      initializeBackgroundsPaper();
+    if(backgroundsModalFirstTimeShown){
+      initializeBackgroundsPaper(defaultBackgroundThemeURL);
+    }else{
+      loadBackgroundsTheme(currentBackgroundThemeURL);
     }
+    backgroundsModalFirstTimeShown = false;
   })
 
 
   function initializeJoint(){
       //initializeCustomElements();
       initializeGraphPaper();
-      initializeNodeTypesPaper();
-      initializeLinkTypesPaper();
+      initializeNodeTypesPaper(defaultElementsThemeURL);
+      initializeLinkTypesPaper(defaultLinksThemeURL);
+      //initializeBackgroundsPaper(defaultBackgroundThemeURL);
       loadTypeDefinitions(defaultTypesDefinitionURL);
   }
 
@@ -643,7 +648,7 @@
     backgroundBox.toBack();
   }
 
-  function initializeLinkTypesPaper(){
+  function initializeLinkTypesPaper(themeURL){
     link_types_graph = new joint.dia.Graph;
     link_types_paper = new joint.dia.Paper({
       el: $('#link_types_list'),
@@ -658,7 +663,7 @@
             selectLink(linkView);
         }
       );
-    loadLinksTheme(defaultLinksThemeURL);
+    loadLinksTheme(themeURL);
   }
 
   function loadLinksTheme(url){
@@ -712,7 +717,8 @@
     link_types_paper.render();
   }
 
-  function initializeBackgroundsPaper(){
+  function initializeBackgroundsPaper(themeURL){
+    console.log("initializeBackgroundsPaper");
     backgrounds_graph = new joint.dia.Graph;
 
     backgrounds_paper = new joint.dia.Paper({
@@ -729,10 +735,12 @@
       }
     );
 
-    loadBackgroundsTheme(defaultBackgroundThemeURL);
+    loadBackgroundsTheme(themeURL);
+    backgrounds_paper.render();
+
   }
 
-  function initializeNodeTypesPaper(){
+  function initializeNodeTypesPaper(themeURL){
 
     node_types_graph = new joint.dia.Graph;
 
@@ -750,10 +758,11 @@
       }
     );
 
-    loadNodeTypesTheme(defaultElementsThemeURL);
+    loadNodeTypesTheme(themeURL);
   }
 
   function loadBackgroundsTheme(url){
+    console.log("loadBackgroundsTheme");
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -761,12 +770,12 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
+          console.log("onreadystatechange (backgrounds)!");
           backgrounds_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfBackgroundsPaper();
           positionBackgroundsOnPaper();
           //select first node type
           selectBackgroundCell(backgrounds_graph.getElements()[0].findView(backgrounds_paper));
-          console.log("holaaaaaaaaaaaaaaaaaaaaaa!");
           backgrounds_paper.render();
         }
     };
@@ -803,12 +812,22 @@
           node_types_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfNodeTypesPaper();
           positionNodeTypesOnPaper();
+          makeNodeTypesNotInteractive();
           //select first node type
           selectNodeTypeCell(node_types_graph.getElements()[0].findView(node_types_paper));
         }
     };
     xobj.send(null);
     //------------------------------------------------
+  }
+
+  function makeNodeTypesNotInteractive(){
+    console.log("makeNodeTypesNotInteractive");
+    for(var i=0;i<node_types_graph.getElements().length;i++){
+      var currentNodeType = node_types_graph.getElements()[i];
+      currentNodeType.attr("image/magnet","");
+      currentNodeType.attr("text/magnet","");
+    }
   }
 
   function calculateSizeOfNodeTypesPaper(){
@@ -833,13 +852,13 @@
   }
 
   function calculateSizeOfBackgroundsPaper(){
+    console.log("calculateSizeOfBackgroundsPaper");
     var numberOfBackgrounds = backgrounds_graph.getElements().length;
     backgrounds_paper.setDimensions(500, backgroundCellHeight*numberOfBackgrounds);
-    backgrounds_paper.render();
   }
 
   function positionBackgroundsOnPaper(){
-
+    console.log("positionBackgroundsOnPaper");
     var backgrounds = backgrounds_graph.getElements();
     for(var i=0; i<backgrounds.length;i++){
       var currentBackground = backgrounds[i];
@@ -850,7 +869,6 @@
       //console.log(currentText,brokenText);
       currentBackground.attr("text/text", brokenText);
     }
-    backgrounds_paper.render();
   }
 
   function test(){
@@ -1042,7 +1060,11 @@
   function cloneCellAt(cell, x, y){
       var clonedCell = cell.clone();
       clonedCell.prop("position", {"x":x,"y":y});
-      clonedCell.attr("image/magnet","true");
+      if(clonedCell.attr("image/width")){
+        clonedCell.attr("image/magnet","true");
+      }else{
+        clonedCell.attr("text/magnet","true");
+      }
       clonedCell.attr('text/font-weight',"normal");
       graph.addCell(clonedCell);
       clonedCell.toFront();
@@ -1094,10 +1116,6 @@
 
   function onBodyLoad(){
     initializeJoint();
-     //var tempHeight = document.getElementById("graph-container").offsetHeight;
-     //var tempWidth = document.getElementById("graph-container").offsetWidth;
-     //paper.setDimensions(tempWidth,tempHeight);
-     //console.log(tempHeight, tempWidth);
   }
 
   function zoomIn(){
