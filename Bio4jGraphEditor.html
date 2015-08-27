@@ -202,6 +202,14 @@
                   <i class="fa fa-arrows-alt"></i><!--Fit paper to contents--></button>
               </li>
               <li>
+                <button id="selectNodeTypeButton" title="Select current node type" onclick="openDialogSelectNodeType()" type="button" class="btn btn-default">
+                  <i class="fa fa-bullseye"></i></button>
+              </li>
+              <li>
+                <button id="selectLinkTypeButton" title="Select current link type" onclick="openDialogSelectLinkType()" type="button" class="btn btn-default">
+                  <i class="fa fa-arrows-h"></i></button>
+              </li>
+              <li>
                 <form class="navbar-form">
                   <div class="control-group">
                     <!--<span class="control-label">Stage dimensions</span>-->
@@ -231,11 +239,7 @@
     </nav>
     <div id="page-wrapper">
       <div id="diagram_row" class="row">
-        <div id="link_types_list" class="col-xs-2">
-        </div>
-        <div id="graph-container" class="col-xs-8">
-        </div>
-        <div id="node_types_list" class="col-xs-2">
+        <div id="graph-container" class="col-xs-12">
         </div>
       </div>
     </div>
@@ -278,6 +282,42 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" onclick="setSelectedBackground()" class="btn btn-primary">Set background</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="node_types_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Node type selector</h4>
+        </div>
+        <div class="modal-body">
+          <div id="node_types_list">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="setSelectedNodeType()" class="btn btn-primary">Select node type</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="link_types_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Link type selector</h4>
+        </div>
+        <div class="modal-body">
+          <div id="link_types_list">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="setSelectedLinkType()" class="btn btn-primary">Select link type</button>
         </div>
       </div>
     </div>
@@ -349,8 +389,15 @@
  var selectedCell;
  var readOnlyMode = false;
  var currentBackgroundCell = null;
+
  var backgroundsModalFirstTimeShown = true;
  var currentBackgroundThemeURL;
+
+ var nodeTypesModalFirstTimeShown = true;
+ var currentNodeTypeThemeURL;
+
+ var linkTypesModalFirstTimeShown = true;
+ var currentLinkTypeThemeURL;
 
  var typeDefinitionsJSON;
 
@@ -507,27 +554,36 @@
 
     if(buttonClicked == "proteinsThemeButton"){
 
-      loadLinksTheme(proteinsLinksThemeURL);
-      loadNodeTypesTheme(proteinsElementsThemeURL);
+      //loadLinkTypesTheme(proteinsLinksThemeURL);
+      //loadNodeTypesTheme(proteinsElementsThemeURL);
       //loadBackgroundsTheme(proteinsBackgroundThemeURL);
+      loadTypeDefinitions(proteinsTypesDefinitionURL);
 
       currentBackgroundThemeURL = proteinsBackgroundThemeURL;
+      currentNodeTypeThemeURL = proteinsElementsThemeURL;
+      currentLinkTypeThemeURL = proteinsLinksThemeURL;
 
     }else if(buttonClicked == "doPlanningThemeButton"){
 
-      loadLinksTheme(doPlanningLinksThemeURL);
-      loadNodeTypesTheme(doPlanningElementsThemeURL);
+      //loadLinkTypesTheme(doPlanningLinksThemeURL);
+      //loadNodeTypesTheme(doPlanningElementsThemeURL);
       //loadBackgroundsTheme(doPlanningBackgroundThemeURL);
+      loadTypeDefinitions(doPlanningTypesDefinitionURL);
 
       currentBackgroundThemeURL = doPlanningBackgroundThemeURL;
+      currentNodeTypeThemeURL = doPlanningElementsThemeURL;
+      currentLinkTypeThemeURL = doPlanningLinksThemeURL;
 
     }else if(buttonClicked == "basicThemeButton"){
 
-      loadLinksTheme(basicLinksThemeURL);
-      loadNodeTypesTheme(basicElementsThemeURL);
+      //loadLinkTypesTheme(basicLinksThemeURL);
+      //loadNodeTypesTheme(basicElementsThemeURL);
       //loadBackgroundsTheme(basicBackgroundThemeURL);
+      loadTypeDefinitions(basicTypesDefinitionURL);
 
       currentBackgroundThemeURL = basicBackgroundThemeURL;
+      currentNodeTypeThemeURL = basicElementsThemeURL;
+      currentLinkTypeThemeURL = basicLinksThemeURL;
     }
 
   });
@@ -540,21 +596,46 @@
 
   <!-- BACKGROUNDS MODAL DIALOG -->
   $('#background_dialog').on('shown.bs.modal', function () {
-    console.log("shown.bs.modal");
+    console.log("backgrounds! shown.bs.modal");
     if(backgroundsModalFirstTimeShown){
-      initializeBackgroundsPaper(defaultBackgroundThemeURL);
+      console.log("backgroundsModalFirstTimeShown");
+      initializeBackgroundsPaper(currentBackgroundThemeURL);
     }else{
       loadBackgroundsTheme(currentBackgroundThemeURL);
     }
     backgroundsModalFirstTimeShown = false;
-  })
+  });
+
+  <!-- NODE TYPES MODAL DIALOG -->
+  $('#node_types_dialog').on('shown.bs.modal', function () {
+    console.log("node types! shown.bs.modal");
+    if(nodeTypesModalFirstTimeShown){
+      console.log("nodeTypesModalFirstTimeShown");
+      initializeNodeTypesPaper(currentNodeTypeThemeURL);
+    }else{
+      loadNodeTypesTheme(currentNodeTypeThemeURL);
+    }
+    nodeTypesModalFirstTimeShown = false;
+  });
+
+  <!-- LINK TYPES MODAL DIALOG -->
+  $('#link_types_dialog').on('shown.bs.modal', function () {
+    console.log("link types! shown.bs.modal");
+    if(linkTypesModalFirstTimeShown){
+      console.log("linkTypesModalFirstTimeShown");
+      initializeLinkTypesPaper(currentLinkTypeThemeURL);
+    }else{
+      loadLinkTypesTheme(currentLinkTypeThemeURL);
+    }
+    linkTypesModalFirstTimeShown = false;
+  });
 
 
   function initializeJoint(){
       //initializeCustomElements();
       initializeGraphPaper();
-      initializeNodeTypesPaper(defaultElementsThemeURL);
-      initializeLinkTypesPaper(defaultLinksThemeURL);
+      //initializeNodeTypesPaper(defaultElementsThemeURL);
+      //initializeLinkTypesPaper(defaultLinksThemeURL);
       //initializeBackgroundsPaper(defaultBackgroundThemeURL);
       loadTypeDefinitions(defaultTypesDefinitionURL);
   }
@@ -663,10 +744,10 @@
             selectLink(linkView);
         }
       );
-    loadLinksTheme(themeURL);
+    loadLinkTypesTheme(themeURL);
   }
 
-  function loadLinksTheme(url){
+  function loadLinkTypesTheme(url){
 
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
@@ -802,6 +883,7 @@
   }
 
   function loadNodeTypesTheme(url){
+    console.log("loadNodeTypesTheme");
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -1116,6 +1198,10 @@
 
   function onBodyLoad(){
     initializeJoint();
+
+    currentBackgroundThemeURL = defaultBackgroundThemeURL;
+    currentNodeTypeThemeURL = defaultElementsThemeURL;
+    currentLinkTypeThemeURL = defaultLinksThemeURL;
   }
 
   function zoomIn(){
@@ -1134,72 +1220,20 @@
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
 
-  function initializeCustomElements(){
-    console.log("Initializing custom elements...");
-    // Create a custom element.
-    // ------------------------
 
-    joint.shapes.html = {};
-    joint.shapes.html.Element = joint.shapes.basic.Rect.extend({
-        defaults: joint.util.deepSupplement({
-            type: 'html.Element',
-            attrs: {
-                rect: { stroke: 'none', 'fill-opacity': 0 }
-            }
-        }, joint.shapes.basic.Rect.prototype.defaults)
-    });
-
-    // Create a custom view for that element that displays an HTML div above it.
-    // -------------------------------------------------------------------------
-
-    joint.shapes.html.ElementView = joint.dia.ElementView.extend({
-
-        template: [
-            '<div class="html-element">',
-            '<button class="delete">x</button>',
-            '<img></img>',
-            '<label></label>',
-            '</div>'
-        ].join(''),
-
-        initialize: function() {
-            _.bindAll(this, 'updateBox');
-            joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-
-            this.$box = $(_.template(this.template)());
-            this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
-            // Update the box position whenever the underlying model changes.
-            this.model.on('change', this.updateBox, this);
-            // Remove the box when the model gets removed from the graph.
-            this.model.on('remove', this.removeBox, this);
-
-            this.updateBox();
-        },
-        render: function() {
-            joint.dia.ElementView.prototype.render.apply(this, arguments);
-            this.paper.$el.prepend(this.$box);
-            this.updateBox();
-            return this;
-        },
-        updateBox: function() {
-            // Set the position and dimension of the box so that it covers the JointJS element.
-            var bbox = this.model.getBBox();
-            // Example of updating the HTML with a data stored in the cell model.
-            this.$box.find('label').text(this.model.get('label'));
-            this.$box.css({ width: bbox.width, height: bbox.height, left: bbox.x, top: bbox.y, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
-        },
-        removeBox: function(evt) {
-            this.$box.remove();
-        }
-    });
-
-    console.log("Done!");
-  }
 
   function getDefaultLink(){
-    var tempLink = selectedLinkTypeCell.clone();
-    tempLink.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
-    return tempLink;
+    console.log("getDefaultLink");
+    if(selectedLinkTypeCell){
+      console.log("true");
+      var tempLink = selectedLinkTypeCell.clone();
+      tempLink.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
+      return tempLink;
+    }else{
+      console.log("false");
+      return new joint.dia.Link();
+    }
+
   }
 
   function makeLinksInteractive(flag){
@@ -1337,8 +1371,12 @@
         selectNodeCell(selectedCell, false);
     }
     if(document.getElementById("lockDiagramCheckBox").checked != true){
-      var newCell = cloneCellAt(selectedNodeTypeCell,x,y);
-      selectNodeCell(newCell.findView(paper), true);
+      if(!selectedNodeTypeCell){
+        alert("Please select a node type first");
+      }else{
+        var newCell = cloneCellAt(selectedNodeTypeCell,x,y);
+        selectNodeCell(newCell.findView(paper), true);
+      }
     }else{
        paperIsPanning = true;
     }
@@ -1494,6 +1532,26 @@
       console.log("currentLabel", currentLabel);
       document.getElementById("inputNodeName").value = currentLabel;
     }
+  }
+
+  function openDialogSelectNodeType(){
+    $('#node_types_dialog').modal({
+         show: true
+     });
+  }
+
+  function openDialogSelectLinkType(){
+    $('#link_types_dialog').modal({
+         show: true
+     });
+  }
+
+  function setSelectedNodeType(){
+    $('#node_types_dialog').modal('hide');
+  }
+
+  function setSelectedLinkType(){
+    $('#link_types_dialog').modal('hide');
   }
 
 	</script>
