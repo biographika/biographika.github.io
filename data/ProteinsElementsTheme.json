@@ -5,6 +5,7 @@
       "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
       "node_type":"cytoplasmic_protein",
+      "thumbnail":"images/cytoplasmic_protein_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Cytoplasmic protein"
@@ -17,6 +18,7 @@
       "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
       "node_type":"dendritic_cell",
+      "thumbnail":"images/dendritic_cell_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Dendritic cell"
@@ -30,6 +32,7 @@
       "position":{"x":0,"y":130},
       "size":{"width":60,"height":60},
       "node_type":"eosinophile",
+      "thumbnail":"images/eosinophile_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Eosinophile"
@@ -42,6 +45,7 @@
       "position":{"x":0,"y":195},
       "size":{"width":60,"height":60},
       "node_type":"epithelial_cell",
+      "thumbnail":"images/ephitelial_cell_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Epithelial cell"
@@ -54,6 +58,7 @@
       "position":{"x":0,"y":260},
       "size":{"width":60,"height":60},
       "node_type":"fibroblast",
+      "thumbnail":"images/fibroblast_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Fibroblast"
@@ -66,6 +71,7 @@
       "position":{"x":0,"y":325},
       "size":{"width":60,"height":60},
       "node_type":"g_protein_coupled_receptor",
+      "thumbnail":"images/g_protein_coupled_receptor_thumbnail.png",
       "attrs":{
         "text":{
           "text":"G Protein coupled receptor"
@@ -78,6 +84,7 @@
       "position":{"x":0,"y":390},
       "size":{"width":60,"height":60},
       "node_type":"lymphocyte",
+      "thumbnail":"images/lymphocyte_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Lymphocyte"
@@ -90,6 +97,7 @@
       "position":{"x":0,"y":455},
       "size":{"width":60,"height":60},
       "node_type":"mastocyte",
+      "thumbnail":"images/mastocyte_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Mastocyte"
@@ -102,6 +110,7 @@
       "position":{"x":0,"y":520},
       "size":{"width":60,"height":60},
       "node_type":"monocyte_macrophage",
+      "thumbnail":"images/monocyte_macrophage_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Monocyte macrophage"
@@ -114,6 +123,7 @@
       "position":{"x":0,"y":585},
       "size":{"width":60,"height":60},
       "node_type":"neutrophile",
+      "thumbnail":"images/neutrophile_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Neutrophile"
@@ -126,6 +136,7 @@
       "position":{"x":0,"y":650},
       "size":{"width":60,"height":60},
       "node_type":"plasmocyte",
+      "thumbnail":"images/plasmocyte_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Plasmocyte"
@@ -138,6 +149,7 @@
       "position":{"x":0,"y":715},
       "size":{"width":60,"height":60},
       "node_type":"small_molecule",
+      "thumbnail":"images/small_molecule_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Small molecule"
@@ -150,6 +162,7 @@
       "position":{"x":0,"y":780},
       "size":{"width":60,"height":60},
       "node_type":"tyrosin_kinase_receptor",
+      "thumbnail":"images/tyrosin_kinase_receptor_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Tyrosin kinase receptor"
