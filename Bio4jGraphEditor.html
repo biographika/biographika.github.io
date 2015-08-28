@@ -198,7 +198,10 @@
               </li>
               <li>
                 <button id="selectNodeTypeButton" title="Select current node type" onclick="openDialogSelectNodeType()" type="button" class="btn btn-default">
-                  <i class="fa fa-bullseye"></i></button>
+                  <i id="currentNodeTypeIcon" class="fa fa-bullseye"></i>
+                  <img id="currentNodeTypeImage">
+                  </img>
+                </button>
               </li>
               <li>
                 <button id="selectLinkTypeButton" title="Select current link type" onclick="openDialogSelectLinkType()" type="button" class="btn btn-default">
@@ -228,6 +231,10 @@
                   <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
                 </div>
                 <!-- delete node on click checkbox -->
+              </li>
+              <li>
+                <div id="currentNodeTypeDiv">
+                </div>
               </li>
           </ul>
         </div>
@@ -341,7 +348,10 @@
 
 
  <!-- +++++++++++++++++++ MAIN VARS ++++++++++++++++++++++++ -->
- var graph, node_types_graph, link_types_graph, backgrounds_graph, paper, node_types_paper, link_types_paper, backgrounds_paper, protein_node_type, organism_node_type, genome_element_type, selected_node_type;
+ var graph, node_types_graph, link_types_graph, backgrounds_graph, paper,
+    node_types_paper, link_types_paper, backgrounds_paper, protein_node_type,
+    organism_node_type, genome_element_type, selected_node_type,
+    current_node_type_graph, current_node_type_paper;
 
  //.......paper panning related vars........
  var paperIsPanning = false;
@@ -869,8 +879,7 @@
         if (xobj.readyState == 4 && xobj.status == "200") {
           //console.log(xobj.responseText);
           typeDefinitionsJSON = JSON.parse(xobj.responseText);
-          console.log(typeDefinitionsJSON);
-
+          //console.log(typeDefinitionsJSON);
         }
     };
     xobj.send(null);
@@ -886,6 +895,7 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
+          console.log(xobj.responseText);
           node_types_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfNodeTypesPaper();
           positionNodeTypesOnPaper();
@@ -1368,6 +1378,7 @@
     if(document.getElementById("lockDiagramCheckBox").checked != true){
       if(!selectedNodeTypeCell){
         alert("Please select a node type first");
+        openDialogSelectNodeType();
       }else{
         var newCell = cloneCellAt(selectedNodeTypeCell,x,y);
         selectNodeCell(newCell.findView(paper), true);
@@ -1543,6 +1554,10 @@
 
   function setSelectedNodeType(){
     $('#node_types_dialog').modal('hide');
+    console.log("thumbnail prop:",selectedNodeTypeCell.prop("thumbnail"));
+    $('#currentNodeTypeIcon').remove();
+    $('#currentNodeTypeImage').attr("src",selectedNodeTypeCell.prop("thumbnail"));
+    console.log("done!");
   }
 
   function setSelectedLinkType(){
