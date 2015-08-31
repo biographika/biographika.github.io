@@ -530,8 +530,14 @@
   $("#lockDiagramCheckBox").click( function(){
       if( $(this).is(':checked') ){
         readOnlyMode = true;
+        if(alpacaMetadataFormControl){
+          alpacaMetadataFormControl.disable();
+        }
       }else{
         readOnlyMode = false;
+        if(alpacaMetadataFormControl){
+          alpacaMetadataFormControl.enable();
+        }
       }
 
       makeLinksInteractive(!readOnlyMode);
@@ -1287,7 +1293,8 @@
 
   function isLinkInvalid(link){
     var linkToBackgroundBox = link.prop('target/id') == backgroundBox.id;
-    return (!link.prop('source/id') || !link.prop('target/id') || linkToBackgroundBox);
+    var linkToBackground = link.prop('target/id') == currentBackgroundCell.id;
+    return (!link.prop('source/id') || !link.prop('target/id') || linkToBackgroundBox || linkToBackground);
   }
 
   function rotateCellToTheRight(){
@@ -1443,6 +1450,10 @@
 
       });
 
+      if(readOnlyMode){
+        alpacaMetadataFormControl.disable();
+      }
+
       console.log("selectedCell", selectedCell.model);
 
     }
@@ -1477,7 +1488,7 @@
     graph.addCell(newBackgroundCell);
     newBackgroundCell.toBack();
     backgroundBox.toBack();
-    console.log(newBackgroundCell);
+    //console.log(newBackgroundCell);
     currentBackgroundCell = newBackgroundCell;
     currentBackgroundCell.findView(paper).options.interactive = false;
     paper.render();
@@ -1486,15 +1497,21 @@
   }
 
   function fitPaperToContents(){
+    //first the background box is removed so that it does not influence the calculation
+    //of the bbox
+    backgroundBox.remove();
+    paper.render();
     var bbox = paper.getContentBBox();
-    var tempWidth = bbox.width;
-    var tempHeight = bbox.height;
+    console.log(bbox);
+    var tempWidth = bbox.width + bbox.x;
+    var tempHeight = bbox.height + bbox.y;
     //console.log(tempWidth, tempHeight);
     $('#inputWidth').prop('value', tempWidth);
     $('#inputHeight').prop('value', tempHeight);
     paperInitialWidth = tempWidth;
     paperInitialHeight = tempHeight;
-    updatePaperDimensions(tempWidth, tempHeight);
+    updatePaperDimensions(paperInitialWidth, paperInitialHeight);
+    initializeBackgroundBox(paperInitialWidth,paperInitialHeight);
   }
 
   function saveMetadataChanges(){
