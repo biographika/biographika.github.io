@@ -1293,7 +1293,10 @@
 
   function isLinkInvalid(link){
     var linkToBackgroundBox = link.prop('target/id') == backgroundBox.id;
-    var linkToBackground = link.prop('target/id') == currentBackgroundCell.id;
+    var linkToBackground = false;
+    if(currentBackgroundCell){
+      linkToBackground = link.prop('target/id') == currentBackgroundCell.id;
+    }
     return (!link.prop('source/id') || !link.prop('target/id') || linkToBackgroundBox || linkToBackground);
   }
 
