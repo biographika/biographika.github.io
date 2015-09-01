@@ -459,6 +459,11 @@
  var backgroundBox;
  var alpacaMetadataFormControl;
 
+
+ //=================Config vars=======================
+ var nodeLabelMaxLength;
+ //===================================================
+
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
@@ -541,12 +546,12 @@
       if( $(this).is(':checked') ){
         readOnlyMode = true;
         if(alpacaMetadataFormControl){
-          alpacaMetadataFormControl.disable();
+          alpacaMetadataFormControl.enable("false");
         }
       }else{
         readOnlyMode = false;
         if(alpacaMetadataFormControl){
-          alpacaMetadataFormControl.enable();
+          alpacaMetadataFormControl.enable("true");
         }
       }
 
@@ -1224,11 +1229,14 @@
   }
 
   function onBodyLoad(){
+    console.log("onBodyLoad");
     initializeJoint();
 
     currentBackgroundThemeURL = defaultBackgroundThemeURL;
     currentNodeTypeThemeURL = defaultElementsThemeURL;
     currentLinkTypeThemeURL = defaultLinksThemeURL;
+
+    loadConfigJSON();
   }
 
   function zoomIn(){
@@ -1554,7 +1562,13 @@
 
   function renameSelectedNode(newLabel){
     //console.log("renameSelectedNode", newLabel);
-    selectedCell.model.attr("text/text",newLabel);
+    var labelLength = newLabel.length;
+    console.log("labelLength", labelLength);
+    if(labelLength > nodeLabelMaxLength){
+      selectedCell.model.attr("text/text",addNewLinesToTextWhenNeeded(newLabel, nodeLabelMaxLength));
+    }else{
+      selectedCell.model.attr("text/text",newLabel);
+    }
   }
 
   function applyRenameNode(){
@@ -1662,6 +1676,43 @@
     tempSize.width += 4;
     tempSize.height += 4;
     return tempSize;
+  }
+
+  function loadConfigJSON(){
+    console.log("loadConfigJSON");
+    $.getJSON("data/Config.json", function(json) {
+        nodeLabelMaxLength = json.label_max_length;
+        console.log(nodeLabelMaxLength);
+    });
+  }
+
+  function addNewLinesToTextWhenNeeded(textSt, maxLineLength){
+    console.log("addNewLinesToTextWhenNeeded");
+    var lines = textSt.split('\n');
+    var result = "";
+
+    for(var i=0; i<lines.length; i++){
+      var currentLine = lines[i];
+      if(currentLine.length > maxLineLength){
+
+        for(var j=0;j<(currentLine.length/maxLineLength);j++){
+          var tempStart = j*maxLineLength;
+          if(j<((currentLine.length/maxLineLength) -1)){
+            console.log("argh");
+            result += currentLine.substr(tempStart, tempStart + maxLineLength) + '\n';
+          }else{
+            console.log("buh!");
+            result += currentLine.substr(tempStart, currentLine.length);
+            result += '\n';
+          }
+        }
+
+      }else{
+        result += (currentLine + "\n");
+      }
+    }
+
+    return result;
   }
 
 	</script>
