@@ -394,6 +394,7 @@
  var selectedCell;
  var readOnlyMode = false;
  var currentBackgroundCell = null;
+ var selectionRectCell = null;
 
  var backgroundsModalFirstTimeShown = true;
  var currentBackgroundThemeURL;
@@ -1016,8 +1017,12 @@
     }
 
     if(flag){
+      initializeSelectionRect();
     }else{
-
+      if(selectionRectCell){
+        selectionRectCell.remove();
+        selectionRectCell = null;
+      }
     }
 
   }
@@ -1582,6 +1587,61 @@
 
   function setSelectedLinkType(){
     $('#link_types_dialog').modal('hide');
+  }
+
+  function initializeSelectionRect(){
+
+    console.log("initializeSelectionRect");
+
+    if(selectedCell){
+
+      console.log("selectedCell = true");
+
+      if(!selectionRectCell){
+
+        var tempPosition = getPositionForSelectionRect();
+        var tempSize = getSizeForSelectionRect();
+
+        console.log("selectedCell",selectedCell.model);
+        console.log("tempPosition", tempPosition);
+        console.log("tempSize", tempSize);
+
+        selectionRectCell = new rect({
+            position: tempPosition,
+            size: tempSize,
+            attrs: {
+                rect: { rx: 2, ry: 2, stroke: '#27AE60', 'stroke-width': 2, 'stroke-dasharray':"10,10" }
+            }
+        });
+        console.log(selectionRectCell);
+        graph.addCell(selectionRectCell);
+        selectionRectCell.toBack();
+        if(currentBackgroundCell){
+          currentBackgroundCell.toBack();
+        }
+        backgroundBox.toBack();
+
+      }else{
+        selectionRectCell.prop("position", getPositionForSelectionRect());
+        selectionRectCell.prop("size", getSizeForSelectionRect());
+      }
+
+
+    }
+
+  }
+
+  function getPositionForSelectionRect(){
+    var tempPosition = selectedCell.model.prop('position');
+    tempPosition.x = tempPosition.x - 2;
+    tempPosition.y = tempPosition.y - 2;
+    return tempPosition;
+  }
+  function getSizeForSelectionRect(){
+    var tempSize = selectedCell.model.prop('size');
+    tempSize.width += 4;
+    tempSize.height += 4;
+    return tempSize;
   }
 
 	</script>
