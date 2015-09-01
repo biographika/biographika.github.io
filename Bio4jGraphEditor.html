@@ -359,6 +359,7 @@
  var pointerDownClientY;
  var lastPositionMouseX;
  var lastPositionMouseY;
+ var nodeIsBeingDragged = false;
  //.........................................
  //.......paper zooming related vars........
  var paperScale = 1;
@@ -480,10 +481,18 @@
      $("#graph-container").scrollTop(currentScrollTop + differenceY);
 
    }
+
+   if(nodeIsBeingDragged){
+      updateSelectionRectPosition();
+   }
+
   });
  $(document).mouseup(function( event ) {
     //console.log("mouse up!");
     paperIsPanning = false;
+    if(nodeIsBeingDragged){
+      nodeIsBeingDragged = false;
+    }
  });
 
  <!--===================================================================-->
@@ -608,9 +617,9 @@
 
   <!-- BACKGROUNDS MODAL DIALOG -->
   $('#background_dialog').on('shown.bs.modal', function () {
-    console.log("backgrounds! shown.bs.modal");
+    //console.log("backgrounds! shown.bs.modal");
     if(backgroundsModalFirstTimeShown){
-      console.log("backgroundsModalFirstTimeShown");
+      //console.log("backgroundsModalFirstTimeShown");
       initializeBackgroundsPaper(currentBackgroundThemeURL);
     }else{
       loadBackgroundsTheme(currentBackgroundThemeURL);
@@ -620,9 +629,9 @@
 
   <!-- NODE TYPES MODAL DIALOG -->
   $('#node_types_dialog').on('shown.bs.modal', function () {
-    console.log("node types! shown.bs.modal");
+    //console.log("node types! shown.bs.modal");
     if(nodeTypesModalFirstTimeShown){
-      console.log("nodeTypesModalFirstTimeShown");
+      //console.log("nodeTypesModalFirstTimeShown");
       initializeNodeTypesPaper(currentNodeTypeThemeURL);
     }else{
       loadNodeTypesTheme(currentNodeTypeThemeURL);
@@ -632,9 +641,9 @@
 
   <!-- LINK TYPES MODAL DIALOG -->
   $('#link_types_dialog').on('shown.bs.modal', function () {
-    console.log("link types! shown.bs.modal");
+    //console.log("link types! shown.bs.modal");
     if(linkTypesModalFirstTimeShown){
-      console.log("linkTypesModalFirstTimeShown");
+      //console.log("linkTypesModalFirstTimeShown");
       initializeLinkTypesPaper(currentLinkTypeThemeURL);
     }else{
       loadLinkTypesTheme(currentLinkTypeThemeURL);
@@ -653,7 +662,7 @@
   }
 
   function initializeGraphPaper(){
-    console.log("initializeGraphPaper");
+    //console.log("initializeGraphPaper");
 
     graph = new joint.dia.Graph;
 
@@ -692,13 +701,15 @@
       function(cellView, evt, x, y){
         if(cellView.model == backgroundBox || cellView.model == currentBackgroundCell){
           onStageDown(evt,x,y);
+        }else{
+          nodeIsBeingDragged = true;
         }
       }
     );
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
 
-        console.log("cell:pointerclick!");
+        //console.log("cell:pointerclick!");
 
         if(cellView.model == backgroundBox){
           onBackgroundOrBackgroundBoxClick(evt,x,y);
@@ -734,7 +745,7 @@
   }
 
   function initializeBackgroundBox(width, height){
-    console.log("initializeBackgroundBox");
+    //console.log("initializeBackgroundBox");
     backgroundBox  = createBackgroundBox(0, 0, width, height, '#FFFFFF');
     backgroundBox.findView(paper).options.interactive = false;
     backgroundBox.prop("background_box","true");
@@ -811,7 +822,7 @@
   }
 
   function initializeBackgroundsPaper(themeURL){
-    console.log("initializeBackgroundsPaper");
+    //console.log("initializeBackgroundsPaper");
     backgrounds_graph = new joint.dia.Graph;
 
     backgrounds_paper = new joint.dia.Paper({
@@ -855,7 +866,7 @@
   }
 
   function loadBackgroundsTheme(url){
-    console.log("loadBackgroundsTheme");
+    //console.log("loadBackgroundsTheme");
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -863,7 +874,7 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
-          console.log("onreadystatechange (backgrounds)!");
+          //console.log("onreadystatechange (backgrounds)!");
           backgrounds_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfBackgroundsPaper();
           positionBackgroundsOnPaper();
@@ -894,7 +905,7 @@
   }
 
   function loadNodeTypesTheme(url){
-    console.log("loadNodeTypesTheme");
+    //console.log("loadNodeTypesTheme");
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -902,7 +913,7 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
-          console.log(xobj.responseText);
+          //console.log(xobj.responseText);
           node_types_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfNodeTypesPaper();
           positionNodeTypesOnPaper();
@@ -1000,7 +1011,7 @@
 
   function selectNodeCell(cellView, flag){
 
-    console.log("selectNodeCell");
+    //console.log("selectNodeCell");
 
     var nodeCells = graph.getElements();
 
@@ -1029,7 +1040,7 @@
 
   function selectNodeTypeCell(cellView){
 
-    console.log("selectNodeTypeCell");
+    //console.log("selectNodeTypeCell");
 
     var nodeTypeCells = node_types_graph.getElements();
     for (var i = 0; i < nodeTypeCells.length; i++) {
@@ -1045,7 +1056,7 @@
   }
 
   function selectLink(cellView){
-    console.log("selectLink!");
+    //console.log("selectLink!");
     var linkTypeCells = link_types_graph.getLinks();
 
     for (var i = 0; i < linkTypeCells.length; i++) {
@@ -1062,12 +1073,12 @@
       }
     }
 
-    console.log(link_types_paper.options);
+    //console.log(link_types_paper.options);
   }
 
   function selectBackgroundCell(cellView){
 
-    console.log("selectBackgroundCell");
+    //console.log("selectBackgroundCell");
 
     var backgroundCells = backgrounds_graph.getElements();
 
@@ -1084,7 +1095,7 @@
       }
     }
 
-    console.log("done with select!");
+    //console.log("done with select!");
   }
 
   <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
@@ -1239,14 +1250,14 @@
 
 
   function getDefaultLink(){
-    console.log("getDefaultLink");
+    //console.log("getDefaultLink");
     if(selectedLinkTypeCell){
-      console.log("true");
+      //console.log("true");
       var tempLink = selectedLinkTypeCell.clone();
       tempLink.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
       return tempLink;
     }else{
-      console.log("false");
+      //console.log("false");
       return new joint.dia.Link();
     }
 
@@ -1306,7 +1317,7 @@
   }
 
   function rotateCellToTheRight(){
-     console.log("rotateCellToTheRight");
+     //console.log("rotateCellToTheRight");
      if(selectedCell){
 
        var currentDegreesSt = selectedCell.model.attr("image/transform");
@@ -1321,7 +1332,7 @@
   }
 
   function rotateCellToTheLeft(){
-    console.log("rotateCellToTheLeft");
+    //console.log("rotateCellToTheLeft");
 
     if(selectedCell){
 
@@ -1361,7 +1372,7 @@
   }
 
   function updatePaperDimensions(tempWidth, tempHeight){
-    console.log("updatePaperDimensions");
+    //console.log("updatePaperDimensions");
     paper.setDimensions(tempWidth,tempHeight);
     updateBackgroundBoxDimensions(tempWidth, tempHeight);
     paper.render();
@@ -1372,7 +1383,7 @@
   }
 
   function onStageDown(evt, x, y){
-    console.log("onStageDown");
+    //console.log("onStageDown");
 
     pointerDownClientX = evt.clientX;
     pointerDownClientY = evt.clientY;
@@ -1386,7 +1397,7 @@
   }
 
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
-    console.log("onBackgroundOrBackgroundBoxClick");
+    //console.log("onBackgroundOrBackgroundBoxClick");
     if(selectedCell){
         selectNodeCell(selectedCell, false);
     }
@@ -1432,8 +1443,8 @@
       if(!tempNodeType){
         tempNodeType = selectedCell.model.attr("node_type");
       }
-      console.log("selectedCell.model",selectedCell.model);
-      console.log("tempNodeType: " + tempNodeType);
+      //console.log("selectedCell.model",selectedCell.model);
+      //console.log("tempNodeType: " + tempNodeType);
 
       var jsonForSelectedCell = typeDefinitionsJSON.nodes[tempNodeType];
 
@@ -1443,8 +1454,8 @@
         divContents[i].remove();
       }
 
-      console.log("typeDefinitionsJSON",typeDefinitionsJSON);
-      console.log("jsonForSelectedCell", jsonForSelectedCell);
+      //console.log("typeDefinitionsJSON",typeDefinitionsJSON);
+      //console.log("jsonForSelectedCell", jsonForSelectedCell);
 
       var schema = jsonForSelectedCell.schema;
       var data = selectedCell.model.prop("data");
@@ -1462,7 +1473,7 @@
         alpacaMetadataFormControl.disable();
       }
 
-      console.log("selectedCell", selectedCell.model);
+      //console.log("selectedCell", selectedCell.model);
 
     }
   }
@@ -1471,13 +1482,13 @@
     $('#background_dialog').modal('hide');
 
     if(currentBackgroundCell){
-      console.log("There already was a background for this diagram...");
+      //console.log("There already was a background for this diagram...");
       if(currentBackgroundCell.id != selectedBackgroundCell.id){
-        console.log("The background selected is different from the current one");
+        //console.log("The background selected is different from the current one");
         currentBackgroundCell.remove();
       }
     }
-    console.log("let's create the new background cell!");
+    //console.log("let's create the new background cell!");
 
     var newBackgroundCell = selectedBackgroundCell.clone();
     var realSize = newBackgroundCell.prop("real_size");
@@ -1500,7 +1511,7 @@
     currentBackgroundCell = newBackgroundCell;
     currentBackgroundCell.findView(paper).options.interactive = false;
     paper.render();
-    console.log("done!");
+    //console.log("done!");
 
   }
 
@@ -1510,7 +1521,7 @@
     backgroundBox.remove();
     paper.render();
     var bbox = paper.getContentBBox();
-    console.log(bbox);
+    //console.log(bbox);
     var tempWidth = bbox.width + bbox.x;
     var tempHeight = bbox.height + bbox.y;
     //console.log(tempWidth, tempHeight);
@@ -1525,29 +1536,29 @@
   function saveMetadataChanges(){
     $('#metadata_dialog').modal('hide');
     selectedCell.model.prop("data",alpacaMetadataFormControl.getValue());
-    console.log("saveMetadataChanges", selectedCell.model);
+    //console.log("saveMetadataChanges", selectedCell.model);
   }
 
   function deletePreviousBackgroundBox(){
-    console.log("deletePreviousBackgroundBox");
+    //console.log("deletePreviousBackgroundBox");
     var nodes = graph.getElements();
     for(var i=0; i<nodes.length;i++){
       var currentNode = nodes[i];
-      console.log("currentNode.background_box: " + currentNode.prop("background_box"));
+      //console.log("currentNode.background_box: " + currentNode.prop("background_box"));
       if( currentNode.prop("background_box") == "true"){
-        console.log("remove previous background cell!! :D");
+        //console.log("remove previous background cell!! :D");
         currentNode.remove();
       }
     }
   }
 
   function renameSelectedNode(newLabel){
-    console.log("renameSelectedNode", newLabel);
+    //console.log("renameSelectedNode", newLabel);
     selectedCell.model.attr("text/text",newLabel);
   }
 
   function applyRenameNode(){
-    console.log("applyRenameNode");
+    //console.log("applyRenameNode");
     $('#rename_node_dialog').modal('hide');
     renameSelectedNode(document.getElementById("inputNodeName").value);
   }
@@ -1560,7 +1571,7 @@
         show: true
       })
       var currentLabel = selectedCell.model.attr("text/text");
-      console.log("currentLabel", currentLabel);
+      //console.log("currentLabel", currentLabel);
       document.getElementById("inputNodeName").value = currentLabel;
     }
   }
@@ -1600,20 +1611,22 @@
       if(!selectionRectCell){
 
         var tempPosition = getPositionForSelectionRect();
+        tempPosition.x -= 2;
+        tempPosition.y -= 2;
         var tempSize = getSizeForSelectionRect();
 
-        console.log("selectedCell",selectedCell.model);
-        console.log("tempPosition", tempPosition);
-        console.log("tempSize", tempSize);
+        //console.log("selectedCell",selectedCell.model);
+        //console.log("tempPosition", tempPosition);
+        //console.log("tempSize", tempSize);
 
         selectionRectCell = new rect({
             position: tempPosition,
             size: tempSize,
             attrs: {
-                rect: { rx: 2, ry: 2, stroke: '#27AE60', 'stroke-width': 2, 'stroke-dasharray':"10,10" }
+                rect: { rx: 2, ry: 2, stroke: '#000000', 'stroke-width': 1, 'stroke-dasharray':"5,5" }
             }
         });
-        console.log(selectionRectCell);
+        //console.log(selectionRectCell);
         graph.addCell(selectionRectCell);
         selectionRectCell.toBack();
         if(currentBackgroundCell){
@@ -1622,19 +1635,26 @@
         backgroundBox.toBack();
 
       }else{
-        selectionRectCell.prop("position", getPositionForSelectionRect());
+        updateSelectionRectPosition();
         selectionRectCell.prop("size", getSizeForSelectionRect());
       }
-
 
     }
 
   }
 
+  function updateSelectionRectPosition(){
+    console.log("updateSelectionRectPosition");
+    var positionForSelectionRect = getPositionForSelectionRect();
+    //console.log("positionForSelectionRect",positionForSelectionRect);
+    selectionRectCell.prop("position", positionForSelectionRect);
+  }
+
   function getPositionForSelectionRect(){
     var tempPosition = selectedCell.model.prop('position');
-    tempPosition.x = tempPosition.x - 2;
-    tempPosition.y = tempPosition.y - 2;
+    //console.log("tempPosition", tempPosition);
+    tempPosition.x = tempPosition.x;
+    tempPosition.y = tempPosition.y;
     return tempPosition;
   }
   function getSizeForSelectionRect(){
