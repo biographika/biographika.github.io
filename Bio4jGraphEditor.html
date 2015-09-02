@@ -734,12 +734,16 @@
           if(document.getElementById("deleteNodeOnClickCheckBox").checked && !readOnlyMode){
             //console.log("remove!");
             cellView.remove();
+            if(selectionRectCell){
+              selectionRectCell.remove();
+              selectionRectCell = null;
+            }
           }
 
           if(selectedCell){
               if(cellView.id != selectedCell.id){
                 selectNodeCell(selectedCell, false);
-              }              
+              }
           }
           selectNodeCell(cellView, true);
 
@@ -1315,11 +1319,15 @@
 
   function makeElementsInteractive(flag){
 
+    console.log("makeElementsInteractive");
+
     var nodes = graph.getElements();
 
     for(var i=0; i<nodes.length;i++){
       var currentNode = nodes[i];
       var currentView = currentNode.findView(paper);
+      console.log("currentNode", currentNode);
+      console.log("currentView", currentView);
       if(currentNode != backgroundBox && currentNode != currentBackgroundCell){
         if( !flag ){
           currentView.options.interactive = false;
