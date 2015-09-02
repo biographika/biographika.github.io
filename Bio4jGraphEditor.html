@@ -1361,7 +1361,10 @@
          currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
        }
        var newDegrees = currentDegrees - rotateCellFactor;
-       selectedCell.model.attr("image/transform","rotate("+newDegrees+")");
+       var rotationCenterPointX = selectedCell.model.attr("image/width")/2;
+       var rotationCenterPointY = selectedCell.model.attr("image/height")/2;
+       selectedCell.model.attr("image/transform","rotate("+newDegrees+","
+            + rotationCenterPointX + "," + rotationCenterPointY + ")");
      }
   }
 
@@ -1377,7 +1380,10 @@
         currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
       }
       var newDegrees = currentDegrees + rotateCellFactor;
-      selectedCell.model.attr("image/transform","rotate("+newDegrees+")");
+      var rotationCenterPointX = selectedCell.model.attr("image/width")/2;
+      var rotationCenterPointY = selectedCell.model.attr("image/height")/2;
+      selectedCell.model.attr("image/transform","rotate("+newDegrees+","
+           + rotationCenterPointX + "," + rotationCenterPointY + ")");
     }
   }
 
