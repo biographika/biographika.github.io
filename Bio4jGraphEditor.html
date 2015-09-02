@@ -1270,7 +1270,6 @@
     paperScale -= (paperScale * paperScaleFactor);
     paper.scale(paperScale, paperScale);
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
-    console.log("zoomOut", "paperScale", paperScale);
   }
   function resetZoom(){
     paperScale = 1;
@@ -1384,6 +1383,9 @@
 
   function bringSelectedCellToFront(){
     if(selectedCell){
+      if(selectionRectCell){
+        selectionRectCell.toFront();
+      }
       selectedCell.model.toFront();
     }
   }
@@ -1391,9 +1393,14 @@
   function bringSelectedCellToBack(){
     if(selectedCell){
       selectedCell.model.toBack();
-
-      currentBackgroundCell.toBack();
+      if(selectionRectCell){
+        selectionRectCell.toBack();
+      }
+      if(currentBackgroundCell){
+        currentBackgroundCell.toBack();
+      }
       backgroundBox.toBack();
+      paper.render();
     }
   }
 
