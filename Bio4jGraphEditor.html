@@ -265,7 +265,7 @@
         </div>
         <div class="modal-footer">
           <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-          <button type="button" onclick="saveMetadataChanges()" class="btn btn-primary">Save changes</button>
+          <button id="saveMetadataChangesButton" type="button" onclick="saveMetadataChanges()" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -543,15 +543,24 @@
 
   <!-- LOCK DIAGRAM CHECKBOX... -->
   $("#lockDiagramCheckBox").click( function(){
+
+      var saveChangesMetadataButton = document.getElementById('saveMetadataChangesButton');
+
       if( $(this).is(':checked') ){
         readOnlyMode = true;
         if(alpacaMetadataFormControl){
-          alpacaMetadataFormControl.enable("false");
+          alpacaMetadataFormControl.enable();
+        }
+        if(saveChangesMetadataButton){
+          saveChangesMetadataButton.style.visibility = 'hidden';
         }
       }else{
         readOnlyMode = false;
         if(alpacaMetadataFormControl){
-          alpacaMetadataFormControl.enable("true");
+          alpacaMetadataFormControl.disable();
+        }
+        if(saveChangesMetadataButton){
+          saveChangesMetadataButton.style.visibility = 'visible';
         }
       }
 
@@ -728,7 +737,9 @@
           }
 
           if(selectedCell){
-              selectNodeCell(selectedCell, false);
+              if(cellView.id != selectedCell.id){
+                selectNodeCell(selectedCell, false);
+              }              
           }
           selectNodeCell(cellView, true);
 
@@ -1016,7 +1027,12 @@
 
   function selectNodeCell(cellView, flag){
 
-    //console.log("selectNodeCell");
+    console.log("selectedNodeCell", flag);
+
+    var newCellSelected = true;
+    if(selectedCell){
+      newCellSelected = cellView.id != selectedCell.id;
+    }
 
     var nodeCells = graph.getElements();
 
@@ -1033,7 +1049,9 @@
     }
 
     if(flag){
-      initializeSelectionRect();
+      if(newCellSelected){
+        initializeSelectionRect();
+      }
     }else{
       if(selectionRectCell){
         selectionRectCell.remove();
@@ -1473,15 +1491,11 @@
       "data":data,
       "postRender": function(control) {
               alpacaMetadataFormControl = control;
+              if(readOnlyMode){
+                alpacaMetadataFormControl.disable();
+              }
           }
-
       });
-
-      if(readOnlyMode){
-        alpacaMetadataFormControl.disable();
-      }
-
-      //console.log("selectedCell", selectedCell.model);
 
     }
   }
