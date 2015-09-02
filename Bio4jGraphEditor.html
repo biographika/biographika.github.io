@@ -1262,14 +1262,15 @@
   }
 
   function zoomIn(){
-      paperScale = paperScale + paperScaleFactor;
+      paperScale += (paperScale * paperScaleFactor);
       paper.scale(paperScale, paperScale);
       paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
   function zoomOut(){
-    paperScale = paperScale - paperScaleFactor;
+    paperScale -= (paperScale * paperScaleFactor);
     paper.scale(paperScale, paperScale);
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
+    console.log("zoomOut", "paperScale", paperScale);
   }
   function resetZoom(){
     paperScale = 1;
