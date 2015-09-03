@@ -1293,48 +1293,11 @@
       });
       graph.addCell(cell);
       return cell;
-  };
-  var createNodeEllipse = function(elm, x, y, label, widthValue) {
-      var cell = new elm({
-        position: { x: x, y: y },
-        attrs: {
-          size: { width: widthValue},
-          text: { 'font-size': 10, fill: '#333', text: label , magnet: true},
-          name: label,
-          magnet: true
-          }
-      });
-      graph.addCell(cell);
-      return cell;
-  };
-  var createNodeImage = function(imgURI, x, y, widthValue, heightValue, label){
-    var cell = new joint.shapes.basic.Image({
-      position: { x: x, y: y },
-      size: { width: widthValue, height: heightValue},
-      attrs: {
-        name: label,
-        text: {text: label},
-        magnet: true,
-        image : {
-            "xlink:href" : imgURI,
-            width : widthValue,
-            height : heightValue,
-            magnet: true
-          }
-        }
-    });
-    graph.addCell(cell);
-    return cell;
-  }
-  var createProtein = function(x, y) {
-    return createNodeImage("images/protein.png", x, y, 100, 60, 'Protein');
-      //return createNodeRect(rect, x, y, 'Protein', 80, 30, 2, 2, '#2ECC71', '#27AE60', 2);
-  };
-  var createOrganism = function(x, y) {
-    return createNodeImage("images/biographika_logo_tiny.svg", x, y, 60, 60, 'Organism');
-      //return createNodeEllipse(ellipse, x, y, 'Organism', 100);
-  };
+  };  
 
+  /**
+  Clones the cell provided at the position provided
+  */
   function cloneCellAt(cell, x, y){
       var clonedCell = cell.clone();
       clonedCell.prop("position", {"x":x,"y":y});
@@ -1349,7 +1312,10 @@
       return clonedCell;
   }
 
-
+  /**
+  Download a JSON file with the contents specifed by the parameter 'jsonContent'
+  @param {string} jsonContent - Contents of the file to be downloaded
+  */
   function downloadJSON(jsonContent){
 
     var blob = null,
@@ -1392,6 +1358,9 @@
 
   }
 
+  /**
+  Method called when the body is loaded
+  */
   function onBodyLoad(){
     console.log("onBodyLoad");
     initializeJoint();
@@ -1402,17 +1371,25 @@
 
     loadConfigJSON();
   }
-
+  /**
+  Zooms in on the paper by increasing its scale value
+  */
   function zoomIn(){
       paperScale += (paperScale * paperScaleFactor);
       paper.scale(paperScale, paperScale);
       paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
+  /**
+  Zooms out on the paper by decreasing its scale value
+  */
   function zoomOut(){
     paperScale -= (paperScale * paperScaleFactor);
     paper.scale(paperScale, paperScale);
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
+  /**
+  Resets the scale to the initial value
+  */
   function resetZoom(){
     paperScale = initialPaperScale;
     paper.scale(paperScale, paperScale);
@@ -1420,7 +1397,9 @@
   }
 
 
-
+  /**
+  Provides the default link type used when the user creates new links
+  */
   function getDefaultLink(){
     //console.log("getDefaultLink");
     if(selectedLinkTypeCell){
@@ -1435,6 +1414,13 @@
 
   }
 
+
+  /**
+  Makes all the links of the diagram interactive/passive according to the value
+  of the parameter 'flag'
+  @param {boolean} flag - Flag indicating whether diagram links should become either
+  interactive or passive
+  */
   function makeLinksInteractive(flag){
 
     var links = graph.getLinks();
@@ -1459,6 +1445,12 @@
     }
   }
 
+  /**
+  Makes all the nodes of the diagram interactive/passive according to the value
+  of the parameter 'flag'
+  @param {boolean} flag - Flag indicating whether diagram nodes should become either
+  interactive or passive
+  */
   function makeElementsInteractive(flag){
 
     console.log("makeElementsInteractive");
@@ -1482,7 +1474,9 @@
     }
   }
 
-
+  /**
+  Checks whether the link that is attempted to be created is valid or not
+  */
   function isLinkInvalid(link){
     var linkToBackgroundBox = link.prop('target/id') == backgroundBox.id;
     var linkToBackground = false;
@@ -1492,6 +1486,10 @@
     return (!link.prop('source/id') || !link.prop('target/id') || linkToBackgroundBox || linkToBackground);
   }
 
+  /**
+  Rotates the currently selected node to the right
+  The number of degrees used for the rotation are those specified by the var [rotateCellFactor]
+  */
   function rotateCellToTheRight(){
      //console.log("rotateCellToTheRight");
      if(selectedCell){
@@ -1510,6 +1508,10 @@
      }
   }
 
+  /**
+  Rotates the currently selected node to the left
+  The number of degrees used for the rotation are those specified by the var [rotateCellFactor] (transformed to negative)
+  */
   function rotateCellToTheLeft(){
     //console.log("rotateCellToTheLeft");
 
@@ -1529,6 +1531,9 @@
     }
   }
 
+  /**
+  Brings the selected node to the front
+  */
   function bringSelectedCellToFront(){
     if(selectedCell){
       if(selectionRectCell){
@@ -1538,6 +1543,9 @@
     }
   }
 
+  /**
+  Brings the selected node to the back
+  */
   function bringSelectedCellToBack(){
     if(selectedCell){
       selectedCell.model.toBack();
@@ -1552,6 +1560,10 @@
     }
   }
 
+  /**
+  Updates the dimensions of the paper according to the values currently held by
+  the paper dimensions text inputs
+  */
   function updatePaperDimensionsBasedOnTextInputs(){
     //---update dimension values on text inputs
     var tempWidth = $('#inputWidth').prop('value');
@@ -1561,6 +1573,10 @@
     updatePaperDimensions(tempWidth, tempHeight);
   }
 
+  /**
+  Updates the dimensions of the paper according to the values passed as
+  parameters
+  */
   function updatePaperDimensions(tempWidth, tempHeight){
     //console.log("updatePaperDimensions");
     paper.setDimensions(tempWidth,tempHeight);
@@ -1568,10 +1584,19 @@
     paper.render();
   }
 
+  /**
+  Updates the dimensions of the background box according to the values passed as
+  parameters
+  */
   function updateBackgroundBoxDimensions(widthValue, heightValue){
       backgroundBox.prop("size", {"width":widthValue,"height":heightValue});
   }
 
+  /**
+  This method is called when the user clicks either in the background box or
+  the background of the diagram.
+  It emulates the logic that would otherwise be associated to blank:pointer_down events
+  */
   function onStageDown(evt, x, y){
     //console.log("onStageDown");
 
@@ -1586,6 +1611,11 @@
     }
   }
 
+  /**
+  This method is called when the user clicks either in the background box or
+  the background of the diagram.
+  It emulates the logic that would otherwise be associated to blank:click events
+  */
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
     //console.log("onBackgroundOrBackgroundBoxClick");
     if(selectedCell){
@@ -1604,10 +1634,15 @@
     }
   }
 
+  /**
+  Updates the paper dimensions text inputs so that they reflect the values
+  passed as parameter
+  */
   function updatePaperDimensionsTextInputs(width, height){
     $('#inputWidth').prop('value',width);
     $('#inputHeight').prop('value',height);
   }
+
 
   function onSetBackgroundButtonClick(){
     $('#background_dialog').modal({
@@ -1615,6 +1650,9 @@
      });
   }
 
+  /**
+  Handler for clicks on metadata button
+  */
   function onShowMetadataButtonClick(){
     if(!selectedCell){
       alert("Please select a cell");
@@ -1626,6 +1664,10 @@
     }
   }
 
+  /**
+  Creates an alpaca form and loads into it the metadata information for the currently
+  selected node.
+  */
   function loadSelectedCellMetadataIntoDialog(){
     if(selectedCell){
 
@@ -1664,6 +1706,9 @@
     }
   }
 
+  /**
+  Adds the selected background to the diagram
+  */
   function setSelectedBackground(){
     $('#background_dialog').modal('hide');
 
@@ -1701,6 +1746,11 @@
 
   }
 
+  /**
+  Modifies any or both of the properties: width, height from the paper so that it
+  fits to its contents.
+  Applying this method can result both on either shrinking or expanding the paper.
+  */
   function fitPaperToContents(){
     //first the background box is removed so that it does not influence the calculation
     //of the bbox
@@ -1719,12 +1769,21 @@
     initializeBackgroundBox(paperInitialWidth,paperInitialHeight);
   }
 
+  /**
+  Saves the current values of metadata for the selected node on the model.
+  */
   function saveMetadataChanges(){
     $('#metadata_dialog').modal('hide');
     selectedCell.model.prop("data",alpacaMetadataFormControl.getValue());
     //console.log("saveMetadataChanges", selectedCell.model);
   }
 
+  /**
+  This is an utility method that deletes the 'previous' background box when imported
+  a diagram JSON file.
+  The method identifies such cell by means of the property "background_box" (true for
+  the exported background box)
+  */
   function deletePreviousBackgroundBox(){
     //console.log("deletePreviousBackgroundBox");
     var nodes = graph.getElements();
@@ -1738,10 +1797,15 @@
     }
   }
 
+  /**
+  Updates the selected node label to the value specified by newLabel
+  @param {string} newLabel - New label value that will be applied to the selected
+  node
+  */
   function renameSelectedNode(newLabel){
     //console.log("renameSelectedNode", newLabel);
     var labelLength = newLabel.length;
-    console.log("labelLength", labelLength);
+    //console.log("labelLength", labelLength);
     if(labelLength > nodeLabelMaxLength){
       selectedCell.model.attr("text/text",addNewLinesToTextWhenNeeded(newLabel, nodeLabelMaxLength));
     }else{
@@ -1749,12 +1813,20 @@
     }
   }
 
+  /**
+  Handler for clicks on the dialog button to apply the new label for the selected
+  node
+  */
   function applyRenameNode(){
     //console.log("applyRenameNode");
     $('#rename_node_dialog').modal('hide');
     renameSelectedNode(document.getElementById("inputNodeName").value);
   }
 
+  /**
+  Listener for clicks on 'Rename label' button.
+  Shows the modal dialog where the label of a node can be modified
+  */
   function onRenameNodeButtonClick(){
     if(!selectedCell){
       alert("Please select a cell");
@@ -1768,12 +1840,17 @@
     }
   }
 
+  /**
+  Opens the modal dialog where the current node type can be selected
+  */
   function openDialogSelectNodeType(){
     $('#node_types_dialog').modal({
          show: true
      });
   }
-
+  /**
+  Opens the modal dialog where the current link type can be selected
+  */
   function openDialogSelectLinkType(){
     $('#link_types_dialog').modal({
          show: true
@@ -1782,16 +1859,20 @@
 
   function setSelectedNodeType(){
     $('#node_types_dialog').modal('hide');
-    console.log("thumbnail prop:",selectedNodeTypeCell.prop("thumbnail"));
+    //console.log("thumbnail prop:",selectedNodeTypeCell.prop("thumbnail"));
     $('#currentNodeTypeIcon').remove();
     $('#currentNodeTypeImage').attr("src",selectedNodeTypeCell.prop("thumbnail"));
-    console.log("done!");
+    //console.log("done!");
   }
 
   function setSelectedLinkType(){
     $('#link_types_dialog').modal('hide');
   }
 
+  /**
+  Initializes/creates the selection rect cell that is used to visually identify
+  the node that is currently selected
+  */
   function initializeSelectionRect(){
 
     console.log("initializeSelectionRect");
@@ -1830,31 +1911,44 @@
         updateSelectionRectPosition();
         selectionRectCell.prop("size", getSizeForSelectionRect());
       }
-
     }
-
   }
 
+  /**
+  Updates the selection rect position so that it stays together with the node
+  that is currently selected
+  */
   function updateSelectionRectPosition(){
-    console.log("updateSelectionRectPosition");
+    //console.log("updateSelectionRectPosition");
     var positionForSelectionRect = getPositionForSelectionRect();
-    console.log("positionForSelectionRect",positionForSelectionRect);
+    //console.log("positionForSelectionRect",positionForSelectionRect);
     selectionRectCell.prop("position", positionForSelectionRect);
   }
 
+  /**
+  Returns the position of the currently selected cell so that it can be used to
+  properly position the selection rect
+  */
   function getPositionForSelectionRect(){
-    console.log("getPositionForSelectionRect");
+    //console.log("getPositionForSelectionRect");
     var tempPosition = selectedCell.model.prop('position');
     var newPosition = {x: tempPosition.x, y: tempPosition.y};
     return newPosition;
   }
+  /**
+  Calculates the size of the selection rect so that it propertly fits the node
+  that is currently selected
+  */
   function getSizeForSelectionRect(){
-    console.log("getSizeForSelectionRect");
+    //console.log("getSizeForSelectionRect");
     var tempSize = selectedCell.model.prop('size');
     var newSize = {width: tempSize.width + 4, height: tempSize.height + 4};
     return newSize;
   }
 
+  /**
+  Loads the JSON file holding all the configuration values
+  */
   function loadConfigJSON(){
     console.log("loadConfigJSON");
     $.getJSON("data/Config.json", function(json) {
@@ -1863,6 +1957,12 @@
     });
   }
 
+  /**
+  This function adds new lines to the text provided according to the maximum line
+  length passed as a parameter
+  @param {string} textSt - Text to be modified when needed by adding new lines
+  @param {string} maxLineLength - Maximum number of characters per line
+  */
   function addNewLinesToTextWhenNeeded(textSt, maxLineLength){
     console.log("addNewLinesToTextWhenNeeded");
     var lines = textSt.split('\n');
