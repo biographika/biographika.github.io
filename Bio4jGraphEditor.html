@@ -12,10 +12,6 @@
 <link rel="stylesheet" href="css/font-awesome.min.css">
 <style type="text/css">
 
-  body {
-      background-color: #f8f8f8;
-  }
-
   #wrapper {
       width: 100%;
       height: 100%;
@@ -354,45 +350,127 @@
     current_node_type_graph, current_node_type_paper;
 
  //.......paper panning related vars........
+ /**
+ Flag indicating whether the paper is being currently panned
+ */
  var paperIsPanning = false;
  var pointerDownClientX;
  var pointerDownClientY;
  var lastPositionMouseX;
  var lastPositionMouseY;
+ /**
+ Flag indicating whether the selected cell is currently being dragged
+ */
  var nodeIsBeingDragged = false;
  //.........................................
  //.......paper zooming related vars........
- var paperScale = 1;
+ /**
+ Initial scale for the paper
+ */
+ var initialPaperScale = 1;
+ /**
+ Represents the current scale of the paper
+ */
+ var paperScale = initialPaperScale;
+ /**
+ Factor used to either decrease or increase the scale of the paper
+ */
  var paperScaleFactor = 0.2;
+ /**
+ Initial width for the paper
+ */
  var paperInitialWidth = 500;
+ /**
+ Initial height for the paper
+ */
  var paperInitialHeight = 200;
  //.........................................
 
  //-----node types cells------------------------
+ /**
+ Node type cell height used in the node type selector
+ */
  var nodeTypeCellHeight = 100;
+ /**
+ Node type x position used in the node type selector
+ */
  var nodeTypeCellDefaultX = 15;
+ /**
+ Node type maximum width allowed for nodes in the node type selector
+ */
  var nodeTypeCellMaxWidth = 80;
  //----------------------------------------------
 
  //-----link types cells------------------------
+ /**
+ Link type cell height used in the link type selector
+ */
  var linkTypeCellHeight = 60;
+ /**
+ Link type x position used in the link type selector
+ */
  var linkTypeCellDefaultX = 15;
+ /**
+ Link type y position used in the link type selector
+ */
  var linkTypeCellDefaultY = 30;
+ /**
+ Link type maximum width allowed for links in the node type selector
+ */
  var linkTypeCellMaxWidth = 120;
  //----------------------------------------------
 
  //-----background cells------------------------
+ /**
+ Background height used for cells in the background type selector
+ */
  var backgroundCellHeight = 250;
+ /**
+ Background x position used in the background type selector
+ */
  var backgroundCellDefaultX = 15;
+ /**
+ Background maximum width allowed for background cells in the background type selector
+ */
  var backgroundCellMaxWidth = 500;
+ /**
+ Width value for the paper of the background selector
+ */
  var backgroundPaperWidth = 500;
+ /**
+ Height value for the paper of the background selector
+ */
  var backgroundPaperHeight = 300;
  //----------------------------------------------
 
+ /**
+ Node type currently selected that will be used when creating new nodes
+ */
  var selectedNodeTypeCell;
+ /**
+ Link type currently selected that will be used when creating new links
+ */
  var selectedLinkTypeCell;
+ /**
+ Background type currently selected that will be used when setting a new background
+ */
  var selectedBackgroundCell;
+ /**
+ Node currently selected
+ */
  var selectedCell;
+ /**
+ Flag indicating whether the application is in read-only mode or not. Read-only
+ mode means that neither of the following operations is allowed:
+ - Create new nodes
+ - Delete existing nodes
+ - Create new links
+ - Delete existing links
+ - Move/modify nodes
+ - Move/modify links
+ - Update nodes metadata
+ - Rename node labels
+ */
  var readOnlyMode = false;
  var currentBackgroundCell = null;
  var selectionRectCell = null;
@@ -1272,7 +1350,7 @@
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
   function resetZoom(){
-    paperScale = 1;
+    paperScale = initialPaperScale;
     paper.scale(paperScale, paperScale);
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
