@@ -1044,7 +1044,7 @@
 
   /**
   Loads the type defintions included in the JSON file located at 'url'
-  @param {string} url - URL pointing to the JSON type definitions file 
+  @param {string} url - URL pointing to the JSON type definitions file
   */
   function loadTypeDefinitions(url){
     //----loading JSON WITH TYPE DEFINITIONS-----------------------
@@ -1503,8 +1503,8 @@
          currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
        }
        var newDegrees = currentDegrees - rotateCellFactor;
-       var rotationCenterPointX = selectedCell.model.attr("image/width")/2;
-       var rotationCenterPointY = selectedCell.model.attr("image/height")/2;
+       var rotationCenterPointX = selectedCell.model.attr("size/width")/2;
+       var rotationCenterPointY = selectedCell.model.attr("size/height")/2;
        selectedCell.model.attr("image/transform","rotate("+newDegrees+","
             + rotationCenterPointX + "," + rotationCenterPointY + ")");
      }
@@ -1836,24 +1836,23 @@
   }
 
   function updateSelectionRectPosition(){
-    //console.log("updateSelectionRectPosition");
+    console.log("updateSelectionRectPosition");
     var positionForSelectionRect = getPositionForSelectionRect();
-    //console.log("positionForSelectionRect",positionForSelectionRect);
+    console.log("positionForSelectionRect",positionForSelectionRect);
     selectionRectCell.prop("position", positionForSelectionRect);
   }
 
   function getPositionForSelectionRect(){
+    console.log("getPositionForSelectionRect");
     var tempPosition = selectedCell.model.prop('position');
-    //console.log("tempPosition", tempPosition);
-    tempPosition.x = tempPosition.x;
-    tempPosition.y = tempPosition.y;
-    return tempPosition;
+    var newPosition = {x: tempPosition.x, y: tempPosition.y};
+    return newPosition;
   }
   function getSizeForSelectionRect(){
+    console.log("getSizeForSelectionRect");
     var tempSize = selectedCell.model.prop('size');
-    tempSize.width += 4;
-    tempSize.height += 4;
-    return tempSize;
+    var newSize = {width: tempSize.width + 4, height: tempSize.height + 4};
+    return newSize;
   }
 
   function loadConfigJSON(){
