@@ -472,21 +472,57 @@
  - Rename node labels
  */
  var readOnlyMode = false;
+ /**
+ Current background for the diagram (if any), null otherwise.
+ */
  var currentBackgroundCell = null;
+ /**
+ Rect cell used to represent the selection of a node. It's always located behind
+ the selected node. Its value is null in the case no node is currently selected.
+ */
  var selectionRectCell = null;
 
+ /**
+ Flag used to identify the first time the background selector modal is shown
+ */
  var backgroundsModalFirstTimeShown = true;
  var currentBackgroundThemeURL;
 
+ /**
+ Flag used to identify the first time the node type selector modal is shown
+ */
  var nodeTypesModalFirstTimeShown = true;
  var currentNodeTypeThemeURL;
 
+ /**
+ Flag used to identify the first time the link type selector modal is shown
+ */
  var linkTypesModalFirstTimeShown = true;
  var currentLinkTypeThemeURL;
 
+ /**
+ This variable holds the different type definitions (metadata properties for each node type)
+ valid for the current theme.
+ */
  var typeDefinitionsJSON;
 
+ /**
+ Factor used when rotating either to the left or to the right (number of degrees)
+ */
  var rotateCellFactor = 10;
+
+ /**
+ This cell is used as a white background which is always behind all cells (nodes, bacground, links...)
+ so that it can emulate the existence of the paper. That way the dimensions of the paper can be perceived
+ by the contrast of this box with the greyish background.
+ Events such as blank:pointerdown are no longer fired so they are emulated artificially
+ when the user is clicking in the background box.
+ */
+ var backgroundBox;
+ /**
+ Control variable used to modify the alpaca form used to display/modify nodes metadata
+ */
+ var alpacaMetadataFormControl;
 
  //-----THEMES URLs------------------------
  var proteinsLinksThemeURL = "data/ProteinsLinksTheme.json";
@@ -534,8 +570,7 @@
   });
  var decoratedRect = joint.shapes.basic.DecoratedRect;
 
- var backgroundBox;
- var alpacaMetadataFormControl;
+
 
 
  //=================Config vars=======================
