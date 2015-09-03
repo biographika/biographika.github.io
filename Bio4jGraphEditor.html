@@ -574,6 +574,9 @@
 
 
  //=================Config vars=======================
+ /**
+ Maximun number of characters that a node label can have in the same line
+ */
  var nodeLabelMaxLength;
  //===================================================
 
@@ -608,9 +611,7 @@
  $(document).mouseup(function( event ) {
     //console.log("mouse up!");
     paperIsPanning = false;
-    if(nodeIsBeingDragged){
-      nodeIsBeingDragged = false;
-    }
+    nodeIsBeingDragged = false;
  });
 
  <!--===================================================================-->
@@ -788,6 +789,10 @@
       loadTypeDefinitions(defaultTypesDefinitionURL);
   }
 
+  /**
+  Initializes the graph object plus the main paper where the diagram is displayed.
+  Listeners for events fired by the paper are declared also here.
+  */
   function initializeGraphPaper(){
     //console.log("initializeGraphPaper");
 
@@ -877,14 +882,24 @@
 
   }
 
+  /**
+  Initializes the white paper-sized rect cell that is permanently located behind
+  all the rest of elements.
+  */
   function initializeBackgroundBox(width, height){
     //console.log("initializeBackgroundBox");
     backgroundBox  = createBackgroundBox(0, 0, width, height, '#FFFFFF');
     backgroundBox.findView(paper).options.interactive = false;
+    /**This is a flag used so that the background box cell can be identified for
+    example when importing a diagram file    */
     backgroundBox.prop("background_box","true");
     backgroundBox.toBack();
   }
-
+  /**
+  Initializes the paper where link types are shown.
+  This paper is used to select the current link type that will be used when creating
+  new links on the diagram.
+  */
   function initializeLinkTypesPaper(themeURL){
     link_types_graph = new joint.dia.Graph;
     link_types_paper = new joint.dia.Paper({
@@ -902,7 +917,10 @@
       );
     loadLinkTypesTheme(themeURL);
   }
-
+  /**
+  Loads the link type theme specified by the JSON file at the URL provided
+  @param {string} url - URL pointing to the theme file with the link types definition
+  */
   function loadLinkTypesTheme(url){
 
     //----loading JSON WITH THEME-----------------------
@@ -998,6 +1016,10 @@
     loadNodeTypesTheme(themeURL);
   }
 
+  /**
+  Loads the backgrounds theme specified by the JSON file at the URL provided
+  @param {string} url - URL pointing to the theme file with the backgrounds definition
+  */
   function loadBackgroundsTheme(url){
     //console.log("loadBackgroundsTheme");
     //----loading JSON WITH THEME-----------------------
@@ -1020,6 +1042,10 @@
     //------------------------------------------------
   }
 
+  /**
+  Loads the type defintions included in the JSON file located at 'url'
+  @param {string} url - URL pointing to the JSON type definitions file 
+  */
   function loadTypeDefinitions(url){
     //----loading JSON WITH TYPE DEFINITIONS-----------------------
     var xobj = new XMLHttpRequest();
@@ -1036,7 +1062,10 @@
     xobj.send(null);
     //------------------------------------------------
   }
-
+  /**
+  Loads the node type theme specified by the JSON at the URL provided
+  @param {string} url - URL pointing to the theme file with the definition of the node types
+  */
   function loadNodeTypesTheme(url){
     //console.log("loadNodeTypesTheme");
     //----loading JSON WITH THEME-----------------------
