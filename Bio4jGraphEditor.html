@@ -1267,21 +1267,7 @@
     //console.log("done with select!");
   }
 
-  <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
-  var createNodeRect = function(elm, x, y, label, widthValue, heightValue, rxValue, ryValue, fillValue, strokeValue, strokeWidthValue) {
-      var cell = new elm({
-        position: { x: x, y: y },
-        size: { width: widthValue, height: heightValue},
-        attrs: {
-          rect: { rx: rxValue, ry: ryValue, fill: fillValue, stroke: strokeValue, 'stroke-width': strokeWidthValue, magnet: true},
-          text: { 'font-size': 10, fill: '#333', text: label},
-          name: label
-
-          }
-      });
-      graph.addCell(cell);
-      return cell;
-  };
+  <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->   
   var createBackgroundBox = function(x, y, widthValue, heightValue, fillValue) {
       var cell = new rect({
         position: { x: x, y: y },
@@ -1293,7 +1279,7 @@
       });
       graph.addCell(cell);
       return cell;
-  };  
+  };
 
   /**
   Clones the cell provided at the position provided
