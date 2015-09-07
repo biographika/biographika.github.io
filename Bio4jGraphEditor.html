@@ -169,11 +169,11 @@
                   <i class="fa fa-repeat"></i><!--Rotate to left--></button>
               </li>
               <li>
-                <button id="bringToFrontButton" title="Bring node to front" onclick="bringSelectedCellToFront()" type="button" class="btn btn-default">
+                <button id="bringToFrontButton" title="Bring node to front" onclick="bringSelectedNodeToFront()" type="button" class="btn btn-default">
                   <i class="fa fa-clone"></i><i class="fa fa-arrow-right"></i><!--Bring to front--></button>
               </li>
               <li>
-                <button id="bringToBackButton" title="Bring node to back" onclick="bringSelectedCellToBack()" type="button" class="btn btn-default">
+                <button id="bringToBackButton" title="Bring node to back" onclick="bringSelectedNodeToBack()" type="button" class="btn btn-default">
                   <i class="fa fa-arrow-left"></i><i class="fa fa-clone"></i><!--Bring to back--></button>
               </li>
               <li>
@@ -200,7 +200,7 @@
                 </button>
               </li>
               <li>
-                <button id="selectLinkTypeButton" title="Select current link type" onclick="openDialogSelectLinkType()" type="button" class="btn btn-default">
+                <button id="selectLinkTypeTypeButton" title="Select current link type" onclick="openDialogselectLinkTypeType()" type="button" class="btn btn-default">
                   <i class="fa fa-arrows-h"></i></button>
               </li>
               <li>
@@ -458,7 +458,11 @@
  /**
  Node currently selected
  */
- var selectedCell;
+ var selectedNode;
+ /**
+ Link currently selected
+ */
+ var selectedLink;
  /**
  Flag indicating whether the application is in read-only mode or not. Read-only
  mode means that neither of the following operations is allowed:
@@ -523,6 +527,7 @@
  Control variable used to modify the alpaca form used to display/modify nodes metadata
  */
  var alpacaMetadataFormControl;
+ var lastLinkSelectedStrokeWidth;
 
  //-----THEMES URLs------------------------
  var proteinsLinksThemeURL = "data/ProteinsLinksTheme.json";
@@ -578,6 +583,10 @@
  Maximun number of characters that a node label can have in the same line
  */
  var nodeLabelMaxLength;
+ /**
+ Default font size for labels in links
+ */
+ var linkDefaultFontSize;
  //===================================================
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -841,30 +850,33 @@
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
 
-        //console.log("cell:pointerclick!");
-
-        if(cellView.model == backgroundBox){
-          onBackgroundOrBackgroundBoxClick(evt,x,y);
-        }else if(cellView.model == currentBackgroundCell){
-          onBackgroundOrBackgroundBoxClick(evt,x,y);
+        if(cellView.model.isLink()){
+          console.log("Cell is link! ");
+          selectLinkCell(cellView, true);
         }else{
+          if(cellView.model == backgroundBox){
+            onBackgroundOrBackgroundBoxClick(evt,x,y);
+          }else if(cellView.model == currentBackgroundCell){
+            onBackgroundOrBackgroundBoxClick(evt,x,y);
+          }else{
 
-          if(document.getElementById("deleteNodeOnClickCheckBox").checked && !readOnlyMode){
-            //console.log("remove!");
-            cellView.remove();
-            if(selectionRectCell){
-              selectionRectCell.remove();
-              selectionRectCell = null;
-            }
-          }
-
-          if(selectedCell){
-              if(cellView.id != selectedCell.id){
-                selectNodeCell(selectedCell, false);
+            if(document.getElementById("deleteNodeOnClickCheckBox").checked && !readOnlyMode){
+              //console.log("remove!");
+              cellView.remove();
+              if(selectionRectCell){
+                selectionRectCell.remove();
+                selectionRectCell = null;
               }
-          }
-          selectNodeCell(cellView, true);
+            }
 
+            if(selectedNode){
+                if(cellView.id != selectedNode.id){
+                  selectNodeCell(selectedNode, false);
+                }
+            }
+            selectNodeCell(cellView, true);
+
+          }
         }
       }
     );
@@ -912,7 +924,7 @@
 
       link_types_paper.on('cell:pointerclick',
         function(linkView, evt, x, y) {
-            selectLink(linkView);
+            selectLinkType(linkView);
         }
       );
     loadLinkTypesTheme(themeURL);
@@ -935,7 +947,7 @@
           positionLinkTypesOnPaper();
           makeLinkTypesNotInteractive();
           //select first link type
-          selectLink(link_types_graph.getLinks()[0].findView(link_types_paper));
+          selectLinkType(link_types_graph.getLinks()[0].findView(link_types_paper));
         }
     };
     xobj.send(null);
@@ -1165,10 +1177,58 @@
   }
 
   function exportToJSON(){
-    if(selectedCell){
-      selectNodeCell(selectedCell,false); // so that the selected node is not saved with bold-style text
+    if(selectedNode){
+      selectNodeCell(selectedNode,false); // so that the selected node is not saved with bold-style text
     }
     downloadJSON(JSON.stringify(graph.toJSON()));
+  }
+
+  function selectLinkCell(cellView, flag){
+    console.log("selectLinkCell", flag);
+
+    if(cellView.model.isLink()){
+
+      var linkCells = graph.getLinks();
+
+      if(flag){
+
+        var tempSelectedLink;
+
+        for (var i = 0; i < linkCells.length; i++) {
+          var currentCell = linkCells[i];
+
+          if(currentCell.attributes.id == cellView.model.id){
+            tempSelectedLink = currentCell.findView(paper);
+            var tempLabel = currentCell.label(0);
+            console.log(tempLabel);
+            if(tempLabel){
+              currentCell.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': (linkDefaultFontSize*2) } } });
+            }
+            currentCell.attr({'.connection': { 'stroke-width': lastLinkSelectedStrokeWidth*2 }});
+            console.log("currentCell", currentCell);
+          }
+          else{
+            currentCell.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': linkDefaultFontSize } } });
+            currentCell.attr({'.connection': { 'stroke-width': lastLinkSelectedStrokeWidth*2 }});
+          }
+        }
+
+
+
+        if(selectedLink){
+          selectedLink.model.attr("connection/stroke-width", lastLinkSelectedStrokeWidth);
+        }
+        lastLinkSelectedStrokeWidth = cellView.model.attr("connection/stroke-width");
+        if(!lastLinkSelectedStrokeWidth){
+          lastLinkSelectedStrokeWidth = 1;
+        }
+
+        selectedLink = tempSelectedLink;
+
+      }else{
+
+      }
+    }
   }
 
   function selectNodeCell(cellView, flag){
@@ -1176,8 +1236,8 @@
     console.log("selectedNodeCell", flag);
 
     var newCellSelected = true;
-    if(selectedCell){
-      newCellSelected = cellView.id != selectedCell.id;
+    if(selectedNode){
+      newCellSelected = cellView.id != selectedNode.id;
     }
 
     var nodeCells = graph.getElements();
@@ -1185,7 +1245,7 @@
     for (var i = 0; i < nodeCells.length; i++) {
       var currentCell = nodeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
-          selectedCell = currentCell.findView(paper);
+          selectedNode = currentCell.findView(paper);
           if(flag){
             currentCell.attr('text/font-weight',"bold");
           }else{
@@ -1224,8 +1284,8 @@
     }
   }
 
-  function selectLink(cellView){
-    //console.log("selectLink!");
+  function selectLinkType(cellView){
+    //console.log("selectLinkType!");
     var linkTypeCells = link_types_graph.getLinks();
 
     for (var i = 0; i < linkTypeCells.length; i++) {
@@ -1267,7 +1327,7 @@
     //console.log("done with select!");
   }
 
-  <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->   
+  <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
   var createBackgroundBox = function(x, y, widthValue, heightValue, fillValue) {
       var cell = new rect({
         position: { x: x, y: y },
@@ -1478,18 +1538,18 @@
   */
   function rotateCellToTheRight(){
      //console.log("rotateCellToTheRight");
-     if(selectedCell){
+     if(selectedNode){
 
-       var currentDegreesSt = selectedCell.model.attr("image/transform");
+       var currentDegreesSt = selectedNode.model.attr("image/transform");
        var currentDegrees = 0;
 
        if(currentDegreesSt){
          currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
        }
        var newDegrees = currentDegrees - rotateCellFactor;
-       var rotationCenterPointX = selectedCell.model.attr("size/width")/2;
-       var rotationCenterPointY = selectedCell.model.attr("size/height")/2;
-       selectedCell.model.attr("image/transform","rotate("+newDegrees+","
+       var rotationCenterPointX = selectedNode.model.attr("image/width")/2;
+       var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
+       selectedNode.model.attr("image/transform","rotate("+newDegrees+","
             + rotationCenterPointX + "," + rotationCenterPointY + ")");
      }
   }
@@ -1501,18 +1561,18 @@
   function rotateCellToTheLeft(){
     //console.log("rotateCellToTheLeft");
 
-    if(selectedCell){
+    if(selectedNode){
 
-      var currentDegreesSt = selectedCell.model.attr("image/transform");
+      var currentDegreesSt = selectedNode.model.attr("image/transform");
       var currentDegrees = 0;
 
       if(currentDegreesSt){
         currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
       }
       var newDegrees = currentDegrees + rotateCellFactor;
-      var rotationCenterPointX = selectedCell.model.attr("image/width")/2;
-      var rotationCenterPointY = selectedCell.model.attr("image/height")/2;
-      selectedCell.model.attr("image/transform","rotate("+newDegrees+","
+      var rotationCenterPointX = selectedNode.model.attr("image/width")/2;
+      var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
+      selectedNode.model.attr("image/transform","rotate("+newDegrees+","
            + rotationCenterPointX + "," + rotationCenterPointY + ")");
     }
   }
@@ -1520,21 +1580,21 @@
   /**
   Brings the selected node to the front
   */
-  function bringSelectedCellToFront(){
-    if(selectedCell){
+  function bringselectedNodeToFront(){
+    if(selectedNode){
       if(selectionRectCell){
         selectionRectCell.toFront();
       }
-      selectedCell.model.toFront();
+      selectedNode.model.toFront();
     }
   }
 
   /**
   Brings the selected node to the back
   */
-  function bringSelectedCellToBack(){
-    if(selectedCell){
-      selectedCell.model.toBack();
+  function bringselectedNodeToBack(){
+    if(selectedNode){
+      selectedNode.model.toBack();
       if(selectionRectCell){
         selectionRectCell.toBack();
       }
@@ -1604,8 +1664,8 @@
   */
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
     //console.log("onBackgroundOrBackgroundBoxClick");
-    if(selectedCell){
-        selectNodeCell(selectedCell, false);
+    if(selectedNode){
+        selectNodeCell(selectedNode, false);
     }
     if(document.getElementById("lockDiagramCheckBox").checked != true){
       if(!selectedNodeTypeCell){
@@ -1640,10 +1700,10 @@
   Handler for clicks on metadata button
   */
   function onShowMetadataButtonClick(){
-    if(!selectedCell){
+    if(!selectedNode){
       alert("Please select a cell");
     }else{
-      loadSelectedCellMetadataIntoDialog();
+      loadselectedNodeMetadataIntoDialog();
       $('#metadata_dialog').modal({
         show: true
       })
@@ -1654,17 +1714,17 @@
   Creates an alpaca form and loads into it the metadata information for the currently
   selected node.
   */
-  function loadSelectedCellMetadataIntoDialog(){
-    if(selectedCell){
+  function loadselectedNodeMetadataIntoDialog(){
+    if(selectedNode){
 
-      var tempNodeType = selectedCell.model.prop("node_type");
+      var tempNodeType = selectedNode.model.prop("node_type");
       if(!tempNodeType){
-        tempNodeType = selectedCell.model.attr("node_type");
+        tempNodeType = selectedNode.model.attr("node_type");
       }
-      //console.log("selectedCell.model",selectedCell.model);
+      //console.log("selectedNode.model",selectedNode.model);
       //console.log("tempNodeType: " + tempNodeType);
 
-      var jsonForSelectedCell = typeDefinitionsJSON.nodes[tempNodeType];
+      var jsonForselectedNode = typeDefinitionsJSON.nodes[tempNodeType];
 
       //cleaning previous form fields..
       var divContents = document.getElementById("metadata_form").childNodes;
@@ -1673,10 +1733,10 @@
       }
 
       //console.log("typeDefinitionsJSON",typeDefinitionsJSON);
-      //console.log("jsonForSelectedCell", jsonForSelectedCell);
+      //console.log("jsonForselectedNode", jsonForselectedNode);
 
-      var schema = jsonForSelectedCell.schema;
-      var data = selectedCell.model.prop("data");
+      var schema = jsonForselectedNode.schema;
+      var data = selectedNode.model.prop("data");
 
       alpacaMetadataForm = $("#metadata_form").alpaca({
       "schema":schema,
@@ -1760,8 +1820,8 @@
   */
   function saveMetadataChanges(){
     $('#metadata_dialog').modal('hide');
-    selectedCell.model.prop("data",alpacaMetadataFormControl.getValue());
-    //console.log("saveMetadataChanges", selectedCell.model);
+    selectedNode.model.prop("data",alpacaMetadataFormControl.getValue());
+    //console.log("saveMetadataChanges", selectedNode.model);
   }
 
   /**
@@ -1793,9 +1853,9 @@
     var labelLength = newLabel.length;
     //console.log("labelLength", labelLength);
     if(labelLength > nodeLabelMaxLength){
-      selectedCell.model.attr("text/text",addNewLinesToTextWhenNeeded(newLabel, nodeLabelMaxLength));
+      selectedNode.model.attr("text/text",addNewLinesToTextWhenNeeded(newLabel, nodeLabelMaxLength));
     }else{
-      selectedCell.model.attr("text/text",newLabel);
+      selectedNode.model.attr("text/text",newLabel);
     }
   }
 
@@ -1814,13 +1874,13 @@
   Shows the modal dialog where the label of a node can be modified
   */
   function onRenameNodeButtonClick(){
-    if(!selectedCell){
+    if(!selectedNode){
       alert("Please select a cell");
     }else{
       $('#rename_node_dialog').modal({
         show: true
       })
-      var currentLabel = selectedCell.model.attr("text/text");
+      var currentLabel = selectedNode.model.attr("text/text");
       //console.log("currentLabel", currentLabel);
       document.getElementById("inputNodeName").value = currentLabel;
     }
@@ -1837,7 +1897,7 @@
   /**
   Opens the modal dialog where the current link type can be selected
   */
-  function openDialogSelectLinkType(){
+  function openDialogselectLinkTypeType(){
     $('#link_types_dialog').modal({
          show: true
      });
@@ -1861,11 +1921,11 @@
   */
   function initializeSelectionRect(){
 
-    console.log("initializeSelectionRect");
+    //console.log("initializeSelectionRect");
 
-    if(selectedCell){
+    if(selectedNode){
 
-      console.log("selectedCell = true");
+      console.log("selectedNode = true");
 
       if(!selectionRectCell){
 
@@ -1874,7 +1934,7 @@
         tempPosition.y -= 2;
         var tempSize = getSizeForSelectionRect();
 
-        //console.log("selectedCell",selectedCell.model);
+        //console.log("selectedNode",selectedNode.model);
         //console.log("tempPosition", tempPosition);
         //console.log("tempSize", tempSize);
 
@@ -1917,7 +1977,7 @@
   */
   function getPositionForSelectionRect(){
     //console.log("getPositionForSelectionRect");
-    var tempPosition = selectedCell.model.prop('position');
+    var tempPosition = selectedNode.model.prop('position');
     var newPosition = {x: tempPosition.x, y: tempPosition.y};
     return newPosition;
   }
@@ -1927,7 +1987,7 @@
   */
   function getSizeForSelectionRect(){
     //console.log("getSizeForSelectionRect");
-    var tempSize = selectedCell.model.prop('size');
+    var tempSize = selectedNode.model.prop('size');
     var newSize = {width: tempSize.width + 4, height: tempSize.height + 4};
     return newSize;
   }
@@ -1939,7 +1999,8 @@
     console.log("loadConfigJSON");
     $.getJSON("data/Config.json", function(json) {
         nodeLabelMaxLength = json.label_max_length;
-        console.log(nodeLabelMaxLength);
+        linkDefaultFontSize = json.link_labels_default_font_size
+        //console.log(nodeLabelMaxLength);
     });
   }
 
