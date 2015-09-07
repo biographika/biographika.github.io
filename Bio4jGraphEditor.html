@@ -149,15 +149,18 @@
               </li>
               <li>
                 <button id="zoomInButton" title="Zoom in" onclick="zoomIn()" type="button" class="btn btn-default">
-                  <i class="fa fa-search-plus"></i><!--Zoom in--></button>
+                  <i class="fa fa-search-plus"></i><!--Zoom in-->
+                </button>
               </li>
               <li>
                 <button id="zoomOutButton" title="Zoom out" onclick="zoomOut()" type="button" class="btn btn-default">
-                  <i class="fa fa-search-minus"></i><!--Zoom out--></button>
+                  <i class="fa fa-search-minus"></i><!--Zoom out-->
+                </button>
               </li>
               <li>
                 <button id="resetZoomButton" title="Reset zoom" onclick="resetZoom()" type="button" class="btn btn-default">
-                  <i class="fa fa-search"></i><!--Reset zoom--></button>
+                  <i class="fa fa-search"></i><!--Reset zoom-->
+                </button>
               </li>
               <li>
                 <button id="rotateRightButton" title="Rotate node to the right" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">
@@ -166,31 +169,43 @@
               </li>
               <li>
                 <button id="rotateLeftButton" title="Rotate node to the left" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">
-                  <i class="fa fa-repeat"></i><!--Rotate to left--></button>
+                  <i class="fa fa-repeat"></i><!--Rotate to left-->
+                </button>
               </li>
               <li>
                 <button id="bringToFrontButton" title="Bring node to front" onclick="bringSelectedNodeToFront()" type="button" class="btn btn-default">
-                  <i class="fa fa-clone"></i><i class="fa fa-arrow-right"></i><!--Bring to front--></button>
+                  <i class="fa fa-clone"></i><i class="fa fa-arrow-right"></i><!--Bring to front-->
+                </button>
               </li>
               <li>
                 <button id="bringToBackButton" title="Bring node to back" onclick="bringSelectedNodeToBack()" type="button" class="btn btn-default">
-                  <i class="fa fa-arrow-left"></i><i class="fa fa-clone"></i><!--Bring to back--></button>
+                  <i class="fa fa-arrow-left"></i><i class="fa fa-clone"></i><!--Bring to back-->
+                </button>
               </li>
               <li>
                 <button id="setBackgroundButton" title="Set background image" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">
-                  <i class="fa fa-picture-o"></i><!--Set background--></button>
+                  <i class="fa fa-picture-o"></i><!--Set background-->
+                </button>
               </li>
               <li>
                 <button id="showMetadataButton" title="Show node metadata" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">
-                  <i class="fa fa-newspaper-o"></i><!--Show metadata--></button>
+                  <i class="fa fa-newspaper-o"></i><!--Show metadata-->
+                </button>
               </li>
               <li>
                 <button id="renameNodeButton" title="Rename node" onclick="onRenameNodeButtonClick()" type="button" class="btn btn-default">
-                  <i class="fa fa-pencil-square-o"></i><!--Rename node--></button>
+                  <i class="fa fa-pencil-square-o"></i><!--Rename node-->
+                </button>
               </li>
               <li>
                 <button id="fitPaperToContentsButton" title="Fit stage dimensions to contents" onclick="fitPaperToContents()" type="button" class="btn btn-default">
-                  <i class="fa fa-arrows-alt"></i><!--Fit paper to contents--></button>
+                  <i class="fa fa-arrows-alt"></i><!--Fit paper to contents-->
+                </button>
+              </li>
+              <li>
+                <button id="deleteCellButton" title="Delete selected node/link" onclick="deleteSelectedCell()" type="button" class="btn btn-default">
+                  <i class="fa fa-times"></i><!--Fit paper to contents-->
+                </button>
               </li>
               <li>
                 <button id="selectNodeTypeButton" title="Select current node type" onclick="openDialogSelectNodeType()" type="button" class="btn btn-default">
@@ -221,12 +236,6 @@
                   <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
                 </div>
                 <!-- lock diagram checkbox -->
-              </li>
-              <li>
-                <div class="checkbox">
-                  <label><input id="deleteNodeOnClickCheckBox" type="checkbox" >Delete node on click</label>
-                </div>
-                <!-- delete node on click checkbox -->
               </li>
               <li>
                 <div id="currentNodeTypeDiv">
@@ -859,15 +868,6 @@
           }else if(cellView.model == currentBackgroundCell){
             onBackgroundOrBackgroundBoxClick(evt,x,y);
           }else{
-
-            if(document.getElementById("deleteNodeOnClickCheckBox").checked && !readOnlyMode){
-              //console.log("remove!");
-              cellView.remove();
-              if(selectionRectCell){
-                selectionRectCell.remove();
-                selectionRectCell = null;
-              }
-            }
 
             if(selectedNode){
                 if(cellView.id != selectedNode.id){
@@ -2037,6 +2037,24 @@
     }
 
     return result;
+  }
+
+  function deleteSelectedCell(){
+
+    if(selectedNode){
+
+      if(!readOnlyMode){
+        graph.removeLinks(selectedNode.model);
+        selectedNode.remove();
+        if(selectionRectCell){
+          selectionRectCell.remove();
+          selectionRectCell = null;
+        }
+      }
+
+    }else if(selectedLink){
+
+    }
   }
 
 	</script>
