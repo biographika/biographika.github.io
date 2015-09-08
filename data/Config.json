@@ -1,3 +1,5 @@
 {
-  "label_max_length":30
+  "label_max_length":30,
+  "link_labels_default_font_size":12, 
+  "paper_defaul_size":{"width":800,"height":400} 
 }
