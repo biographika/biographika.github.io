@@ -2127,20 +2127,22 @@
 
   function deleteSelectedCell(){
 
-    if(selectedNode){
-
-      if(!readOnlyMode){
+    if(!readOnlyMode){
+      if(selectedNode){
+      
         graph.removeLinks(selectedNode.model);
         selectedNode.remove();
+        selectedNode = null;
         if(selectionRectCell){
           selectionRectCell.remove();
           selectionRectCell = null;
         }
+      }else if(selectedLink){
+        selectedLink.remove();
+        selectedLink = null;
       }
-
-    }else if(selectedLink){
-
     }
+    
   }
 
   function takeSnapshot(){
