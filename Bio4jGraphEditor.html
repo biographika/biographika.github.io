@@ -208,7 +208,7 @@
               </li>
               <li>
                 <button id="deleteCellButton" title="Delete selected node/link" onclick="deleteSelectedCell()" type="button" class="btn btn-default">
-                  <i class="fa fa-times"></i>
+                  <i class="fa fa-trash"></i>
                 </button>
               </li>
               <li>
@@ -1214,35 +1214,13 @@
     }
   }
 
-  function test(){
-    protein_node_type = new rect({
-        position: { x: 10, y: 10 },
-        size: { width: 100, height: 40 },
-        attrs: {
-            rect: { rx: 2, ry: 2, fill: '#2ECC71', stroke: '#27AE60', 'stroke-width': 2 },
-            text: { 'font-size': 10, fill: '#333', text: 'Protein' },
-            name: 'Protein'
-        }
-    });
-
-    organism_node_type = new rect({
-        position: { x: 10, y: 60 },
-        size: { width: 100, height: 40 },
-        attrs: {
-            rect: { rx: 2, ry: 2, fill: '#FFC72E', stroke: '#FFA42E', 'stroke-width': 2 },
-            text: { 'font-size': 10, fill: '#333', text: 'Organism' },
-            name: 'Organism'
-        }
-    });
-
-    node_types_graph.addCell(protein_node_type);
-    node_types_graph.addCell(organism_node_type);
-
-  }
 
   function exportToJSON(){
     if(selectedNode){
       selectNodeCell(selectedNode,false); // so that the selected node is not saved with bold-style text
+    }
+    if(selectedLink){
+      selectLinkCell(selectedLink,false); // so that the selected link is not saved with bold-style text
     }
     downloadJSON(JSON.stringify(graph.toJSON()));
   }
@@ -1560,6 +1538,8 @@
   */
   function makeLinksInteractive(flag){
 
+    console.log("makeLinksInteractive")
+
     var links = graph.getLinks();
 
     if(!flag){
@@ -1574,6 +1554,9 @@
     for(var i=0; i<links.length;i++){
       var currentLink = links[i];
       var currentView = currentLink.findView(paper);
+
+      console.log("currentView",currentView);
+
       if(!flag){
         currentView.options.interactive = false;
       }else{
@@ -1819,6 +1802,7 @@
       }
 
       var jsonForselectedNode = typeDefinitionsJSON.nodes[tempNodeType];
+      console.log("jsonForselectedNode",jsonForselectedNode);
 
       //cleaning previous form fields..
       var divContents = document.getElementById("metadata_form").childNodes;
@@ -1827,7 +1811,9 @@
       }
 
       var schema = jsonForselectedNode.schema;
+      var form = jsonForselectedNode.form;
       var data = selectedNode.model.prop("data");
+
 
       alpacaMetadataForm = $("#metadata_form").alpaca({
       "schema":schema,
@@ -1851,11 +1837,17 @@
     if(selectedLink){
 
       var tempLinkType = selectedLink.model.prop("link_type");
+      console.log("tempLinkType",tempLinkType);
       if(!tempLinkType){
         tempLinkType = selectedLink.model.attr("link_type");
       }
 
+      console.log("tempLinkType",tempLinkType);
+
+
       var jsonForselectedLink = typeDefinitionsJSON.links[tempLinkType];
+
+      console.log("jsonForselectedLink",jsonForselectedLink);
 
       //cleaning previous form fields..
       var divContents = document.getElementById("metadata_form").childNodes;
@@ -1863,8 +1855,12 @@
         divContents[i].remove();
       }
 
-      var schema = jsonForselectedLink.schema;
-      var data = selectedLink.model.prop("data");
+      var schema,form,data;
+      if(jsonForselectedLink){
+        schema = jsonForselectedLink.schema;
+        form = jsonForselectedLink.form;
+      }
+      data = selectedLink.model.prop("data");
 
       alpacaMetadataForm = $("#metadata_form").alpaca({
       "schema":schema,
@@ -1948,7 +1944,12 @@
   */
   function saveMetadataChanges(){
     $('#metadata_dialog').modal('hide');
-    selectedNode.model.prop("data",alpacaMetadataFormControl.getValue());
+    if(selectedNode){
+      selectedNode.model.prop("data",alpacaMetadataFormControl.getValue());
+    }else if(selectedLink){
+      selectedLink.model.prop("data",alpacaMetadataFormControl.getValue());
+    }
+    
     //console.log("saveMetadataChanges", selectedNode.model);
   }
 
@@ -2155,6 +2156,7 @@
         paperDefaultSize = json.paper_defaul_size;
         console.log("paperDefaultSize",paperDefaultSize);
         updatePaperDimensions(paperDefaultSize.width, paperDefaultSize.height);
+        updatePaperDimensionsTextInputs(paperDefaultSize.width, paperDefaultSize.height);
         //console.log(nodeLabelMaxLength);
     });
   }
@@ -2200,16 +2202,17 @@
       if(selectedNode){
       
         graph.removeLinks(selectedNode.model);
-        selectedNode.remove();
+        selectedNode.model.remove();
         selectedNode = null;
         if(selectionRectCell){
           selectionRectCell.remove();
           selectionRectCell = null;
         }
       }else if(selectedLink){
-        selectedLink.remove();
+        selectedLink.model.remove();
         selectedLink = null;
       }
+      paper.render();
     }
     
   }
