@@ -12,7 +12,7 @@
         { "position": ".5",
           "attrs": {
             "text": { "text": "is a", "fill": "white", "font-family": "sans-serif" },
-            "rect": { "stroke": "#F39C12", "stroke-width": 20, "rx": 5, "ry": 5 } }}
+            "rect": { "stroke": "#F39C12", "stroke-width": 10, "rx": 5, "ry": 5 } }}
       ]
     },
     {
@@ -52,7 +52,7 @@
       "smooth": true,
       "attrs": {
         "link_type":"part_of_link",
-        "connection": { "stroke": "#E74C3C", "stroke-width": 5 },
+        "connection": { "stroke": "#E74C3C", "stroke-width": 2 },
         ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
         ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
       },

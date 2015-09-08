@@ -18,10 +18,7 @@
       "form":[
         "name",
         "uniprot_id"
-      ],
-      "options":{
-        "focus":false
-      }
+      ]
     },
     "dendritic_cell":{
       "schema":{
@@ -192,5 +189,63 @@
         }
       }
    }
+  },
+  "links":{
+    "is_a_link":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "Is_a_property": {
+            "title": "Is_a property",
+            "type": "string"
+          }
+        }        
+      },
+      "form":[
+        "Is_a_property"
+      ]
+    },
+    "interacts_link":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "Interacts_property": {
+            "title": "Interacts property",
+            "type": "string"
+          }
+        }        
+      },
+      "form":[
+        "Interacts_property"
+      ]
+    },
+    "associated_to_link":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "associated_to_property": {
+            "title": "Associated to property",
+            "type": "string"
+          }
+        }        
+      },
+      "form":[
+        "associated_to_property"
+      ]
+    },
+    "part_of_link":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "part_of_property": {
+            "title": "Part of property",
+            "type": "string"
+          }
+        }         
+      },
+      "form":[
+        "part_of_property"
+      ]
+    }
   }
 }
