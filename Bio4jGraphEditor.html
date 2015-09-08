@@ -103,6 +103,10 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/handlebars-v3.0.3.js"></script>
 <script type="text/javascript" src="js/alpaca.min.js"></script>
+<script type="text/javascript" src="js/rgbcolor.js"></script>
+<script type="text/javascript" src="js/StackBlur.js"></script>
+<script type="text/javascript" src="js/canvg.js"></script>
+<script type="text/javascript" src="js/base64-binary.js"></script>
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
 <body onload="onBodyLoad()">
@@ -204,7 +208,12 @@
               </li>
               <li>
                 <button id="deleteCellButton" title="Delete selected node/link" onclick="deleteSelectedCell()" type="button" class="btn btn-default">
-                  <i class="fa fa-times"></i><!--Fit paper to contents-->
+                  <i class="fa fa-times"></i>
+                </button>
+              </li>
+              <li>
+                <button id="takeSnapshotButton" title="Take snapshot" onclick="takeSnapshot()" type="button" class="btn btn-default">
+                  <i class="fa fa-camera"></i>
                 </button>
               </li>
               <li>
@@ -238,8 +247,10 @@
                 <!-- lock diagram checkbox -->
               </li>
               <li>
-                <div id="currentNodeTypeDiv">
+                <div class="checkbox">
+                  <label><input id="modifyLinkOnClickCheckBox" type="checkbox" >Modify links on click</label>
                 </div>
+                <!-- lock diagram checkbox -->
               </li>
           </ul>
         </div>
@@ -348,6 +359,8 @@
       </div>
     </div>
   </div>
+  <canvas id="snapshotCanvas" width="1000px" height="600px" style="display:none"></canvas>
+  <img id="snapshotImage"/>
 
   <script type="text/javascript">
 
@@ -473,6 +486,10 @@
  */
  var selectedLink;
  /**
+ Last link selected
+ */
+ var lastSelectedLink;
+ /**
  Flag indicating whether the application is in read-only mode or not. Read-only
  mode means that neither of the following operations is allowed:
  - Create new nodes
@@ -485,6 +502,11 @@
  - Rename node labels
  */
  var readOnlyMode = false;
+ /**
+ Flag indicating whether links can be modified by user interaction, that's to say: 
+ deleted, updated, etc...
+ */
+ var modifiableLinks = false;
  /**
  Current background for the diagram (if any), null otherwise.
  */
@@ -536,7 +558,7 @@
  Control variable used to modify the alpaca form used to display/modify nodes metadata
  */
  var alpacaMetadataFormControl;
- var lastLinkSelectedStrokeWidth;
+ var lastLinkSelectedStrokeWidth = 1;
 
  //-----THEMES URLs------------------------
  var proteinsLinksThemeURL = "data/ProteinsLinksTheme.json";
@@ -627,7 +649,7 @@
 
   });
  $(document).mouseup(function( event ) {
-    //console.log("mouse up!");
+    console.log("mouse up!");
     paperIsPanning = false;
     nodeIsBeingDragged = false;
  });
@@ -700,6 +722,27 @@
       makeElementsInteractive(!readOnlyMode);
 
       paper.render();
+    }
+  );
+
+  <!-- MODIFY LINK ON CLICK CHECKBOX... -->
+  $("#modifyLinkOnClickCheckBox").click( function(){
+    console.log("modifyLinkOnClick");
+    if( $(this).is(':checked') ){
+
+      console.log("checked!");
+      makeLinksInteractive(true); 
+      modifiableLinks = true;    
+      
+      
+    }else{
+
+      console.log("unchecked!");
+      makeLinksInteractive(false);    
+      modifiableLinks = false;
+      
+    }
+
     }
   );
 
@@ -852,7 +895,15 @@
         if(cellView.model == backgroundBox || cellView.model == currentBackgroundCell){
           onStageDown(evt,x,y);
         }else{
-          nodeIsBeingDragged = true;
+          if(!cellView.model.isLink()){            
+            if(selectedNode){
+              console.log("selectedNode is true", selectedNode);
+              if(selectedNode.model.id == cellView.model.id){
+                console.log("selectednode and the same");
+                nodeIsBeingDragged = true;
+              }
+            }            
+          }          
         }
       }
     );
@@ -870,9 +921,9 @@
           }else{
 
             if(selectedNode){
-                if(cellView.id != selectedNode.id){
-                  selectNodeCell(selectedNode, false);
-                }
+              if(cellView.id != selectedNode.id){
+                selectNodeCell(selectedNode, false);
+              }
             }
             selectNodeCell(cellView, true);
 
@@ -886,6 +937,11 @@
           var tempLink = cellView.model;
           if(isLinkInvalid(tempLink)){
             tempLink.remove();
+          }else{
+            selectLinkCell(cellView,true);
+            if(!modifiableLinks){
+              makeLinksInteractive(false);
+            }
           }
         }
     });
@@ -1186,48 +1242,71 @@
   function selectLinkCell(cellView, flag){
     console.log("selectLinkCell", flag);
 
-    if(cellView.model.isLink()){
-
-      var linkCells = graph.getLinks();
+    if(cellView.model.isLink()){     
 
       if(flag){
 
-        var tempSelectedLink;
+        // Deselecting current selected node so that both a link and a node are
+        // not selected at the same time.
+        if(selectedNode){
+          selectNodeCell(selectedNode,false);
+        }
 
-        for (var i = 0; i < linkCells.length; i++) {
-          var currentCell = linkCells[i];
+        if(selectedLink && selectedLink.id == cellView.id){
+          console.log("same cell!");
+        }else{
 
-          if(currentCell.attributes.id == cellView.model.id){
-            tempSelectedLink = currentCell.findView(paper);
-            var tempLabel = currentCell.label(0);
-            console.log(tempLabel);
-            if(tempLabel){
-              currentCell.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': (linkDefaultFontSize*2) } } });
-            }
-            currentCell.attr({'.connection': { 'stroke-width': lastLinkSelectedStrokeWidth*2 }});
-            console.log("currentCell", currentCell);
+          var tempLabel = cellView.model.label(0);
+            
+        if(tempLabel){
+          var currentFontSize = cellView.attr('text/font-size');
+          if(!currentFontSize){
+            currentFontSize = linkDefaultFontSize;
           }
-          else{
-            currentCell.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': linkDefaultFontSize } } });
-            currentCell.attr({'.connection': { 'stroke-width': lastLinkSelectedStrokeWidth*2 }});
+          cellView.model.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': (currentFontSize*1.25) } } });
+        }
+        var currentStrokeWidth = cellView.model.attr('connection/stroke-width');
+        if(!currentStrokeWidth){
+          currentStrokeWidth = 1;
+        }
+        console.log("currentStrokeWidth",currentStrokeWidth);
+        cellView.model.attr({'.connection': { 'stroke-width': currentStrokeWidth*2 }});
+
+        selectedLink = cellView;
+
+        if(lastSelectedLink){
+          var tempLabel = lastSelectedLink.model.label(0);
+            
+          if(tempLabel){
+            var currentFontSize = lastSelectedLink.model.attr('text/font-size');            
+            lastSelectedLink.model.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': (currentFontSize/1.25) } } });
           }
+          var currentStrokeWidth = lastSelectedLink.model.attr('.connection/stroke-width');
+          lastSelectedLink.model.attr({'.connection': { 'stroke-width': currentStrokeWidth/2 }});
         }
 
-
-
-        if(selectedLink){
-          selectedLink.model.attr("connection/stroke-width", lastLinkSelectedStrokeWidth);
-        }
-        lastLinkSelectedStrokeWidth = cellView.model.attr("connection/stroke-width");
-        if(!lastLinkSelectedStrokeWidth){
-          lastLinkSelectedStrokeWidth = 1;
-        }
-
-        selectedLink = tempSelectedLink;
+        
+        lastSelectedLink = selectedLink;
+          
+        }        
+       
 
       }else{
+        var tempLabel = cellView.model.label(0);
+            
+        if(tempLabel){
+           var currentFontSize = cellView.model.attr('text/font-size');            
+           cellView.model.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': (currentFontSize/1.25) } } });
+        }
+        var currentStrokeWidth = cellView.model.attr('.connection/stroke-width');
+        cellView.model.attr({'.connection': { 'stroke-width': currentStrokeWidth/2 }});
 
-      }
+        seletecdLink = null;
+        lastSelectedLink = null;
+
+      }      
+
+      
     }
   }
 
@@ -1258,10 +1337,14 @@
       if(newCellSelected){
         initializeSelectionRect();
       }
+      if(selectedLink){
+        selectLinkCell(selectedLink,false);
+      }
     }else{
       if(selectionRectCell){
         selectionRectCell.remove();
         selectionRectCell = null;
+        selectedNode = null;
       }
     }
 
@@ -2000,6 +2083,9 @@
     $.getJSON("data/Config.json", function(json) {
         nodeLabelMaxLength = json.label_max_length;
         linkDefaultFontSize = json.link_labels_default_font_size
+        paperDefaultSize = json.paper_defaul_size;
+        console.log("paperDefaultSize",paperDefaultSize);
+        updatePaperDimensions(paperDefaultSize.width, paperDefaultSize.height);
         //console.log(nodeLabelMaxLength);
     });
   }
@@ -2055,6 +2141,41 @@
     }else if(selectedLink){
 
     }
+  }
+
+  function takeSnapshot(){
+    console.log("takeSnapshot");
+    var svgDoc = paper.svg;
+    var serializer = new XMLSerializer();
+    var svgString = serializer.serializeToString(svgDoc);
+    console.log("svgString",svgString);
+    var snapshot = canvg(snapshotCanvas, svgString);
+
+    var img_b64 = document.getElementById('snapshotCanvas').toDataURL('image/png');
+    var image_data = atob(img_b64.split(',')[1]);
+    // Use typed arrays to convert the binary data to a Blob
+    var arraybuffer = new ArrayBuffer(image_data.length);
+    var view = new Uint8Array(arraybuffer);
+    for (var i=0; i<image_data.length; i++) {
+        view[i] = image_data.charCodeAt(i) & 0xff;
+    }
+    try {
+        // This is the recommended method:
+        var blob = new Blob([arraybuffer], {type: 'application/octet-stream'});
+    } catch (e) {
+        // The BlobBuilder API has been deprecated in favour of Blob, but older
+        // browsers don't know about the Blob constructor
+        // IE10 also supports BlobBuilder, but since the `Blob` constructor
+        //  also works, there's no need to add `MSBlobBuilder`.
+        var bb = new (window.WebKitBlobBuilder || window.MozBlobBuilder);
+        bb.append(arraybuffer);
+        var blob = bb.getBlob('application/octet-stream'); // <-- Here's the Blob
+    }
+
+    // Use the URL object to create a temporary URL
+    var url = (window.webkitURL || window.URL).createObjectURL(blob);
+    location.href = url; // <-- Download!
+
   }
 
 	</script>
