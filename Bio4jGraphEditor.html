@@ -192,7 +192,7 @@
                 </button>
               </li>
               <li>
-                <button id="showMetadataButton" title="Show node metadata" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">
+                <button id="showMetadataButton" title="Show cell metadata" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">
                   <i class="fa fa-newspaper-o"></i><!--Show metadata-->
                 </button>
               </li>
@@ -1671,7 +1671,7 @@
   /**
   Brings the selected node to the front
   */
-  function bringselectedNodeToFront(){
+  function bringSelectedNodeToFront(){
     if(selectedNode){
       if(selectionRectCell){
         selectionRectCell.toFront();
@@ -1683,7 +1683,7 @@
   /**
   Brings the selected node to the back
   */
-  function bringselectedNodeToBack(){
+  function bringSelectedNodeToBack(){
     if(selectedNode){
       selectedNode.model.toBack();
       if(selectionRectCell){
@@ -1791,10 +1791,15 @@
   Handler for clicks on metadata button
   */
   function onShowMetadataButtonClick(){
-    if(!selectedNode){
+    if(!selectedNode && !selectedLink){
       alert("Please select a cell");
     }else{
-      loadselectedNodeMetadataIntoDialog();
+      if(selectedNode){
+        loadSelectedNodeMetadataIntoDialog();
+      }else if(selectedLink){
+        loadSelectedLinkMetadataIntoDialog();
+      }
+      
       $('#metadata_dialog').modal({
         show: true
       })
@@ -1805,15 +1810,13 @@
   Creates an alpaca form and loads into it the metadata information for the currently
   selected node.
   */
-  function loadselectedNodeMetadataIntoDialog(){
+  function loadSelectedNodeMetadataIntoDialog(){
     if(selectedNode){
 
       var tempNodeType = selectedNode.model.prop("node_type");
       if(!tempNodeType){
         tempNodeType = selectedNode.model.attr("node_type");
       }
-      //console.log("selectedNode.model",selectedNode.model);
-      //console.log("tempNodeType: " + tempNodeType);
 
       var jsonForselectedNode = typeDefinitionsJSON.nodes[tempNodeType];
 
@@ -1823,11 +1826,45 @@
         divContents[i].remove();
       }
 
-      //console.log("typeDefinitionsJSON",typeDefinitionsJSON);
-      //console.log("jsonForselectedNode", jsonForselectedNode);
-
       var schema = jsonForselectedNode.schema;
       var data = selectedNode.model.prop("data");
+
+      alpacaMetadataForm = $("#metadata_form").alpaca({
+      "schema":schema,
+      "data":data,
+      "postRender": function(control) {
+              alpacaMetadataFormControl = control;
+              if(readOnlyMode){
+                alpacaMetadataFormControl.disable();
+              }
+          }
+      });
+
+    }
+  }
+
+  /**
+  Creates an alpaca form and loads into it the metadata information for the currently
+  selected link.
+  */
+  function loadSelectedLinkMetadataIntoDialog(){
+    if(selectedLink){
+
+      var tempLinkType = selectedLink.model.prop("link_type");
+      if(!tempLinkType){
+        tempLinkType = selectedLink.model.attr("link_type");
+      }
+
+      var jsonForselectedLink = typeDefinitionsJSON.links[tempLinkType];
+
+      //cleaning previous form fields..
+      var divContents = document.getElementById("metadata_form").childNodes;
+      for(var i=0; i<divContents.length; i++){
+        divContents[i].remove();
+      }
+
+      var schema = jsonForselectedLink.schema;
+      var data = selectedLink.model.prop("data");
 
       alpacaMetadataForm = $("#metadata_form").alpaca({
       "schema":schema,
@@ -1983,7 +2020,8 @@
       if(selectedNode){
         currentLabel = selectedNode.model.attr("text/text");
       }else if(selectedLink){
-        var currentLabelObj = selectedLink.model.label(0);
+        var currentLabelObj = selectedLink.model.label(0);        
+        console.log("currentLabelObj",currentLabelObj);
         if(!currentLabelObj){
           currentLabel = "";
         }else{
