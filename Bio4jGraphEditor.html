@@ -359,8 +359,11 @@
       </div>
     </div>
   </div>
-  <canvas id="snapshotCanvas" width="1000px" height="600px" style="display:none"></canvas>
+  <!--
+  canvas id="snapshotCanvas" width="1000px" height="600px" style="display:none"></canvas>
   <img id="snapshotImage"/>
+
+  -->
 
   <script type="text/javascript">
 
@@ -2219,7 +2222,11 @@
 
   function takeSnapshot(){
     console.log("takeSnapshot");
-    var svgDoc = paper.svg;
+
+    window.print();
+
+
+    /*var svgDoc = paper.svg;
     var serializer = new XMLSerializer();
     var svgString = serializer.serializeToString(svgDoc);
     console.log("svgString",svgString);
@@ -2249,6 +2256,8 @@
     // Use the URL object to create a temporary URL
     var url = (window.webkitURL || window.URL).createObjectURL(blob);
     location.href = url; // <-- Download!
+
+    */
 
   }
 
