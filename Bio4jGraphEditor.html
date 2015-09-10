@@ -72,12 +72,13 @@
   #node_types_list{
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 450px;
+    min-height: 200px;
+    max-height: 350px;
   }
   #link_types_list{
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 450px;
+    max-height: 350px;
     min-height: 200px;
   }
   #backgrounds_list{
@@ -660,7 +661,7 @@
 
   });
  $(document).mouseup(function( event ) {
-    console.log("mouse up!");
+    //console.log("mouse up!");
     paperIsPanning = false;
     nodeIsBeingDragged = false;
  });
@@ -678,7 +679,7 @@
         var reader = new FileReader();
         reader.onload = function(e) {
   	      var contents = e.target.result;
-          //console.log(fileType);
+          ////console.log(fileType);
           if(fileType != "json"){
               alert("Please select a .json file");
           }else{
@@ -689,7 +690,7 @@
              paperInitialWidth = contentBBox.width + contentBBox.x;
              paperInitialHeight = contentBBox.height + contentBBox.y;
 
-             console.log("graph loaded!");
+             //console.log("graph loaded!");
 
              updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
 
@@ -697,6 +698,10 @@
              initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
 
              updatePaperDimensions(paperInitialWidth,paperInitialHeight);
+
+             if(!modifiableLinks){
+                makeLinksInteractive(false);
+             }
              paper.render();
           }
         }
@@ -738,17 +743,17 @@
 
   <!-- MODIFY LINK ON CLICK CHECKBOX... -->
   $("#modifyLinkOnClickCheckBox").click( function(){
-    console.log("modifyLinkOnClick");
+    //console.log("modifyLinkOnClick");
     if( $(this).is(':checked') ){
 
-      console.log("checked!");
+      //console.log("checked!");
       makeLinksInteractive(true); 
       modifiableLinks = true;    
       
       
     }else{
 
-      console.log("unchecked!");
+      //console.log("unchecked!");
       makeLinksInteractive(false);    
       modifiableLinks = false;
       
@@ -817,9 +822,9 @@
 
   <!-- BACKGROUNDS MODAL DIALOG -->
   $('#background_dialog').on('shown.bs.modal', function () {
-    //console.log("backgrounds! shown.bs.modal");
+    ////console.log("backgrounds! shown.bs.modal");
     if(backgroundsModalFirstTimeShown){
-      //console.log("backgroundsModalFirstTimeShown");
+      ////console.log("backgroundsModalFirstTimeShown");
       initializeBackgroundsPaper(currentBackgroundThemeURL);
     }else{
       loadBackgroundsTheme(currentBackgroundThemeURL);
@@ -829,9 +834,9 @@
 
   <!-- NODE TYPES MODAL DIALOG -->
   $('#node_types_dialog').on('shown.bs.modal', function () {
-    //console.log("node types! shown.bs.modal");
+    ////console.log("node types! shown.bs.modal");
     if(nodeTypesModalFirstTimeShown){
-      //console.log("nodeTypesModalFirstTimeShown");
+      ////console.log("nodeTypesModalFirstTimeShown");
       initializeNodeTypesPaper(currentNodeTypeThemeURL);
     }else{
       loadNodeTypesTheme(currentNodeTypeThemeURL);
@@ -841,9 +846,9 @@
 
   <!-- LINK TYPES MODAL DIALOG -->
   $('#link_types_dialog').on('shown.bs.modal', function () {
-    //console.log("link types! shown.bs.modal");
+    ////console.log("link types! shown.bs.modal");
     if(linkTypesModalFirstTimeShown){
-      //console.log("linkTypesModalFirstTimeShown");
+      ////console.log("linkTypesModalFirstTimeShown");
       initializeLinkTypesPaper(currentLinkTypeThemeURL);
     }else{
       loadLinkTypesTheme(currentLinkTypeThemeURL);
@@ -866,7 +871,7 @@
   Listeners for events fired by the paper are declared also here.
   */
   function initializeGraphPaper(){
-    //console.log("initializeGraphPaper");
+    ////console.log("initializeGraphPaper");
 
     graph = new joint.dia.Graph;
 
@@ -898,7 +903,7 @@
     );
     paper.on("cell:mouseout",
       function(evt, x, y){
-        //console.log("cell mouse out!");
+        ////console.log("cell mouse out!");
       }
     );
     paper.on('cell:pointerdown',
@@ -908,9 +913,9 @@
         }else{
           if(!cellView.model.isLink()){            
             if(selectedNode){
-              console.log("selectedNode is true", selectedNode);
+              //console.log("selectedNode is true", selectedNode);
               if(selectedNode.model.id == cellView.model.id){
-                console.log("selectednode and the same");
+                //console.log("selectednode and the same");
                 nodeIsBeingDragged = true;
               }
             }            
@@ -922,7 +927,7 @@
       function(cellView, evt, x, y) {
 
         if(cellView.model.isLink()){
-          console.log("Cell is link! ");
+          //console.log("Cell is link! ");
           selectLinkCell(cellView, true);
         }else{
           if(cellView.model == backgroundBox){
@@ -966,7 +971,7 @@
   all the rest of elements.
   */
   function initializeBackgroundBox(width, height){
-    //console.log("initializeBackgroundBox");
+    ////console.log("initializeBackgroundBox");
     backgroundBox  = createBackgroundBox(0, 0, width, height, '#FFFFFF');
     backgroundBox.findView(paper).options.interactive = false;
     /**This is a flag used so that the background box cell can be identified for
@@ -1052,7 +1057,7 @@
   }
 
   function initializeBackgroundsPaper(themeURL){
-    //console.log("initializeBackgroundsPaper");
+    ////console.log("initializeBackgroundsPaper");
     backgrounds_graph = new joint.dia.Graph;
 
     backgrounds_paper = new joint.dia.Paper({
@@ -1100,7 +1105,7 @@
   @param {string} url - URL pointing to the theme file with the backgrounds definition
   */
   function loadBackgroundsTheme(url){
-    //console.log("loadBackgroundsTheme");
+    ////console.log("loadBackgroundsTheme");
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -1108,7 +1113,7 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
-          //console.log("onreadystatechange (backgrounds)!");
+          ////console.log("onreadystatechange (backgrounds)!");
           backgrounds_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfBackgroundsPaper();
           positionBackgroundsOnPaper();
@@ -1133,9 +1138,9 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
-          //console.log(xobj.responseText);
+          ////console.log(xobj.responseText);
           typeDefinitionsJSON = JSON.parse(xobj.responseText);
-          //console.log(typeDefinitionsJSON);
+          ////console.log(typeDefinitionsJSON);
         }
     };
     xobj.send(null);
@@ -1146,7 +1151,7 @@
   @param {string} url - URL pointing to the theme file with the definition of the node types
   */
   function loadNodeTypesTheme(url){
-    //console.log("loadNodeTypesTheme");
+    ////console.log("loadNodeTypesTheme");
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -1154,7 +1159,7 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
-          //console.log(xobj.responseText);
+          ////console.log(xobj.responseText);
           node_types_graph.fromJSON(JSON.parse(xobj.responseText));
           calculateSizeOfNodeTypesPaper();
           positionNodeTypesOnPaper();
@@ -1168,7 +1173,7 @@
   }
 
   function makeNodeTypesNotInteractive(){
-    console.log("makeNodeTypesNotInteractive");
+    //console.log("makeNodeTypesNotInteractive");
     for(var i=0;i<node_types_graph.getElements().length;i++){
       var currentNodeType = node_types_graph.getElements()[i];
       currentNodeType.attr("image/magnet","");
@@ -1191,20 +1196,20 @@
       currentNodeType.prop("position", {"x":nodeTypeCellDefaultX,"y":currentY});
       var currentText = currentNodeType.attr("text/text");
       var brokenText = joint.util.breakText(currentText, { width: nodeTypeCellMaxWidth });
-      //console.log(currentText,brokenText);
+      ////console.log(currentText,brokenText);
       currentNodeType.attr("text/text", brokenText);
     }
     node_types_paper.render();
   }
 
   function calculateSizeOfBackgroundsPaper(){
-    console.log("calculateSizeOfBackgroundsPaper");
+    //console.log("calculateSizeOfBackgroundsPaper");
     var numberOfBackgrounds = backgrounds_graph.getElements().length;
     backgrounds_paper.setDimensions(500, backgroundCellHeight*numberOfBackgrounds);
   }
 
   function positionBackgroundsOnPaper(){
-    console.log("positionBackgroundsOnPaper");
+    //console.log("positionBackgroundsOnPaper");
     var backgrounds = backgrounds_graph.getElements();
     for(var i=0; i<backgrounds.length;i++){
       var currentBackground = backgrounds[i];
@@ -1212,7 +1217,7 @@
       currentBackground.prop("position", {"x":backgroundCellDefaultX,"y":currentY});
       var currentText = currentBackground.attr("text/text");
       var brokenText = joint.util.breakText(currentText, { width: backgroundCellMaxWidth });
-      //console.log(currentText,brokenText);
+      ////console.log(currentText,brokenText);
       currentBackground.attr("text/text", brokenText);
     }
   }
@@ -1229,7 +1234,7 @@
   }
 
   function selectLinkCell(cellView, flag){
-    console.log("selectLinkCell", flag);
+    //console.log("selectLinkCell", flag);
 
     if(cellView.model.isLink()){     
 
@@ -1242,7 +1247,7 @@
         }
 
         if(selectedLink && selectedLink.id == cellView.id){
-          console.log("same cell!");
+          //console.log("same cell!");
         }else{
 
           var tempLabel = cellView.model.label(0);
@@ -1258,7 +1263,7 @@
         if(!currentStrokeWidth){
           currentStrokeWidth = 1;
         }
-        console.log("currentStrokeWidth",currentStrokeWidth);
+        //console.log("currentStrokeWidth",currentStrokeWidth);
         cellView.model.attr({'.connection': { 'stroke-width': currentStrokeWidth*2 }});
 
         selectedLink = cellView;
@@ -1301,7 +1306,7 @@
 
   function selectNodeCell(cellView, flag){
 
-    console.log("selectedNodeCell", flag);
+    //console.log("selectedNodeCell", flag);
 
     var newCellSelected = true;
     if(selectedNode){
@@ -1341,14 +1346,14 @@
 
   function selectNodeTypeCell(cellView){
 
-    //console.log("selectNodeTypeCell");
+    ////console.log("selectNodeTypeCell");
 
     var nodeTypeCells = node_types_graph.getElements();
     for (var i = 0; i < nodeTypeCells.length; i++) {
       var currentCell = nodeTypeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
           selectedNodeTypeCell = currentCell;
-          //console.log(selectedNodeTypeCell);
+          ////console.log(selectedNodeTypeCell);
           currentCell.attr('text/font-weight',"bold");
       }else {
           currentCell.attr('text/font-weight',"normal");
@@ -1357,7 +1362,7 @@
   }
 
   function selectLinkType(cellView){
-    //console.log("selectLinkType!");
+    ////console.log("selectLinkType!");
     var linkTypeCells = link_types_graph.getLinks();
 
     for (var i = 0; i < linkTypeCells.length; i++) {
@@ -1367,19 +1372,19 @@
           selectedLinkTypeCell = currentCell;
           currentCell.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': 16 } } });
           link_types_paper.defaultLink = selectedLinkTypeCell;
-          //console.log("selected",currentCell.label(0));
+          ////console.log("selected",currentCell.label(0));
       }else {
         currentCell.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
-        //console.log("rest",currentCell.label(0));
+        ////console.log("rest",currentCell.label(0));
       }
     }
 
-    //console.log(link_types_paper.options);
+    ////console.log(link_types_paper.options);
   }
 
   function selectBackgroundCell(cellView){
 
-    //console.log("selectBackgroundCell");
+    ////console.log("selectBackgroundCell");
 
     var backgroundCells = backgrounds_graph.getElements();
 
@@ -1389,14 +1394,14 @@
 
       if(currentBackground.attributes.id == cellView.model.id){
           selectedBackgroundCell = currentBackground;
-          //console.log(selectedNodeTypeCell);
+          ////console.log(selectedNodeTypeCell);
           currentBackground.attr('text/font-weight',"bold");
       }else {
           currentBackground.attr('text/font-weight',"normal");
       }
     }
 
-    //console.log("done with select!");
+    ////console.log("done with select!");
   }
 
   <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
@@ -1480,7 +1485,7 @@
   Method called when the body is loaded
   */
   function onBodyLoad(){
-    console.log("onBodyLoad");
+    //console.log("onBodyLoad");
     initializeJoint();
 
     currentBackgroundThemeURL = defaultBackgroundThemeURL;
@@ -1519,14 +1524,14 @@
   Provides the default link type used when the user creates new links
   */
   function getDefaultLink(){
-    //console.log("getDefaultLink");
+    ////console.log("getDefaultLink");
     if(selectedLinkTypeCell){
-      //console.log("true");
+      ////console.log("true");
       var tempLink = selectedLinkTypeCell.clone();
       tempLink.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
       return tempLink;
     }else{
-      //console.log("false");
+      ////console.log("false");
       return new joint.dia.Link();
     }
 
@@ -1541,7 +1546,7 @@
   */
   function makeLinksInteractive(flag){
 
-    console.log("makeLinksInteractive")
+    //console.log("makeLinksInteractive")
 
     var links = graph.getLinks();
 
@@ -1558,7 +1563,7 @@
       var currentLink = links[i];
       var currentView = currentLink.findView(paper);
 
-      console.log("currentView",currentView);
+      //console.log("currentView",currentView);
 
       if(!flag){
         currentView.options.interactive = false;
@@ -1576,15 +1581,15 @@
   */
   function makeElementsInteractive(flag){
 
-    console.log("makeElementsInteractive");
+    //console.log("makeElementsInteractive");
 
     var nodes = graph.getElements();
 
     for(var i=0; i<nodes.length;i++){
       var currentNode = nodes[i];
       var currentView = currentNode.findView(paper);
-      console.log("currentNode", currentNode);
-      console.log("currentView", currentView);
+      //console.log("currentNode", currentNode);
+      //console.log("currentView", currentView);
       if(currentNode != backgroundBox && currentNode != currentBackgroundCell){
         if( !flag ){
           currentView.options.interactive = false;
@@ -1614,7 +1619,7 @@
   The number of degrees used for the rotation are those specified by the var [rotateCellFactor]
   */
   function rotateCellToTheRight(){
-     //console.log("rotateCellToTheRight");
+     ////console.log("rotateCellToTheRight");
      if(selectedNode){
 
        var currentDegreesSt = selectedNode.model.attr("image/transform");
@@ -1636,7 +1641,7 @@
   The number of degrees used for the rotation are those specified by the var [rotateCellFactor] (transformed to negative)
   */
   function rotateCellToTheLeft(){
-    //console.log("rotateCellToTheLeft");
+    ////console.log("rotateCellToTheLeft");
 
     if(selectedNode){
 
@@ -1701,7 +1706,7 @@
   parameters
   */
   function updatePaperDimensions(tempWidth, tempHeight){
-    //console.log("updatePaperDimensions");
+    ////console.log("updatePaperDimensions");
     paper.setDimensions(tempWidth,tempHeight);
     updateBackgroundBoxDimensions(tempWidth, tempHeight);
     paper.render();
@@ -1721,7 +1726,7 @@
   It emulates the logic that would otherwise be associated to blank:pointer_down events
   */
   function onStageDown(evt, x, y){
-    //console.log("onStageDown");
+    ////console.log("onStageDown");
 
     pointerDownClientX = evt.clientX;
     pointerDownClientY = evt.clientY;
@@ -1740,7 +1745,7 @@
   It emulates the logic that would otherwise be associated to blank:click events
   */
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
-    //console.log("onBackgroundOrBackgroundBoxClick");
+    ////console.log("onBackgroundOrBackgroundBoxClick");
     if(selectedNode){
         selectNodeCell(selectedNode, false);
     }
@@ -1805,7 +1810,7 @@
       }
 
       var jsonForselectedNode = typeDefinitionsJSON.nodes[tempNodeType];
-      console.log("jsonForselectedNode",jsonForselectedNode);
+      //console.log("jsonForselectedNode",jsonForselectedNode);
 
       //cleaning previous form fields..
       var divContents = document.getElementById("metadata_form").childNodes;
@@ -1840,17 +1845,17 @@
     if(selectedLink){
 
       var tempLinkType = selectedLink.model.prop("link_type");
-      console.log("tempLinkType",tempLinkType);
+      //console.log("tempLinkType",tempLinkType);
       if(!tempLinkType){
         tempLinkType = selectedLink.model.attr("link_type");
       }
 
-      console.log("tempLinkType",tempLinkType);
+      //console.log("tempLinkType",tempLinkType);
 
 
       var jsonForselectedLink = typeDefinitionsJSON.links[tempLinkType];
 
-      console.log("jsonForselectedLink",jsonForselectedLink);
+      //console.log("jsonForselectedLink",jsonForselectedLink);
 
       //cleaning previous form fields..
       var divContents = document.getElementById("metadata_form").childNodes;
@@ -1886,20 +1891,20 @@
     $('#background_dialog').modal('hide');
 
     if(currentBackgroundCell){
-      //console.log("There already was a background for this diagram...");
+      ////console.log("There already was a background for this diagram...");
       if(currentBackgroundCell.id != selectedBackgroundCell.id){
-        //console.log("The background selected is different from the current one");
+        ////console.log("The background selected is different from the current one");
         currentBackgroundCell.remove();
       }
     }
-    //console.log("let's create the new background cell!");
+    ////console.log("let's create the new background cell!");
 
     var newBackgroundCell = selectedBackgroundCell.clone();
     var realSize = newBackgroundCell.prop("real_size");
     var realWidth = realSize.width;
     var realHeight = realSize.height;
     //var nodeType = newBackgroundCell.attr("node_type");
-    //console.log(realWidth, realHeight, realSize, nodeType);
+    ////console.log(realWidth, realHeight, realSize, nodeType);
 
     newBackgroundCell.prop("size", {"width":realWidth,"height":realHeight});
     newBackgroundCell.prop("position", {"x":0,"y":0});
@@ -1911,11 +1916,11 @@
     graph.addCell(newBackgroundCell);
     newBackgroundCell.toBack();
     backgroundBox.toBack();
-    //console.log(newBackgroundCell);
+    ////console.log(newBackgroundCell);
     currentBackgroundCell = newBackgroundCell;
     currentBackgroundCell.findView(paper).options.interactive = false;
     paper.render();
-    //console.log("done!");
+    ////console.log("done!");
 
   }
 
@@ -1930,10 +1935,10 @@
     backgroundBox.remove();
     paper.render();
     var bbox = paper.getContentBBox();
-    //console.log(bbox);
+    ////console.log(bbox);
     var tempWidth = bbox.width + bbox.x;
     var tempHeight = bbox.height + bbox.y;
-    //console.log(tempWidth, tempHeight);
+    ////console.log(tempWidth, tempHeight);
     $('#inputWidth').prop('value', tempWidth);
     $('#inputHeight').prop('value', tempHeight);
     paperInitialWidth = tempWidth;
@@ -1953,7 +1958,7 @@
       selectedLink.model.prop("data",alpacaMetadataFormControl.getValue());
     }
     
-    //console.log("saveMetadataChanges", selectedNode.model);
+    ////console.log("saveMetadataChanges", selectedNode.model);
   }
 
   /**
@@ -1963,13 +1968,13 @@
   the exported background box)
   */
   function deletePreviousBackgroundBox(){
-    //console.log("deletePreviousBackgroundBox");
+    ////console.log("deletePreviousBackgroundBox");
     var nodes = graph.getElements();
     for(var i=0; i<nodes.length;i++){
       var currentNode = nodes[i];
-      //console.log("currentNode.background_box: " + currentNode.prop("background_box"));
+      ////console.log("currentNode.background_box: " + currentNode.prop("background_box"));
       if( currentNode.prop("background_box") == "true"){
-        //console.log("remove previous background cell!! :D");
+        ////console.log("remove previous background cell!! :D");
         currentNode.remove();
       }
     }
@@ -1999,7 +2004,7 @@
   node
   */
   function applyRenameCell(){
-    //console.log("applyRenameCell");
+    ////console.log("applyRenameCell");
     $('#rename_cell_dialog').modal('hide');
     if(selectedNode){
       renameSelectedNode(document.getElementById("inputCellName").value);
@@ -2025,18 +2030,18 @@
         currentLabel = selectedNode.model.attr("text/text");
       }else if(selectedLink){
         var currentLabelObj = selectedLink.model.label(0);        
-        console.log("currentLabelObj",currentLabelObj);
+        //console.log("currentLabelObj",currentLabelObj);
         if(!currentLabelObj){
           currentLabel = "";
         }else{
           currentLabel = currentLabelObj.attr("text/text");
         }
           
-        console.log("currentLabel", currentLabel);
+        //console.log("currentLabel", currentLabel);
         
       }
        
-      //console.log("currentLabel", currentLabel);
+      ////console.log("currentLabel", currentLabel);
       document.getElementById("inputCellName").value = currentLabel;
     }
   }
@@ -2060,10 +2065,10 @@
 
   function setSelectedNodeType(){
     $('#node_types_dialog').modal('hide');
-    //console.log("thumbnail prop:",selectedNodeTypeCell.prop("thumbnail"));
+    ////console.log("thumbnail prop:",selectedNodeTypeCell.prop("thumbnail"));
     $('#currentNodeTypeIcon').remove();
     $('#currentNodeTypeImage').attr("src",selectedNodeTypeCell.prop("thumbnail"));
-    //console.log("done!");
+    ////console.log("done!");
   }
 
   function setSelectedLinkType(){
@@ -2076,11 +2081,11 @@
   */
   function initializeSelectionRect(){
 
-    //console.log("initializeSelectionRect");
+    ////console.log("initializeSelectionRect");
 
     if(selectedNode){
 
-      console.log("selectedNode = true");
+      //console.log("selectedNode = true");
 
       if(!selectionRectCell){
 
@@ -2089,9 +2094,9 @@
         tempPosition.y -= 2;
         var tempSize = getSizeForSelectionRect();
 
-        //console.log("selectedNode",selectedNode.model);
-        //console.log("tempPosition", tempPosition);
-        //console.log("tempSize", tempSize);
+        ////console.log("selectedNode",selectedNode.model);
+        ////console.log("tempPosition", tempPosition);
+        ////console.log("tempSize", tempSize);
 
         selectionRectCell = new rect({
             position: tempPosition,
@@ -2100,7 +2105,7 @@
                 rect: { rx: 2, ry: 2, stroke: '#000000', 'stroke-width': 1, 'stroke-dasharray':"5,5" }
             }
         });
-        //console.log(selectionRectCell);
+        ////console.log(selectionRectCell);
         graph.addCell(selectionRectCell);
         selectionRectCell.toBack();
         if(currentBackgroundCell){
@@ -2120,9 +2125,9 @@
   that is currently selected
   */
   function updateSelectionRectPosition(){
-    //console.log("updateSelectionRectPosition");
+    ////console.log("updateSelectionRectPosition");
     var positionForSelectionRect = getPositionForSelectionRect();
-    //console.log("positionForSelectionRect",positionForSelectionRect);
+    ////console.log("positionForSelectionRect",positionForSelectionRect);
     selectionRectCell.prop("position", positionForSelectionRect);
   }
 
@@ -2131,7 +2136,7 @@
   properly position the selection rect
   */
   function getPositionForSelectionRect(){
-    //console.log("getPositionForSelectionRect");
+    ////console.log("getPositionForSelectionRect");
     var tempPosition = selectedNode.model.prop('position');
     var newPosition = {x: tempPosition.x, y: tempPosition.y};
     return newPosition;
@@ -2141,7 +2146,7 @@
   that is currently selected
   */
   function getSizeForSelectionRect(){
-    //console.log("getSizeForSelectionRect");
+    ////console.log("getSizeForSelectionRect");
     var tempSize = selectedNode.model.prop('size');
     var newSize = {width: tempSize.width + 4, height: tempSize.height + 4};
     return newSize;
@@ -2151,16 +2156,16 @@
   Loads the JSON file holding all the configuration values
   */
   function loadConfigJSON(){
-    console.log("loadConfigJSON");
+    //console.log("loadConfigJSON");
     $.getJSON("data/Config.json", function(json) {
         nodeLabelMaxLength = json.node_label_max_length;
         linkLabelMaxLength = json.link_label_max_length;
         linkDefaultFontSize = json.link_labels_default_font_size
         paperDefaultSize = json.paper_defaul_size;
-        console.log("paperDefaultSize",paperDefaultSize);
+        //console.log("paperDefaultSize",paperDefaultSize);
         updatePaperDimensions(paperDefaultSize.width, paperDefaultSize.height);
         updatePaperDimensionsTextInputs(paperDefaultSize.width, paperDefaultSize.height);
-        //console.log(nodeLabelMaxLength);
+        ////console.log(nodeLabelMaxLength);
     });
   }
 
@@ -2171,7 +2176,7 @@
   @param {string} maxLineLength - Maximum number of characters per line
   */
   function addNewLinesToTextWhenNeeded(textSt, maxLineLength){
-    console.log("addNewLinesToTextWhenNeeded");
+    //console.log("addNewLinesToTextWhenNeeded");
     var lines = textSt.split('\n');
     var result = "";
 
@@ -2182,10 +2187,10 @@
         for(var j=0;j<(currentLine.length/maxLineLength);j++){
           var tempStart = j*maxLineLength;
           if(j<((currentLine.length/maxLineLength) -1)){
-            console.log("argh");
+            //console.log("argh");
             result += currentLine.substr(tempStart, tempStart + maxLineLength) + '\n';
           }else{
-            console.log("buh!");
+            //console.log("buh!");
             result += currentLine.substr(tempStart, currentLine.length);
             result += '\n';
           }
@@ -2221,7 +2226,7 @@
   }
 
   function takeSnapshot(){
-    console.log("takeSnapshot");
+    //console.log("takeSnapshot");
 
     window.print();
 
@@ -2229,7 +2234,7 @@
     /*var svgDoc = paper.svg;
     var serializer = new XMLSerializer();
     var svgString = serializer.serializeToString(svgDoc);
-    console.log("svgString",svgString);
+    //console.log("svgString",svgString);
     var snapshot = canvg(snapshotCanvas, svgString);
 
     var img_b64 = document.getElementById('snapshotCanvas').toDataURL('image/png');
