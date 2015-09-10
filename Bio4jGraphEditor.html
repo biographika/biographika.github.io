@@ -241,7 +241,7 @@
                   </div>
                 </form>
               </li>
-              <li>
+              <li id="lockDiagramCheckBoxListItem">
                 <div class="checkbox">
                   <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
                 </div>
@@ -630,6 +630,10 @@
  Default font size for labels in links
  */
  var linkDefaultFontSize;
+ /**
+ Indicates whether the application should be launched in read only mode or not
+ */
+ var launchInReadOnlyMode;
  //===================================================
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -702,6 +706,9 @@
              if(!modifiableLinks){
                 makeLinksInteractive(false);
              }
+             if(readOnlyMode){
+              applyReadOnlyMode(true);
+             }
              paper.render();
           }
         }
@@ -712,32 +719,10 @@
   });
 
   <!-- LOCK DIAGRAM CHECKBOX... -->
-  $("#lockDiagramCheckBox").click( function(){
+  $("#lockDiagramCheckBox").click( function(){      
 
-      var saveChangesMetadataButton = document.getElementById('saveMetadataChangesButton');
-
-      if( $(this).is(':checked') ){
-        readOnlyMode = true;
-        if(alpacaMetadataFormControl){
-          alpacaMetadataFormControl.enable();
-        }
-        if(saveChangesMetadataButton){
-          saveChangesMetadataButton.style.visibility = 'hidden';
-        }
-      }else{
-        readOnlyMode = false;
-        if(alpacaMetadataFormControl){
-          alpacaMetadataFormControl.disable();
-        }
-        if(saveChangesMetadataButton){
-          saveChangesMetadataButton.style.visibility = 'visible';
-        }
-      }
-
-      makeLinksInteractive(!readOnlyMode);
-      makeElementsInteractive(!readOnlyMode);
-
-      paper.render();
+      applyReadOnlyMode($(this).is(':checked'));
+      
     }
   );
 
@@ -1620,7 +1605,8 @@
   */
   function rotateCellToTheRight(){
      ////console.log("rotateCellToTheRight");
-     if(selectedNode){
+     if(!readOnlyMode){
+      if(selectedNode){
 
        var currentDegreesSt = selectedNode.model.attr("image/transform");
        var currentDegrees = 0;
@@ -1633,7 +1619,9 @@
        var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
        selectedNode.model.attr("image/transform","rotate("+newDegrees+","
             + rotationCenterPointX + "," + rotationCenterPointY + ")");
+      }
      }
+     
   }
 
   /**
@@ -1644,18 +1632,19 @@
     ////console.log("rotateCellToTheLeft");
 
     if(selectedNode){
+      if(!readOnlyMode){
+        var currentDegreesSt = selectedNode.model.attr("image/transform");
+        var currentDegrees = 0;
 
-      var currentDegreesSt = selectedNode.model.attr("image/transform");
-      var currentDegrees = 0;
-
-      if(currentDegreesSt){
-        currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
-      }
-      var newDegrees = currentDegrees + rotateCellFactor;
-      var rotationCenterPointX = selectedNode.model.attr("image/width")/2;
-      var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
-      selectedNode.model.attr("image/transform","rotate("+newDegrees+","
-           + rotationCenterPointX + "," + rotationCenterPointY + ")");
+        if(currentDegreesSt){
+          currentDegrees = parseFloat(currentDegreesSt.split("(")[1].split(")")[0]);
+        }
+        var newDegrees = currentDegrees + rotateCellFactor;
+        var rotationCenterPointX = selectedNode.model.attr("image/width")/2;
+        var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
+        selectedNode.model.attr("image/transform","rotate("+newDegrees+","
+             + rotationCenterPointX + "," + rotationCenterPointY + ")");
+      }      
     }
   }
 
@@ -1664,10 +1653,12 @@
   */
   function bringSelectedNodeToFront(){
     if(selectedNode){
-      if(selectionRectCell){
-        selectionRectCell.toFront();
-      }
-      selectedNode.model.toFront();
+      if(!readOnlyMode){
+        if(selectionRectCell){
+          selectionRectCell.toFront();
+        }
+        selectedNode.model.toFront();
+      }      
     }
   }
 
@@ -1676,15 +1667,17 @@
   */
   function bringSelectedNodeToBack(){
     if(selectedNode){
-      selectedNode.model.toBack();
-      if(selectionRectCell){
-        selectionRectCell.toBack();
-      }
-      if(currentBackgroundCell){
-        currentBackgroundCell.toBack();
-      }
-      backgroundBox.toBack();
-      paper.render();
+      if(!readOnlyMode){
+        selectedNode.model.toBack();
+        if(selectionRectCell){
+          selectionRectCell.toBack();
+        }
+        if(currentBackgroundCell){
+          currentBackgroundCell.toBack();
+        }
+        backgroundBox.toBack();
+        paper.render();
+      }      
     }
   }
 
@@ -1734,7 +1727,7 @@
     lastPositionMouseX = pointerDownClientX;
     lastPositionMouseY = pointerDownClientY;
 
-    if(document.getElementById("lockDiagramCheckBox").checked == true){
+    if(readOnlyMode){
       paperIsPanning = true;
     }
   }
@@ -1749,7 +1742,7 @@
     if(selectedNode){
         selectNodeCell(selectedNode, false);
     }
-    if(document.getElementById("lockDiagramCheckBox").checked != true){
+    if(!readOnlyMode){
       if(!selectedNodeTypeCell){
         alert("Please select a node type first");
         openDialogSelectNodeType();
@@ -1773,9 +1766,11 @@
 
 
   function onSetBackgroundButtonClick(){
-    $('#background_dialog').modal({
+    if(!readOnlyMode){
+      $('#background_dialog').modal({
          show: true
      });
+    }    
   }
 
   /**
@@ -2024,31 +2019,34 @@
   Shows the modal dialog where the label of a node can be modified
   */
   function onrenameCellButtonClick(){
-    if(!selectedNode && !selectedLink){
-      alert("Please select a node or link");
-    }else{
-      $('#rename_cell_dialog').modal({
-        show: true
-      });
-      var currentLabel;
-      if(selectedNode){
-        currentLabel = selectedNode.model.attr("text/text");
-      }else if(selectedLink){
-        var currentLabelObj = selectedLink.model.label(0);        
-        //console.log("currentLabelObj",currentLabelObj);
-        if(!currentLabelObj){
-          currentLabel = "";
-        }else{
-          currentLabel = currentLabelObj.attr("text/text");
-        }
+    if(!readOnlyMode){
+      if(!selectedNode && !selectedLink){
+        alert("Please select a node or link");
+      }else{
+
+        $('#rename_cell_dialog').modal({
+          show: true
+        });
+        var currentLabel;
+        if(selectedNode){
+          currentLabel = selectedNode.model.attr("text/text");
+        }else if(selectedLink){
+          var currentLabelObj = selectedLink.model.label(0);        
+          //console.log("currentLabelObj",currentLabelObj);
+          if(!currentLabelObj){
+            currentLabel = "";
+          }else{
+            currentLabel = currentLabelObj.model.attr("text/text");
+          }
+            
+          //console.log("currentLabel", currentLabel);
           
-        //console.log("currentLabel", currentLabel);
-        
+        }
+         
+        ////console.log("currentLabel", currentLabel);
+        document.getElementById("inputCellName").value = currentLabel;
       }
-       
-      ////console.log("currentLabel", currentLabel);
-      document.getElementById("inputCellName").value = currentLabel;
-    }
+    }    
   }
 
   /**
@@ -2161,16 +2159,26 @@
   Loads the JSON file holding all the configuration values
   */
   function loadConfigJSON(){
-    //console.log("loadConfigJSON");
+    console.log("loadConfigJSON");
     $.getJSON("data/Config.json", function(json) {
         nodeLabelMaxLength = json.node_label_max_length;
         linkLabelMaxLength = json.link_label_max_length;
-        linkDefaultFontSize = json.link_labels_default_font_size
+        linkDefaultFontSize = json.link_labels_default_font_size;
+
         paperDefaultSize = json.paper_defaul_size;
         //console.log("paperDefaultSize",paperDefaultSize);
         updatePaperDimensions(paperDefaultSize.width, paperDefaultSize.height);
         updatePaperDimensionsTextInputs(paperDefaultSize.width, paperDefaultSize.height);
         ////console.log(nodeLabelMaxLength);
+
+        launchInReadOnlyMode = json.launch_in_read_only_mode;
+        if(launchInReadOnlyMode){
+          console.log("launchInReadOnlyMode")
+          applyReadOnlyMode(true);
+          $("#lockDiagramCheckBox").prop("checked",true);
+          $("#lockDiagramCheckBoxListItem").remove();
+
+        }
     });
   }
 
@@ -2232,43 +2240,34 @@
 
   function takeSnapshot(){
     //console.log("takeSnapshot");
-
     window.print();
+  }
 
-
-    /*var svgDoc = paper.svg;
-    var serializer = new XMLSerializer();
-    var svgString = serializer.serializeToString(svgDoc);
-    //console.log("svgString",svgString);
-    var snapshot = canvg(snapshotCanvas, svgString);
-
-    var img_b64 = document.getElementById('snapshotCanvas').toDataURL('image/png');
-    var image_data = atob(img_b64.split(',')[1]);
-    // Use typed arrays to convert the binary data to a Blob
-    var arraybuffer = new ArrayBuffer(image_data.length);
-    var view = new Uint8Array(arraybuffer);
-    for (var i=0; i<image_data.length; i++) {
-        view[i] = image_data.charCodeAt(i) & 0xff;
-    }
-    try {
-        // This is the recommended method:
-        var blob = new Blob([arraybuffer], {type: 'application/octet-stream'});
-    } catch (e) {
-        // The BlobBuilder API has been deprecated in favour of Blob, but older
-        // browsers don't know about the Blob constructor
-        // IE10 also supports BlobBuilder, but since the `Blob` constructor
-        //  also works, there's no need to add `MSBlobBuilder`.
-        var bb = new (window.WebKitBlobBuilder || window.MozBlobBuilder);
-        bb.append(arraybuffer);
-        var blob = bb.getBlob('application/octet-stream'); // <-- Here's the Blob
+  function applyReadOnlyMode(flag){
+    console.log("applyReadOnlyMode");
+    var saveChangesMetadataButton = document.getElementById('saveMetadataChangesButton');
+    if(flag){
+      readOnlyMode = true;
+      if(alpacaMetadataFormControl){
+        alpacaMetadataFormControl.enable();
+      }
+      if(saveChangesMetadataButton){
+        saveChangesMetadataButton.style.visibility = 'hidden';
+      }
+    }else{
+      readOnlyMode = false;
+      if(alpacaMetadataFormControl){
+        alpacaMetadataFormControl.disable();
+      }
+      if(saveChangesMetadataButton){
+        saveChangesMetadataButton.style.visibility = 'visible';
+      }
     }
 
-    // Use the URL object to create a temporary URL
-    var url = (window.webkitURL || window.URL).createObjectURL(blob);
-    location.href = url; // <-- Download!
+    makeLinksInteractive(!readOnlyMode);
+    makeElementsInteractive(!readOnlyMode);
 
-    */
-
+    paper.render();
   }
 
 	</script>
