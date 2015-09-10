@@ -119,7 +119,7 @@
           <!--<a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>-->
           <div class="nav navbar-nav btn-group">
             <ul class="nav navbar-nav">
-              <li>
+              <li id="themesListItem">
                 <div class="dropdown">
                   <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
                   <ul id="themesDropDownMenu" class="dropdown-menu">
@@ -225,10 +225,10 @@
                 </button>
               </li>
               <li>
-                <button id="selectLinkTypeTypeButton" title="Select current link type" onclick="openDialogselectLinkTypeType()" type="button" class="btn btn-default">
+                <button id="selectLinkTypeButton" title="Select current link type" onclick="openDialogselectLinkTypeType()" type="button" class="btn btn-default">
                   <i class="fa fa-arrows-h"></i></button>
               </li>
-              <li>
+              <li id="paperDimensionsListItem">
                 <form class="navbar-form">
                   <div class="control-group">
                     <!--<span class="control-label">Stage dimensions</span>-->
@@ -247,7 +247,7 @@
                 </div>
                 <!-- lock diagram checkbox -->
               </li>
-              <li>
+              <li id="modifyLinksOnClickCheckBoxListItem">
                 <div class="checkbox">
                   <label><input id="modifyLinkOnClickCheckBox" type="checkbox" >Modify links on click</label>
                 </div>
@@ -2175,8 +2175,23 @@
         if(launchInReadOnlyMode){
           console.log("launchInReadOnlyMode")
           applyReadOnlyMode(true);
+
+          //----removing elements that won't be used-----
           $("#lockDiagramCheckBox").prop("checked",true);
           $("#lockDiagramCheckBoxListItem").remove();
+          $('#rotateRightButton').remove();
+          $('#rotateLeftButton').remove();
+          $('#bringToBackButton').remove();
+          $('#bringToFrontButton').remove();
+          $('#setBackgroundButton').remove();
+          $('#deleteCellButton').remove();
+          $('#fitPaperToContentsButton').remove();
+          $('#selectNodeTypeButton').remove();
+          $('#selectLinkTypeButton').remove();
+          $('#modifyLinksOnClickCheckBoxListItem').remove();
+          $('#renameCellButton').remove();
+          $('#paperDimensionsListItem').remove();
+          $('#themesListItem').remove();
 
         }
     });
