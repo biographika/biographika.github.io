@@ -134,7 +134,7 @@
               <li>
                 <div>
                   <span class="btn btn-default btn-file" title="Load diagram file">
-                      <i class="fa fa-file-code-o"></i>
+                      <i class="fa fa-upload"></i>
                       <!--Load file...-->
                       <input type="file" accept=".json" >
                   </span>
@@ -1842,15 +1842,16 @@
   selected link.
   */
   function loadSelectedLinkMetadataIntoDialog(){
+    //console.log("loadSelectedLinkMetadataIntoDialog")
     if(selectedLink){
 
       var tempLinkType = selectedLink.model.prop("link_type");
-      //console.log("tempLinkType",tempLinkType);
+      //console.log("tempLinkType (before)",tempLinkType);
       if(!tempLinkType){
         tempLinkType = selectedLink.model.attr("link_type");
       }
 
-      //console.log("tempLinkType",tempLinkType);
+      //console.log("tempLinkType (after)",tempLinkType);
 
 
       var jsonForselectedLink = typeDefinitionsJSON.links[tempLinkType];
@@ -1869,6 +1870,10 @@
         form = jsonForselectedLink.form;
       }
       data = selectedLink.model.prop("data");
+
+      //console.log("data",data);
+      //console.log("schema",schema);
+      //console.log("form",form);
 
       alpacaMetadataForm = $("#metadata_form").alpaca({
       "schema":schema,

@@ -3,11 +3,11 @@
     {
       "type":"link",
       "smooth": true,
-      ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
-      ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
       "attrs": {
-        "link_type":"is_a_link"
+        ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
       },
+      "link_type":"is_a_link",
       "labels": [
         { "position": ".5",
           "attrs": {
@@ -18,11 +18,11 @@
     {
       "type":"link",
       "smooth": true,
-      ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
-      ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
       "attrs": {
-        "link_type":"interacts_link"
+        ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
       },
+      "link_type":"interacts_link",
       "labels": [
         { "position": ".5",
           "attrs": {
@@ -34,8 +34,8 @@
     {
       "type":"link",
       "smooth": true,
-      "attrs": {
-        "link_type":"associated_to_link",
+      "link_type":"associated_to_link",
+      "attrs": {        
         ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
         ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
       },
