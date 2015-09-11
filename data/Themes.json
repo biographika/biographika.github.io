@@ -1,0 +1,20 @@
+{
+	"proteins":{
+		"backgrounds":"data/themes/proteins/Backgrounds.json",
+		"links":"data/themes/proteins/Links.json",
+		"elements":"data/themes/proteins/Elements.json",
+		"type_definitions":"data/themes/proteins/TypeDefinitions.json"
+	},
+	"doplanning":{
+		"backgrounds":"data/themes/doplanning/Backgrounds.json",
+		"links":"data/themes/doplanning/Links.json",
+		"elements":"data/themes/doplanning/Elements.json",
+		"type_definitions":"data/themes/doplanning/TypeDefinitions.json"
+	},
+	"basic":{
+		"backgrounds":"data/themes/basic/Backgrounds.json",
+		"links":"data/themes/basic/Links.json",
+		"elements":"data/themes/basic/Elements.json",
+		"type_definitions":"data/themes/basic/TypeDefinitions.json"
+	}
+}

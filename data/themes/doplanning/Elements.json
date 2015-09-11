@@ -1,15 +1,15 @@
 {
+  "theme":"doplanning",
   "cells":[
     {
       "type":"basic.Image",
       "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
-      "node_type":"cytoplasmic_protein",
-      "thumbnail":"images/cytoplasmic_protein_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Cytoplasmic protein"
           },
+        "node_type":"cytoplasmic_protein",
         "image":{"xlink:href":"images/CYTOPLASMIC_PROTEIN.png","width":60,"height":60}
       }
     },
@@ -17,12 +17,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
-      "node_type":"dendritic_cell",
-      "thumbnail":"images/dendritic_cell_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Dendritic cell"
           },
+        "node_type":"dendritic_cell",
         "image":{"xlink:href":"images/DENDRITIC_CELL.png","width":60,"height":60}
       }
 
@@ -31,12 +30,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":130},
       "size":{"width":60,"height":60},
-      "node_type":"eosinophile",
-      "thumbnail":"images/eosinophile_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Eosinophile"
           },
+        "node_type":"eosinophile",
         "image":{"xlink:href":"images/EOSINOPHILE.png","width":60,"height":60}
       }
     },
@@ -44,12 +42,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":195},
       "size":{"width":60,"height":60},
-      "node_type":"epithelial_cell",
-      "thumbnail":"images/ephitelial_cell_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Epithelial cell"
           },
+        "node_type":"epithelial_cell",
         "image":{"xlink:href":"images/EPITHELIAL CELL.png","width":60,"height":60}
       }
     },
@@ -57,12 +54,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":260},
       "size":{"width":60,"height":60},
-      "node_type":"fibroblast",
-      "thumbnail":"images/fibroblast_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Fibroblast"
           },
+        "node_type":"fibroblast",
         "image":{"xlink:href":"images/FIBROBLAST.png","width":60,"height":60}
       }
     },
@@ -70,12 +66,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":325},
       "size":{"width":60,"height":60},
-      "node_type":"g_protein_coupled_receptor",
-      "thumbnail":"images/g_protein_coupled_receptor_thumbnail.png",
       "attrs":{
         "text":{
           "text":"G Protein coupled receptor"
           },
+        "node_type":"g_protein_coupled_receptor",
         "image":{"xlink:href":"images/G_PROTEIN_COUPLED_RECEPTOR.png","width":60,"height":60}
       }
     },
@@ -83,12 +78,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":390},
       "size":{"width":60,"height":60},
-      "node_type":"lymphocyte",
-      "thumbnail":"images/lymphocyte_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Lymphocyte"
           },
+        "node_type":"lymphocyte",
         "image":{"xlink:href":"images/LYMPHOCYTE.png","width":60,"height":60}
       }
     },
@@ -96,12 +90,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":455},
       "size":{"width":60,"height":60},
-      "node_type":"mastocyte",
-      "thumbnail":"images/mastocyte_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Mastocyte"
           },
+        "node_type":"mastocyte",
         "image":{"xlink:href":"images/MASTOCYTE.png","width":60,"height":60}
       }
     },
@@ -109,12 +102,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":520},
       "size":{"width":60,"height":60},
-      "node_type":"monocyte_macrophage",
-      "thumbnail":"images/monocyte_macrophage_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Monocyte macrophage"
           },
+        "node_type":"monocyte_macrophage",
         "image":{"xlink:href":"images/MONOCYTE_MACROPHAGE.png","width":60,"height":60}
       }
     },
@@ -122,12 +114,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":585},
       "size":{"width":60,"height":60},
-      "node_type":"neutrophile",
-      "thumbnail":"images/neutrophile_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Neutrophile"
           },
+        "node_type":"neutrophile",
         "image":{"xlink:href":"images/NEUTROPHILE.png","width":60,"height":60}
       }
     },
@@ -135,12 +126,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":650},
       "size":{"width":60,"height":60},
-      "node_type":"plasmocyte",
-      "thumbnail":"images/plasmocyte_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Plasmocyte"
           },
+        "node_type":"plasmocyte",
         "image":{"xlink:href":"images/PLASMOCYTE.png","width":60,"height":60}
       }
     },
@@ -148,12 +138,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":715},
       "size":{"width":60,"height":60},
-      "node_type":"small_molecule",
-      "thumbnail":"images/small_molecule_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Small molecule"
           },
+        "node_type":"small_molecule",
         "image":{"xlink:href":"images/SMALL_MOLECULE.png","width":60,"height":60}
       }
     },
@@ -161,12 +150,11 @@
       "type":"basic.Image",
       "position":{"x":0,"y":780},
       "size":{"width":60,"height":60},
-      "node_type":"tyrosin_kinase_receptor",
-      "thumbnail":"images/tyrosin_kinase_receptor_thumbnail.png",
       "attrs":{
         "text":{
           "text":"Tyrosin kinase receptor"
           },
+        "node_type":"tyrosin_kinase_receptor",
         "image":{"xlink:href":"images/TYROSIN-KINASE RECEPTOR.png","width":60,"height":60}
       }
 

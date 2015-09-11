@@ -1,4 +1,5 @@
 {
+  "theme":"basic",
   "nodes":{
     "basic_rect":{
       "schema":{
