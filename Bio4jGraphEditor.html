@@ -660,6 +660,7 @@
    }
 
    if(nodeIsBeingDragged){
+      $("#graph-container").css("cursor", "move");
       updateSelectionRectPosition();
    }
 
@@ -668,6 +669,7 @@
     //console.log("mouse up!");
     paperIsPanning = false;
     nodeIsBeingDragged = false;
+    $("#graph-container").css("cursor", "pointer");
  });
 
  <!--===================================================================-->
@@ -2160,7 +2162,9 @@
   */
   function loadConfigJSON(){
     console.log("loadConfigJSON");
-    $.getJSON("data/Config.json", function(json) {
+    var configJsonPath = "data/" + location.search.substr(1);
+    console.log("configJsonPath",configJsonPath);
+    $.getJSON(configJsonPath, function(json) {
         nodeLabelMaxLength = json.node_label_max_length;
         linkLabelMaxLength = json.link_label_max_length;
         linkDefaultFontSize = json.link_labels_default_font_size;
@@ -2172,7 +2176,8 @@
         ////console.log(nodeLabelMaxLength);
 
         launchInReadOnlyMode = json.launch_in_read_only_mode;
-        if(launchInReadOnlyMode){
+        console.log("launchInReadOnlyMode",launchInReadOnlyMode);
+        if(launchInReadOnlyMode == "true"){
           console.log("launchInReadOnlyMode")
           applyReadOnlyMode(true);
 
