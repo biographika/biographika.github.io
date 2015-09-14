@@ -132,9 +132,8 @@
               <li>
                 <div>
                   <span class="btn btn-default btn-file" title="Load diagram file">
-                      <i class="fa fa-upload"></i>
-                      <!--Load file...
-                      <input type="file" accept=".json" >
+                      <i class="fa fa-upload"></i>                      
+                      <input type="file" accept=".json">
                   </span>
                 </div>
               </li>
@@ -212,7 +211,7 @@
               </li>
               <li>
                 <button id="takeSnapshotButton" title="Take snapshot" onclick="takeSnapshot()" type="button" class="btn btn-default">
-                  <i class="fa fa-camera"></i>
+                  <i class="fa fa-print"></i>
                 </button>
               </li>
               <li>
@@ -2121,7 +2120,9 @@
   function loadThemesJSON(){
     console.log("loadThemesJSON");
     $.getJSON(themesFileURL, function(json) {
+      console.log("inside getJSON call!")
       themesJSON = json;
+      console.log("themesJSON",themesJSON);
     });
   }
 
