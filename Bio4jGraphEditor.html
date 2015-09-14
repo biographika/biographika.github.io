@@ -816,7 +816,17 @@
     paper.on("cell:mouseover",
       function(cellView, evt, x, y){
         if(cellView.model == backgroundBox){
-
+          $(".element").css("cursor","pointer");
+        }else{
+          if(cellView.model.isLink()){
+            $(".element").css("cursor","pointer");
+          }else{
+            if(selectedNode){
+              if(cellView.id == selectedNode.id){
+                $(".element").css("cursor","move");
+              }
+            }
+          }  
         }
       }
     );
@@ -1214,7 +1224,7 @@
         var currentStrokeWidth = cellView.model.attr('.connection/stroke-width');
         cellView.model.attr({'.connection': { 'stroke-width': currentStrokeWidth/2 }});
 
-        seletecdLink = null;
+        selectedLink = null;
         lastSelectedLink = null;
 
       }      
