@@ -422,7 +422,7 @@
   Listeners for events fired by the paper are declared also here.
   */
   function initializeGraphPaper(){
-    ////console.log("initializeGraphPaper");
+    console.log("initializeGraphPaper");
 
     graph = new joint.dia.Graph;
 
@@ -432,7 +432,8 @@
       model: graph,
       width: paperInitialWidth,
       height: paperInitialHeight,
-      defaultLink: getDefaultLink
+      defaultLink: getDefaultLink,
+      validateConnection: validateConnectionOverriden
     });
 
     //---update dimension values on text inputs
@@ -1608,7 +1609,7 @@
           if(!currentLabelObj){
             currentLabel = "";
           }else{
-            currentLabel = currentLabelObj.model.attr("text/text");
+            currentLabel = currentLabelObj.attrs.text.text
           }
             
           //console.log("currentLabel", currentLabel);
@@ -1908,4 +1909,95 @@
 
     paper.render();
   }
+
+  function validateConnectionOverriden(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+    console.log("validateConnectionOverriden");
+
+    var linkType = linkView.model.prop("link_type");
+    var targetType = cellViewT.model.prop("node_type");
+    var sourceType = cellViewS.model.prop("node_type");
+
+    console.log("linkType",linkType);
+
+    if(linkType){
+
+      console.log("hola hola holaaaaa");
+
+      var linkToSelf = cellViewS.id == cellViewT.id;
+
+      if(!linkToSelf){
+        //delete vertices previously created
+        linkView.model.set('vertices',"");
+      }
+
+      var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
+      var allowedTargets = linkTypeRestrictions.allowed_targets;
+      var allowedSources = linkTypeRestrictions.allowed_sources;
+
+      var sourceOK = false;
+      var targetOK = false;
+
+      console.log("allowedSources",allowedSources);
+      console.log("allowedTargets",allowedTargets);
+      var wildCardSources = ($.inArray("*", allowedSources) >= 0);
+      var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
+
+      console.log("wildCardSources",wildCardSources);
+      console.log("wildCardTargets",wildCardTargets);
+
+      if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
+        sourceOK = true;
+      }
+      if(($.inArray(targetType, allowedTargets) >= 0) || wildCardTargets){
+        targetOK = true;
+      }
+
+      var connectionValidated = sourceOK && targetOK;
+
+      if(connectionValidated){
+        if(linkToSelf){
+          linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));
+          linkView.model.attr('smooth',true);
+        }
+      }
+
+      return connectionValidated;
+
+    }else{
+      return false;
+    }
+
+    
+  }
+
+  function getVerticesForLinkEdgeToSelf(cellView){
+
+    var vertices = [];
+    var cellPosition = cellView.model.prop('position');
+    var cellHeight = cellView.model.attr('image/height');
+    var cellWidth = cellView.model.attr('image/width');
+
+    var initialPositionX = cellPosition.x;
+    var initialPositionY = cellPosition.y;
+
+    var tempPositionX = initialPositionX + (cellWidth * 1.5);
+    var tempPositionY = initialPositionY + (cellHeight * 0.5);
+
+    vertices[0] = {x:tempPositionX,y:tempPositionY};
+
+    tempPositionX = initialPositionX + (cellWidth * 1.5);
+    tempPositionY = initialPositionY - (cellHeight * 0.5);
+
+    vertices[1] = {x:tempPositionX,y:tempPositionY};
+
+    tempPositionX = initialPositionX + (cellWidth * 0.5);
+    tempPositionY = initialPositionY - (cellHeight * 0.5);
+
+    vertices[2] = {x:tempPositionX,y:tempPositionY};
+
+    return vertices;
+
+
+  }
+
 

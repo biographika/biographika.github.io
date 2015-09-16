@@ -51,8 +51,8 @@
     {
       "type":"link",
       "smooth": true,
-      "attrs": {
-        "link_type":"part_of_link",
+      "link_type":"part_of_link",
+      "attrs": {        
         "connection": { "stroke": "#E74C3C", "stroke-width": 2 },
         ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
         ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }

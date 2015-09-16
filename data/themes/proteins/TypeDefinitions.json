@@ -204,7 +204,17 @@
       },
       "form":[
         "Is_a_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "eosinophile",
+          "cytoplasmic_protein",
+          "dendritic_cell"
+        ],
+        "allowed_targets":[
+          "eosinophile"
+        ]
+      }
     },
     "interacts_link":{
       "schema":{
@@ -218,7 +228,15 @@
       },
       "form":[
         "Interacts_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "*"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
     },
     "associated_to_link":{
       "schema":{
@@ -232,7 +250,15 @@
       },
       "form":[
         "associated_to_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "*"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
     },
     "part_of_link":{
       "schema":{
@@ -246,7 +272,15 @@
       },
       "form":[
         "part_of_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "*"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
     }
   }
 }
