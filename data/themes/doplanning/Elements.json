@@ -5,159 +5,398 @@
       "type":"basic.Image",
       "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
+      "node_type":"tree",
       "attrs":{
         "text":{
-          "text":"Cytoplasmic protein"
-          },
-        "node_type":"cytoplasmic_protein",
-        "image":{"xlink:href":"images/CYTOPLASMIC_PROTEIN.png","width":60,"height":60}
+          "text":"Tree"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_tree.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":0},
       "size":{"width":60,"height":60},
+      "node_type":"typology",
       "attrs":{
         "text":{
-          "text":"Dendritic cell"
-          },
-        "node_type":"dendritic_cell",
-        "image":{"xlink:href":"images/DENDRITIC_CELL.png","width":60,"height":60}
+          "text":"Typology"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_typology.png","width":60,"height":60}
       }
-
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":130},
       "size":{"width":60,"height":60},
+      "node_type":"user_preferences",
       "attrs":{
         "text":{
-          "text":"Eosinophile"
-          },
-        "node_type":"eosinophile",
-        "image":{"xlink:href":"images/EOSINOPHILE.png","width":60,"height":60}
+          "text":"User Preferences"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_user_preferences.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":195},
       "size":{"width":60,"height":60},
+      "node_type":"users",
       "attrs":{
         "text":{
-          "text":"Epithelial cell"
-          },
-        "node_type":"epithelial_cell",
-        "image":{"xlink:href":"images/EPITHELIAL CELL.png","width":60,"height":60}
+          "text":"Users"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_users.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":260},
       "size":{"width":60,"height":60},
+      "node_type":"user",
       "attrs":{
         "text":{
-          "text":"Fibroblast"
-          },
-        "node_type":"fibroblast",
-        "image":{"xlink:href":"images/FIBROBLAST.png","width":60,"height":60}
+          "text":"User"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_users.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":325},
       "size":{"width":60,"height":60},
+      "node_type":"news",
       "attrs":{
         "text":{
-          "text":"G Protein coupled receptor"
+          "text":"News"
           },
-        "node_type":"g_protein_coupled_receptor",
-        "image":{"xlink:href":"images/G_PROTEIN_COUPLED_RECEPTOR.png","width":60,"height":60}
+        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_news.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":390},
       "size":{"width":60,"height":60},
+      "node_type":"publication",
       "attrs":{
         "text":{
-          "text":"Lymphocyte"
-          },
-        "node_type":"lymphocyte",
-        "image":{"xlink:href":"images/LYMPHOCYTE.png","width":60,"height":60}
+          "text":"Publication"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_pubmed.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":455},
       "size":{"width":60,"height":60},
+      "node_type":"search",
       "attrs":{
         "text":{
-          "text":"Mastocyte"
-          },
-        "node_type":"mastocyte",
-        "image":{"xlink:href":"images/MASTOCYTE.png","width":60,"height":60}
+          "text":"Search"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_search.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":520},
       "size":{"width":60,"height":60},
+      "node_type":"task_done",
       "attrs":{
         "text":{
-          "text":"Monocyte macrophage"
-          },
-        "node_type":"monocyte_macrophage",
-        "image":{"xlink:href":"images/MONOCYTE_MACROPHAGE.png","width":60,"height":60}
+          "text":"Task done"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_task_done.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":585},
       "size":{"width":60,"height":60},
+      "node_type":"task",
       "attrs":{
         "text":{
-          "text":"Neutrophile"
-          },
-        "node_type":"neutrophile",
-        "image":{"xlink:href":"images/NEUTROPHILE.png","width":60,"height":60}
+          "text":"Task"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_task.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":650},
       "size":{"width":60,"height":60},
+      "node_type":"task_not_done",
       "attrs":{
         "text":{
-          "text":"Plasmocyte"
-          },
-        "node_type":"plasmocyte",
-        "image":{"xlink:href":"images/PLASMOCYTE.png","width":60,"height":60}
+          "text":"Task not done"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_task_not_done.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":715},
       "size":{"width":60,"height":60},
+      "node_type":"form_view",
       "attrs":{
         "text":{
-          "text":"Small molecule"
-          },
-        "node_type":"small_molecule",
-        "image":{"xlink:href":"images/SMALL_MOLECULE.png","width":60,"height":60}
+          "text":"Form view"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_form_view.png","width":60,"height":60}
       }
     },
     {
       "type":"basic.Image",
       "position":{"x":0,"y":780},
       "size":{"width":60,"height":60},
+      "node_type":"form",
       "attrs":{
         "text":{
-          "text":"Tyrosin kinase receptor"
-          },
-        "node_type":"tyrosin_kinase_receptor",
-        "image":{"xlink:href":"images/TYROSIN-KINASE RECEPTOR.png","width":60,"height":60}
+          "text":"Form"
+          },    
+        "image":{"xlink:href":"data/themes/doplanning/images/t_form.png","width":60,"height":60}
       }
-
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"image",
+      "attrs":{
+        "text":{
+          "text":"Image"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_image.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"list",
+      "attrs":{
+        "text":{
+          "text":"List"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_list.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"list_view",
+      "attrs":{
+        "text":{
+          "text":"List view"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_list_view.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"message",
+      "attrs":{
+        "text":{
+          "text":"Message"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_message.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"event",
+      "attrs":{
+        "text":{
+          "text":"Event"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_event.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"area_file_locked",
+      "attrs":{
+        "text":{
+          "text":"Area file locked"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_file_area_locked.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"area_file",
+      "attrs":{
+        "text":{
+          "text":"Area file"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_file_area.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"edition_of_file_locked",
+      "attrs":{
+        "text":{
+          "text":"Edition of file locked"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_file_edited_locked.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"edition_of_file",
+      "attrs":{
+        "text":{
+          "text":"Edition of file"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_file_edited.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"file",
+      "attrs":{
+        "text":{
+          "text":"File"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_file.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"files",
+      "attrs":{
+        "text":{
+          "text":"files"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_files.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"intranet_area",
+      "attrs":{
+        "text":{
+          "text":"Intranet area"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_area_intranet.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"web_area",
+      "attrs":{
+        "text":{
+          "text":"Web area"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_area_web.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"area",
+      "attrs":{
+        "text":{
+          "text":"Area"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_area.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"bin",
+      "attrs":{
+        "text":{
+          "text":"Bin"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_bin.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"consultation",
+      "attrs":{
+        "text":{
+          "text":"Consultation"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_consultation.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"doplanning_document",
+      "attrs":{
+        "text":{
+          "text":"Doplanning document"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_dp_document.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"web_entry",
+      "attrs":{
+        "text":{
+          "text":"Web entry"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_entry.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"forbidden_area",
+      "attrs":{
+        "text":{
+          "text":"Forbidden area"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_area_disabled.png","width":60,"height":60}
+      }
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":780},
+      "size":{"width":60,"height":60},
+      "node_type":"links",
+      "attrs":{
+        "text":{
+          "text":"Links"
+          },        
+        "image":{"xlink:href":"data/themes/doplanning/images/t_area_web.png","width":60,"height":60}
+      }
     }
   ]
 }

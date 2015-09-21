@@ -1,253 +1,725 @@
 {
   "theme":"doplanning",
-  "theme":"proteins",
   "nodes":{
-    "cytoplasmic_protein":{
+    "tree":{
       "schema":{
         "type": "object",
         "properties": {
           "name": {
             "title": "Name",
             "type": "string"
-          },
-          "uniprot_id": {
-            "title": "UniProt ID",
-            "description": "UniProt KB database identifier",
-            "type": "string"
           }
         }
       },
       "form":[
-        "name",
-        "uniprot_id"
+        "name"
       ]
     },
-    "dendritic_cell":{
+    "typology":{
       "schema":{
         "type": "object",
         "properties": {
           "name": {
             "title": "Name",
             "type": "string"
-          },
-          "uniprot_id": {
-            "title": "UniProt ID",
-            "description": "UniProt KB database identifier",
-            "type": "string"
-          },
-          "dendritic_property": {
-            "title": "Dendritic property",
-            "description": "UniProt KB database identifier",
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "user_preferences":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
             "type": "string"
           }
         }
       },
       "form":[
-        "name",
-        "uniprot_id",
-        "dendritic_property"
+        "name"
       ]
     },
-    "eosinophile":{
+    "users":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "epithelial_cell":{
+    "user":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "fibroblast":{
+    "news":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "g_protein_coupled_receptor":{
+    "publication":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "lymphocyte":{
+    "search":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "mastocyte":{
+    "task_done":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "monocyte_macrophage":{
+    "task":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "neutrophile":{
+    "task_not_done":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "plasmocyte":{
+    "form_view":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "small_molecule":{
+    "form":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
+      },
+      "form":[
+        "name"
+      ]
     },
-    "tyrosin_kinase_receptor":{
+    "home":{
       "schema":{
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "uniprot_id": {
-          "title": "UniProt ID",
-          "description": "UniProt KB database identifier",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
         }
-      }
-   }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "image":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "list":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "list_view":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "message":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "event":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "area_file_locked":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "area_file":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "edition_of_file_locked":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "edition_of_file":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "file":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "files":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "intranet_area":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "web_area":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "area":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "bin":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "consultation":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "doplanning_document":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "web_entry":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+    "forbidden_area":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    }
   },
   "links":{
-    "is_a_link":{
+    "new_link":{
       "schema":{
         "type": "object",
-        "properties":{
-          "Is_a_property": {
-            "title": "Is_a property",
-            "type": "string"
-          }
+        "properties":{          
         }        
       },
       "form":[
-        "Is_a_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
     },
-    "interacts_link":{
+    "delete_link":{
       "schema":{
         "type": "object",
-        "properties":{
-          "Interacts_property": {
-            "title": "Interacts property",
-            "type": "string"
-          }
+        "properties":{          
         }        
       },
       "form":[
-        "Interacts_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
     },
-    "associated_to_link":{
+    "upload_link":{
       "schema":{
         "type": "object",
-        "properties":{
-          "associated_to_property": {
-            "title": "Associated to property",
-            "type": "string"
-          }
+        "properties":{          
         }        
       },
       "form":[
-        "associated_to_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user"
+        ],
+        "allowed_targets":[
+          "file",
+          "area_file",
+          "doplanning_document",
+          "image"
+        ]
+      }
     },
-    "part_of_link":{
+    "download_link":{
       "schema":{
         "type": "object",
-        "properties":{
-          "part_of_property": {
-            "title": "Part of property",
-            "type": "string"
-          }
-        }         
+        "properties":{          
+        }        
       },
       "form":[
-        "part_of_property"
-      ]
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user"
+        ],
+        "allowed_targets":[
+          "file",
+          "area_file",
+          "doplanning_document",
+          "publication",
+          "image"
+        ]
+      }
+    },
+    "edit_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
+    },
+    "do_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
+    },
+    "send_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "message"
+        ]
+      }
+    },
+    "publish_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
+    },
+    "is_part_of_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "*"
+        ],
+        "allowed_targets":[
+          "area"
+        ]
+      }
+    },
+    "in_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "*"
+        ],
+        "allowed_targets":[
+          "area"
+        ]
+      }
+    },
+    "define_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "*"
+        ]
+      }
+    },
+    "fill_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user",
+          "users"
+        ],
+        "allowed_targets":[
+          "form",
+          "list"
+        ]
+      }
+    },
+    "notify_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "*"
+        ],
+        "allowed_targets":[
+          "user",
+          "users"
+        ]
+      }
+    },
+    "go_to_link":{
+      "schema":{
+        "type": "object",
+        "properties":{          
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "user"
+        ],
+        "allowed_targets":[
+          "home",
+          "search"
+        ]
+      }
     }
   }
 }

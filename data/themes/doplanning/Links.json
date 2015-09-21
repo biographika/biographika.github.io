@@ -4,30 +4,225 @@
     {
       "type":"link",
       "smooth": true,
-      ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
-      ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
+      "link_type":"new_link",
       "attrs": {
-        "link_type":"message_to_link"
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }        
       },
       "labels": [
         { "position": ".5",
           "attrs": {
-            "text": { "text": "message to", "fill": "white", "font-family": "sans-serif" },
-            "rect": { "stroke": "#F39C12", "stroke-width": 20, "rx": 5, "ry": 5 } }}
+            "text": { "text": "New"}
+          }
+        }
       ]
     },
     {
       "type":"link",
       "smooth": true,
-      ".marker-source": { "d": "M 10 0 L 0 5 L 10 10 z" },
-      ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" },
+      "link_type":"delete_link",
       "attrs": {
-        "link_type":"belongs_to_area_link"
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
       },
       "labels": [
         { "position": ".5",
           "attrs": {
-            "text": { "text": "belongs to area"}
+            "text": { "text": "delete"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"upload_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "upload"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"download_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "download"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"edit_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "edit"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"do_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "do"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"send_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+        
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "send"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"publish_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "publish"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"is_part_of_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "is part of"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"in_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "in"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"define_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "define"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"fill_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "fill"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"notify_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "notify"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"set_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "set"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"go_to_link",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "go to"}
           }
         }
       ]

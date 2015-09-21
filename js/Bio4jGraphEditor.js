@@ -363,10 +363,7 @@
     var selectedThemeName = event.currentTarget.getElementsByTagName("a")[0].textContent;
 
     console.log("selectedThemeName",selectedThemeName);
-    var selectedTheme = themesJSON[selectedThemeName];
-    console.log("selectedTheme",selectedTheme);
-
-    
+    loadTheme(selectedThemeName);    
 
   });
 
@@ -395,6 +392,8 @@
       ////console.log("nodeTypesModalFirstTimeShown");
       initializeNodeTypesPaper(currentTheme.elements);
     }else{
+      console.log("currentTheme",currentTheme);
+      console.log("currentTheme.elements", currentTheme.elements)
       loadNodeTypesTheme(currentTheme.elements);
     }
     nodeTypesModalFirstTimeShown = false;
@@ -712,8 +711,8 @@
   Loads the node type theme specified by the JSON at the URL provided
   @param {string} url - URL pointing to the theme file with the definition of the node types
   */
-  function loadNodeTypesTheme(url){
-    ////console.log("loadNodeTypesTheme");
+  function loadNodeTypesTheme(url){ 
+    //console.log("loadNodeTypesTheme: " + url);
     //----loading JSON WITH THEME-----------------------
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -1918,6 +1917,8 @@
     var sourceType = cellViewS.model.prop("node_type");
 
     console.log("linkType",linkType);
+    console.log("sourceType",sourceType);
+    console.log("targetType",targetType);
 
     if(linkType){
 
@@ -1929,6 +1930,8 @@
         //delete vertices previously created
         linkView.model.set('vertices',"");
       }
+
+      console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);
 
       var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
       var allowedTargets = linkTypeRestrictions.allowed_targets;
@@ -1944,6 +1947,7 @@
 
       console.log("wildCardSources",wildCardSources);
       console.log("wildCardTargets",wildCardTargets);
+      console.log("sourceType",sourceType);
 
       if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
         sourceOK = true;
@@ -1951,6 +1955,9 @@
       if(($.inArray(targetType, allowedTargets) >= 0) || wildCardTargets){
         targetOK = true;
       }
+
+      console.log("sourceOK", sourceOK);
+      console.log("targetOK", targetOK);
 
       var connectionValidated = sourceOK && targetOK;
 
