@@ -14,9 +14,18 @@
  var lastPositionMouseX;
  var lastPositionMouseY;
  /**
- Flag indicating whether the selected cell is currently being dragged
+ Flag indicating whether a node is currently being dragged
  */
  var nodeIsBeingDragged = false;
+ /**
+ Node that is currently being dragged
+ */
+ var nodeBeingDragged;
+ /**
+ Flag indicating whether a node is currently being dragged
+ */
+ var selectedNodeIsBeingDragged = false;
+
  //.........................................
  //.......paper zooming related vars........
  /**
@@ -239,17 +248,18 @@
  <!--===================DOCUMENT EVENT HANDLERS======================== -->
  $(document).mousemove(function( event ) {
 
+   var tempClientX = event.clientX;
+   var tempClientY = event.clientY;
+   var differenceX = tempClientX - lastPositionMouseX;
+   var differenceY = tempClientY - lastPositionMouseY;
+
+   lastPositionMouseX += differenceX;
+  lastPositionMouseY += differenceY;
+
    if(paperIsPanning){
-
-     var tempClientX = event.clientX;
-     var tempClientY = event.clientY;
-     var differenceX = tempClientX - lastPositionMouseX;
-     var differenceY = tempClientY - lastPositionMouseY;
+     
      var currentScrollLeft = $("#graph-container").scrollLeft();
-     var currentScrollTop = $("#graph-container").scrollTop();
-
-     lastPositionMouseX += differenceX;
-     lastPositionMouseY += differenceY;
+     var currentScrollTop = $("#graph-container").scrollTop();     
 
      $("#graph-container").scrollLeft(currentScrollLeft + differenceX);
      $("#graph-container").scrollTop(currentScrollTop + differenceY);
@@ -257,7 +267,11 @@
    }
 
    if(nodeIsBeingDragged){
-      $("#graph-container").css("cursor", "move");
+      $("#graph-container").css("cursor", "move");      
+      updateLinkPointsIfAny(nodeBeingDragged, differenceX, differenceY);
+   }
+   if(selectedNodeIsBeingDragged){
+      $("#graph-container").css("cursor", "move"); 
       updateSelectionRectPosition();
    }
 
@@ -266,6 +280,8 @@
     //console.log("mouse up!");
     paperIsPanning = false;
     nodeIsBeingDragged = false;
+    selectedNodeIsBeingDragged = false;
+    nodeBeingDragged = null;
     $("#graph-container").css("cursor", "pointer");
  });
 
@@ -476,10 +492,14 @@
             if(selectedNode){
               //console.log("selectedNode is true", selectedNode);
               if(selectedNode.model.id == cellView.model.id){
-                //console.log("selectednode and the same");
-                nodeIsBeingDragged = true;
+                //console.log("selectednode and the same");                
+                selectedNodeIsBeingDragged = true;
+                console.log("selected node is being dragged!!!!");
               }
-            }            
+            }
+            nodeIsBeingDragged = true;   
+            console.log("Node is being dragged!!!!"); 
+            nodeBeingDragged = cellView;        
           }          
         }
       }
@@ -1632,7 +1652,7 @@
   /**
   Opens the modal dialog where the current link type can be selected
   */
-  function openDialogselectLinkTypeType(){
+  function openDialogselectLinkType(){
     $('#link_types_dialog').modal({
          show: true
      });
@@ -1731,9 +1751,9 @@
   Loads the JSON file holding all the configuration values
   */
   function loadConfigJSON(){
-    console.log("loadConfigJSON");
+    //console.log("loadConfigJSON");
     var configJsonPath = "data/" + location.search.substr(1);
-    console.log("configJsonPath",configJsonPath);
+    //console.log("configJsonPath",configJsonPath);
     $.getJSON(configJsonPath, function(json) {
         nodeLabelMaxLength = json.node_label_max_length;
         linkLabelMaxLength = json.link_label_max_length;
@@ -1746,9 +1766,9 @@
         ////console.log(nodeLabelMaxLength);
 
         launchInReadOnlyMode = json.launch_in_read_only_mode;
-        console.log("launchInReadOnlyMode",launchInReadOnlyMode);
+        //console.log("launchInReadOnlyMode",launchInReadOnlyMode);
         if(launchInReadOnlyMode == "true"){
-          console.log("launchInReadOnlyMode")
+          //console.log("launchInReadOnlyMode")
           applyReadOnlyMode(true);
 
           //----removing elements that won't be used-----
@@ -1760,22 +1780,22 @@
   }
 
   function loadThemesJSON(){
-    console.log("loadThemesJSON");
+    //console.log("loadThemesJSON");
     $.getJSON(themesFileURL, function(json) {
-      console.log("inside getJSON call!")
+      //console.log("inside getJSON call!")
       themesJSON = json;
-      console.log("themesJSON",themesJSON);
+      //console.log("themesJSON",themesJSON);
     });
   }
 
   function loadTheme(jsonThemeName){
-    console.log("loadTheme");
-    console.log("jsonThemeName",jsonThemeName);
+    //console.log("loadTheme");
+    //console.log("jsonThemeName",jsonThemeName);
     var jsonTheme = themesJSON[jsonThemeName];    
-    console.log("jsonTheme",jsonTheme);
+    //console.log("jsonTheme",jsonTheme);
     currentTheme = jsonTheme;
     var typeDefinitionsURL = jsonTheme.type_definitions;
-    console.log("typeDefinitionsURL",typeDefinitionsURL);
+    //console.log("typeDefinitionsURL",typeDefinitionsURL);
     loadTypeDefinitions(typeDefinitionsURL);
   }
 
@@ -1883,7 +1903,7 @@
   }
 
   function applyReadOnlyMode(flag){
-    console.log("applyReadOnlyMode");
+    //console.log("applyReadOnlyMode");
     var saveChangesMetadataButton = document.getElementById('saveMetadataChangesButton');
     if(flag){
       readOnlyMode = true;
@@ -1910,19 +1930,19 @@
   }
 
   function validateConnectionOverriden(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-    console.log("validateConnectionOverriden");
+    //console.log("validateConnectionOverriden");
 
     var linkType = linkView.model.prop("link_type");
     var targetType = cellViewT.model.prop("node_type");
     var sourceType = cellViewS.model.prop("node_type");
 
-    console.log("linkType",linkType);
-    console.log("sourceType",sourceType);
-    console.log("targetType",targetType);
+    //console.log("linkType",linkType);
+    //console.log("sourceType",sourceType);
+    //console.log("targetType",targetType);
 
     if(linkType){
 
-      console.log("hola hola holaaaaa");
+      //console.log("hola hola holaaaaa");
 
       var linkToSelf = cellViewS.id == cellViewT.id;
 
@@ -1931,7 +1951,7 @@
         linkView.model.set('vertices',"");
       }
 
-      console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);
+      //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);
 
       var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
       var allowedTargets = linkTypeRestrictions.allowed_targets;
@@ -1940,14 +1960,14 @@
       var sourceOK = false;
       var targetOK = false;
 
-      console.log("allowedSources",allowedSources);
-      console.log("allowedTargets",allowedTargets);
+      //console.log("allowedSources",allowedSources);
+      //console.log("allowedTargets",allowedTargets);
       var wildCardSources = ($.inArray("*", allowedSources) >= 0);
       var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
 
-      console.log("wildCardSources",wildCardSources);
-      console.log("wildCardTargets",wildCardTargets);
-      console.log("sourceType",sourceType);
+      //console.log("wildCardSources",wildCardSources);
+      //console.log("wildCardTargets",wildCardTargets);
+      //console.log("sourceType",sourceType);
 
       if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
         sourceOK = true;
@@ -1956,8 +1976,8 @@
         targetOK = true;
       }
 
-      console.log("sourceOK", sourceOK);
-      console.log("targetOK", targetOK);
+      //console.log("sourceOK", sourceOK);
+      //console.log("targetOK", targetOK);
 
       var connectionValidated = sourceOK && targetOK;
 
@@ -1971,6 +1991,8 @@
       return connectionValidated;
 
     }else{
+      alert("Please select a link type first");
+      openDialogselectLinkType();
       return false;
     }
 
@@ -2007,4 +2029,27 @@
 
   }
 
+  function updateLinkPointsIfAny(node,differenceX, differenceY){
+    console.log("updateLinkPointsIfAny");
+    console.log("differenceX", differenceX);
+    console.log("differenceY", differenceY);
+    //console.log("node", node);
+    var links = graph.getConnectedLinks(node.model);
 
+    //console.log("links",links);
+
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      if(link.prop('target/id') == link.prop('source/id')){
+        //console.log("link to self!");
+        var vertices = link.get('vertices');
+        for(var j=0;j < vertices.length; j++){
+          var vertex = vertices[j];
+          vertex.x += differenceX;
+          vertex.y += differenceY;
+          //console.log("vertex", vertex);
+        }
+      }
+      
+    }
+}
