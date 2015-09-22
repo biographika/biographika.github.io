@@ -1251,6 +1251,10 @@
           selectionRectCell.toFront();
         }
         selectedNode.model.toFront();
+        var links = graph.getConnectedLinks(selectedNode.model);
+        for (var i = 0; i < links.length; i++) {
+          links[i].toFront();
+        };
       }      
     }
   }
@@ -1262,6 +1266,10 @@
     if(selectedNode){
       if(!readOnlyMode){
         selectedNode.model.toBack();
+        var links = graph.getConnectedLinks(selectedNode.model);
+        for (var i = 0; i < links.length; i++) {
+          links[i].toFront();
+        };
         if(selectionRectCell){
           selectionRectCell.toBack();
         }
@@ -2031,9 +2039,9 @@
   }
 
   function updateLinkPointsIfAny(node,differenceX, differenceY){
-    console.log("updateLinkPointsIfAny");
-    console.log("differenceX", differenceX);
-    console.log("differenceY", differenceY);
+    //console.log("updateLinkPointsIfAny");
+    //console.log("differenceX", differenceX);
+    //console.log("differenceY", differenceY);
     //console.log("node", node);
     var links = graph.getConnectedLinks(node.model);
 
