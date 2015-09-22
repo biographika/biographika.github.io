@@ -9,10 +9,10 @@
  Flag indicating whether the paper is being currently panned
  */
  var paperIsPanning = false;
- var pointerDownClientX;
- var pointerDownClientY;
- var lastPositionMouseX;
- var lastPositionMouseY;
+ var pointerDownClientX = 0;
+ var pointerDownClientY = 0;
+ var lastPositionMouseX = 0;
+ var lastPositionMouseY = 0;
  /**
  Flag indicating whether a node is currently being dragged
  */
@@ -253,8 +253,9 @@
    var differenceX = tempClientX - lastPositionMouseX;
    var differenceY = tempClientY - lastPositionMouseY;
 
+
    lastPositionMouseX += differenceX;
-  lastPositionMouseY += differenceY;
+   lastPositionMouseY += differenceY;
 
    if(paperIsPanning){
      
@@ -267,7 +268,7 @@
    }
 
    if(nodeIsBeingDragged){
-      $("#graph-container").css("cursor", "move");      
+      $("#graph-container").css("cursor", "move");   
       updateLinkPointsIfAny(nodeBeingDragged, differenceX, differenceY);
    }
    if(selectedNodeIsBeingDragged){
@@ -1311,7 +1312,7 @@
   It emulates the logic that would otherwise be associated to blank:pointer_down events
   */
   function onStageDown(evt, x, y){
-    ////console.log("onStageDown");
+    console.log("onStageDown");
 
     pointerDownClientX = evt.clientX;
     pointerDownClientY = evt.clientY;
