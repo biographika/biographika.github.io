@@ -204,6 +204,8 @@
  var alpacaMetadataFormControl;
  var lastLinkSelectedStrokeWidth = 1;
 
+ var currentTooltipCell = null;
+
  // Shortcuts.
  var rect = joint.shapes.basic.Rect;
  var path = joint.shapes.basic.Path;
@@ -212,7 +214,7 @@
  var polygon = joint.shapes.basic.Polygon;
  var polyline = joint.shapes.basic.Polyline;
  var text = joint.shapes.basic.Text;
- var link = joint.dia.Link;
+ var link = joint.dia.Link; 
  
 
  //=================Config vars=======================
@@ -462,6 +464,16 @@
       }
     );
 
+    paper.on("cell:mouseout",
+      function(cellView, evt){
+        console.log("cell:mouseout");
+        if(currentTooltipCell){
+          currentTooltipCell.remove();
+          currentTooltipCell = null;
+        }
+      }
+    );
+
     paper.on("cell:mouseover",
       function(cellView, evt, x, y){
         if(cellView.model == backgroundBox){
@@ -495,11 +507,11 @@
               if(selectedNode.model.id == cellView.model.id){
                 //console.log("selectednode and the same");                
                 selectedNodeIsBeingDragged = true;
-                console.log("selected node is being dragged!!!!");
+                //console.log("selected node is being dragged!!!!");
               }
             }
             nodeIsBeingDragged = true;   
-            console.log("Node is being dragged!!!!"); 
+            //console.log("Node is being dragged!!!!"); 
             nodeBeingDragged = cellView;        
           }          
         }
@@ -531,6 +543,10 @@
     );
 
     paper.on('cell:pointerup', function(cellView) {
+        if(currentTooltipCell){
+            currentTooltipCell.remove();
+            currentTooltipCell = null;
+        }
         if (cellView.model instanceof joint.dia.Link){
           var tempLink = cellView.model;
           if(isLinkInvalid(tempLink)){
@@ -999,6 +1015,47 @@
       graph.addCell(cell);
       return cell;
   };
+
+  var createLinkTooltipCell = function(cellView,linkTypeRestrictions){
+    var cellPosition = cellView.model.prop('position');
+    var x = cellPosition.x + 50,y = cellPosition.y;
+    var tempWidth = 130;
+    var tempHeight = 6.5;
+    //console.log("linkTypeRestrictions", linkTypeRestrictions);
+    //console.log("cellView", cellView);
+
+    var tooltipText = "Invalid source/target.\nThe allowed sources are:\n" + JSON.stringify(linkTypeRestrictions.allowed_sources) + "\nThe allowed targets are:\n" +  JSON.stringify(linkTypeRestrictions.allowed_targets);    
+    var comma = ',';
+    var re1 = new RegExp(comma, 'g');
+    tooltipText = tooltipText.replace(re1, '\n');
+    tooltipText = tooltipText.replace(']', '');
+    tooltipText = tooltipText.replace('[', '');
+    
+    var brokenTooltipText = joint.util.breakText(tooltipText, { width: tempWidth });
+
+    var numberOfLines = brokenTooltipText.split("\n").length;
+    tempHeight *= numberOfLines;
+
+
+    //console.log("tooltipText",tooltipText);
+    //console.log("brokenTooltipText",brokenTooltipText);
+
+    var cell = new rect({
+        position: { x: x, y: y },
+        size: { width: tempWidth, height: tempHeight},
+        attrs: {
+          rect: { fill: '#EBD7B7', rx: 2, ry: 2, 'stroke-width': 1},
+          text: {
+            text: tooltipText, 'font-size': 11
+          }
+        }
+    });
+
+    graph.addCell(cell);
+    return cell;
+  }
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->
 
   /**
   Clones the cell provided at the position provided
@@ -1939,71 +1996,85 @@
   }
 
   function validateConnectionOverriden(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-    //console.log("validateConnectionOverriden");
+    console.log("validateConnectionOverriden");
 
-    var linkType = linkView.model.prop("link_type");
-    var targetType = cellViewT.model.prop("node_type");
-    var sourceType = cellViewS.model.prop("node_type");
+    if(!cellViewT.model.isLink()){
 
-    //console.log("linkType",linkType);
-    //console.log("sourceType",sourceType);
-    //console.log("targetType",targetType);
+      var linkType = linkView.model.prop("link_type");
+      var targetType = cellViewT.model.prop("node_type");
+      var sourceType = cellViewS.model.prop("node_type");
 
-    if(linkType){
-
-      //console.log("hola hola holaaaaa");
-
-      var linkToSelf = cellViewS.id == cellViewT.id;
-
-      if(!linkToSelf){
-        //delete vertices previously created
-        linkView.model.set('vertices',"");
-      }
-
-      //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);
-
-      var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
-      var allowedTargets = linkTypeRestrictions.allowed_targets;
-      var allowedSources = linkTypeRestrictions.allowed_sources;
-
-      var sourceOK = false;
-      var targetOK = false;
-
-      //console.log("allowedSources",allowedSources);
-      //console.log("allowedTargets",allowedTargets);
-      var wildCardSources = ($.inArray("*", allowedSources) >= 0);
-      var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
-
-      //console.log("wildCardSources",wildCardSources);
-      //console.log("wildCardTargets",wildCardTargets);
+      //console.log("linkType",linkType);
       //console.log("sourceType",sourceType);
+      //console.log("targetType",targetType);
 
-      if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
-        sourceOK = true;
+
+      if(linkType){
+
+        var linkToSelf = cellViewS.id == cellViewT.id;
+
+        if(!linkToSelf){
+            //delete vertices previously created
+            linkView.model.set('vertices',"");
+          }
+
+        if(cellViewT.model.id != backgroundBox.id){                
+          
+          //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);
+
+          var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
+          var allowedTargets = linkTypeRestrictions.allowed_targets;
+          var allowedSources = linkTypeRestrictions.allowed_sources;
+
+          var sourceOK = false;
+          var targetOK = false;
+
+          //console.log("allowedSources",allowedSources);
+          //console.log("allowedTargets",allowedTargets);
+          var wildCardSources = ($.inArray("*", allowedSources) >= 0);
+          var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
+
+          //console.log("wildCardSources",wildCardSources);
+          //console.log("wildCardTargets",wildCardTargets);
+          //console.log("sourceType",sourceType);
+
+          if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
+            sourceOK = true;
+          }
+          if(($.inArray(targetType, allowedTargets) >= 0) || wildCardTargets){
+            targetOK = true;
+          }
+
+          //console.log("sourceOK", sourceOK);
+          //console.log("targetOK", targetOK);
+
+          var connectionValidated = sourceOK && targetOK;
+
+          if(connectionValidated){
+            if(linkToSelf){
+              linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));
+              linkView.model.attr('smooth',true);
+            }
+          }else{
+            if(!currentTooltipCell){
+              currentTooltipCell = createLinkTooltipCell(cellViewT, linkTypeRestrictions);
+            }
+            
+          }
+
+          return connectionValidated;
+        
+        }      
+
+      }else{
+        alert("Please select a link type first");
+        openDialogselectLinkType();
+        return false;
       }
-      if(($.inArray(targetType, allowedTargets) >= 0) || wildCardTargets){
-        targetOK = true;
-      }
-
-      //console.log("sourceOK", sourceOK);
-      //console.log("targetOK", targetOK);
-
-      var connectionValidated = sourceOK && targetOK;
-
-      if(connectionValidated){
-        if(linkToSelf){
-          linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));
-          linkView.model.attr('smooth',true);
-        }
-      }
-
-      return connectionValidated;
 
     }else{
-      alert("Please select a link type first");
-      openDialogselectLinkType();
       return false;
-    }
+    }   
 
     
   }
