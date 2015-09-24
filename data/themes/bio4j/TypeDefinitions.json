@@ -1,0 +1,1961 @@
+{
+  "theme":"bio4j",
+  "nodes":{
+    "enzyme":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "cofactors": {
+            "title": "Cofactors",
+            "type": "string"
+          },
+		  "official_name": {
+            "title": "Official name",
+            "type": "string"
+          },
+		  "alternate_names": {
+            "title": "Alternate names",
+            "type": "string"
+          },
+		  "comments": {
+            "title": "Comments",
+            "type": "string"
+          },
+		  "catalytic_activity": {
+            "title": "Catalytic activity",
+            "type": "string"
+          },
+		  "prosite_cross_references": {
+            "title": "Prosite cross references",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"cofactors",
+		"official_name",
+		"alternate_names",
+		"comments",
+		"catalytic_activity",
+		"prosite_cross_references"		
+      ]
+    },
+    "go":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "name": {
+            "title": "Name",
+            "type": "string"
+          },
+		  "definition": {
+            "title": "Definition",
+            "type": "string"
+          },
+		  "obsolete": {
+            "title": "Obsolete",
+            "type": "string"
+          },
+		  "comment": {
+            "title": "Comment",
+            "type": "string"
+          },
+		  "synonym": {
+            "title": "Synonym",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"name",
+		"definition",
+		"obsolete",
+		"comment",
+		"synonym"
+      ]
+    },
+	"ncbi_taxon":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "scientific_name": {
+            "title": "Scientific name",
+            "type": "string"
+          },
+		  "taxonomic_rank": {
+            "title": "Taxonomic rank",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"scientific_name",
+		"taxonomic_rank"
+      ]
+    },
+	"protein":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "accession": {
+            "title": "Accession",
+            "type": "string"
+          },
+		  "name": {
+            "title": "Name",
+            "type": "string"
+          },
+		  "short_name": {
+            "title": "Short name",
+            "type": "string"
+          },
+		  "full_name": {
+            "title": "Full name",
+            "type": "string"
+          },
+		  "modified_date": {
+            "title": "Modified date",
+            "type": "date"
+          },
+		  "uniref_100_cluster_id": {
+            "title": "UniRef100 cluster ID",
+            "type": "string"
+          },
+		  "uniref_90_cluster_id": {
+            "title": "UniRef90 cluster ID",
+            "type": "string"
+          },
+		  "uniref_50_cluster_id": {
+            "title": "UniRef50 cluster ID",
+            "type": "string"
+          },
+		  "created_date": {
+            "title": "Created date",
+            "type": "date"
+          },
+		  "mass": {
+            "title": "Mass",
+            "type": "string"
+          },
+		  "version": {
+            "title": "Version",
+            "type": "string"
+          },
+		  "length": {
+            "title": "Length",
+            "type": "integer"
+          },
+        }
+      },
+      "form":[
+        "accession",
+		"name",
+		"short_name",
+		"full_name",
+		"modified_date",
+		"uniref100_cluster_id",
+		"uniref90_cluster_id",
+		"uniref50_cluster_id",
+		"created_date",
+		"mass",
+		"version",
+		"length"
+      ]
+    },
+	"alternative_product":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"article":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "title",
+            "type": "string"
+          },
+		  "doi": {
+            "title": "DOI",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "title",
+		"doi"
+      ]
+    },
+	"db":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"book":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"city":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"consortium":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"country":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"dataset":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"gene_location":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"gene_name":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"disease":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          },
+		  "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "acronym": {
+            "title": "Acronym",
+            "type": "string"
+          },
+		  "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name",
+		"id",
+		"acronym",
+		"description"
+      ]
+    },
+	"organism":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "scientific_name": {
+            "title": "Scientific name",
+            "type": "string"
+          },
+		  "common_name": {
+            "title": "Common name",
+            "type": "string"
+          },
+		  "synonym_name": {
+            "title": "Synonym name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "scientific_name",
+		"common_name",
+		"synonym_name"
+      ]
+    },
+	"keyword":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          },
+		  "id": {
+            "title": "ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name",
+		"id"
+      ]
+    },
+	"interpro":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          },
+		  "id": {
+            "title": "ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name",
+		"id"
+      ]
+    },
+	"isoform":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          },
+		  "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "sequence": {
+            "title": "Sequence",
+            "type": "string"
+          },
+		  "note": {
+            "title": "Note",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name",
+		"id",
+		"sequence",
+		"note"
+      ]
+    },
+	"institute":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"journal":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"person":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"publisher":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"pubmed":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id"
+      ]
+    },
+	"reactome":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "pathway_name": {
+            "title": "Pathway name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"pathway_name"
+      ]
+    },
+	"pfam":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"name"
+      ]
+    },
+	"kegg":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id"
+      ]
+    },
+	"embl":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "molecule_type": {
+            "title": "Molecule type",
+            "type": "string"
+          },
+		  "protein_sequence_id": {
+            "title": "Protein sequence ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"molecule_type",
+		"protein_sequence_id"
+      ]
+    },
+	"patent":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+		  "number": {
+            "title": "Number",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "title",
+		"number"
+      ]
+    },
+	"pir":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "entry_name": {
+            "title": "Entry name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"entry_name"
+      ]
+    },
+	"unigene":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id"
+      ]
+    },
+	"ensembl":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "molecule_id": {
+            "title": "Molecule ID",
+            "type": "string"
+          },
+		  "protein_sequence_id": {
+            "title": "Protein sequence ID",
+            "type": "string"
+          },
+		  "gene_id": {
+            "title": "Gene ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"molecule_id",
+		"protein_sequence_id",
+		"gene_id"
+      ]
+    },
+	"taxon":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"thesis":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "title"
+      ]
+    },
+	"online_article":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "title"
+      ]
+    },
+	"online_journal":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"refseq":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "nucleotide_sequence_id": {
+            "title": "Nucleotide sequence ID",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"nucleotide_sequence_id"
+      ]
+    },
+	"reference":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+		  "date": {
+            "title": "Date",
+            "type": "date"
+          }
+        }
+      },
+      "form":[
+        "id",
+		"date"
+      ]
+    },
+	"sequence_caution":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"subcellular_location":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"submission":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "title"
+      ]
+    },
+	"feature_type":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"comment_type":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "name"
+      ]
+    },
+	"unpublished_observation":{
+      "schema":{
+        "type": "object",
+        "properties": {
+          "scope_key": {
+            "title": "Scope key",
+            "type": "string"
+          }
+        }
+      },
+      "form":[
+        "scope_key"
+      ]
+    },
+  },
+  "links":{
+    "is_a":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "go"
+        ],
+        "allowed_targets":[
+          "go"
+        ]
+      }
+    },
+    "part_of":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "go"
+        ],
+        "allowed_targets":[
+          "go"
+        ]
+      }
+    },
+    "has_part_of":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "go"
+        ],
+        "allowed_targets":[
+          "go"
+        ]
+      }
+    },
+    "negatively_regulates":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "go"
+        ],
+        "allowed_targets":[
+          "go"
+        ]
+      }
+    },
+    "positively_regulates":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "go"
+        ],
+        "allowed_targets":[
+          "go"
+        ]
+      }
+    },
+    "regulates":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "go"
+        ],
+        "allowed_targets":[
+          "go"
+        ]
+      }
+    },
+    "ncbi_taxon_parent":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "ncbi_taxon"
+        ],
+        "allowed_targets":[
+          "ncbi_taxon"
+        ]
+      }
+    },
+    "article_pubmed":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "article"
+        ],
+        "allowed_targets":[
+          "pubmed"
+        ]
+      }
+    },
+    "article_journal":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "volume": {
+            "title": "Volume",
+            "type": "string"
+          },
+          "first": {
+            "title": "First",
+            "type": "string"
+          },
+          "last": {
+            "title": "Last",
+            "type": "string"
+          },
+        }        
+      },
+      "form":[
+      	"volume",
+      	"first",
+      	"last"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "article"
+        ],
+        "allowed_targets":[
+          "ncbi_taxon"
+        ]
+      }
+    },
+    "book_city":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "book"
+        ],
+        "allowed_targets":[
+          "city"
+        ]
+      }
+    },
+    "book_editor":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "book"
+        ],
+        "allowed_targets":[
+          "person"
+        ]
+      }
+    },
+    "book_publisher":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "book"
+        ],
+        "allowed_targets":[
+          "publisher"
+        ]
+      }
+    },
+    "institute_country":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "institute"
+        ],
+        "allowed_targets":[
+          "country"
+        ]
+      }
+    },
+    "isoform_event_generator":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "isoform"
+        ],
+        "allowed_targets":[
+          "alternative_product"
+        ]
+      }
+    },
+    "online_article_online_journal":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "locator": {
+            "title": "Locator",
+            "type": "string"
+          }
+        }        
+      },
+      "form":[
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "online_article"
+        ],
+        "allowed_targets":[
+          "online_journal"
+        ]
+      }
+    },
+    "protein_dataset":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "locator": {
+            "title": "Locator",
+            "type": "string"
+          }
+        }        
+      },
+      "form":[
+      	"locator"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "dataset"
+        ]
+      }
+    },
+    "protein_disease":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "evidence": {
+            "title": "Evidence",
+            "type": "string"
+          }
+        }        
+      },
+      "form":[
+      	"text",
+      	"status",
+      	"evidence"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "disease"
+        ]
+      }
+    },
+    "protein_organism":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "organism"
+        ]
+      }
+    },
+    "protein_keyword":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "keyword"
+        ]
+      }
+    },
+    "protein_gene_location":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }           
+      },
+      "form":[
+      	"name"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "gene_location"
+        ]
+      }
+    },
+    "protein_gene_name":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }           
+      },
+      "form":[
+      	"name"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "gene_name"
+        ]
+      }
+    },
+    "protein_interpro":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "interpro"
+        ]
+      }
+    },
+    "protein_reactome":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "reactome"
+        ]
+      }
+    },
+    "protein_pfam":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "pfam"
+        ]
+      }
+    },
+    "protein_kegg":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "kegg"
+        ]
+      }
+    },
+    "protein_pir":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "pir"
+        ]
+      }
+    },
+    "protein_ensembl":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "ensembl"
+        ]
+      }
+    },
+    "protein_embl":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "embl"
+        ]
+      }
+    },
+    "protein_refseq":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "refseq"
+        ]
+      }
+    },
+    "protein_sequence_caution":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "id": {
+            "title": "ID",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "evidence": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "string"
+          },
+          "resource": {
+            "title": "Resource",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        }         
+      },
+      "form":[
+      	"id",
+      	"status",
+      	"evidence",
+      	"version",
+      	"position",
+      	"resource",
+      	"text"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "sequence_caution"
+        ]
+      }
+    },
+    "protein_subcellular_location":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "topology": {
+            "title": "Topology",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "evidence": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "topology_status": {
+            "title": "Topology status",
+            "type": "string"
+          }
+        }         
+      },
+      "form":[
+      	"status",
+      	"evidence",
+      	"topology",
+      	"topology_status"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "subcellular_location"
+        ]
+      }
+    },
+    "protein_unigene":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "unigene"
+        ]
+      }
+    },
+    "taxon_parent":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "taxon"
+        ],
+        "allowed_targets":[
+          "taxon"
+        ]
+      }
+    },
+    "organism_taxon":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "organism"
+        ],
+        "allowed_targets":[
+          "taxon"
+        ]
+      }
+    },
+    "protein_comment":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "evidence": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "mass": {
+            "title": "Mass",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "string"
+          },
+          "resource": {
+            "title": "Resource",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "begin": {
+            "title": "Begin",
+            "type": "string"
+          },
+          "end": {
+            "title": "End",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "absorption_max": {
+            "title": "Absorption max",
+            "type": "string"
+          },"absorption_text": {
+            "title": "Absorption text",
+            "type": "string"
+          },"kinetics_xml": {
+            "title": "Kinetics XML",
+            "type": "string"
+          },"ph_dependence": {
+            "title": "PH dependence",
+            "type": "string"
+          },"redox_potential": {
+            "title": "Redox potential",
+            "type": "string"
+          },"redox_potential_evidence": {
+            "title": "Redox potential evidence",
+            "type": "string"
+          },"temperature_dependence": {
+            "title": "Temperature dependence",
+            "type": "string"
+          }               
+        }         
+      },
+      "form":[
+      	"status",
+      	"evidence",
+      	"end",
+      	"position",
+      	"begin",
+      	"text",
+      	"mass",
+      	"method",
+      	"absorption_max",
+      	"absorption_text",
+      	"kinetics_xml",
+      	"ph_dependence",
+      	"redox_potential",
+      	"redox_potential_evidence",
+      	"temperature_dependence"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "comment_type"
+        ]
+      }
+    },
+    "protein_feature":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "evidence": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "variation": {
+            "title": "Variation",
+            "type": "string"
+          },
+          "original": {
+            "title": "Original",
+            "type": "string"
+          },
+          "ref": {
+            "title": "Ref",
+            "type": "string"
+          },
+          "begin": {
+            "title": "Begin",
+            "type": "string"
+          },
+          "end": {
+            "title": "End",
+            "type": "string"
+          }            
+        }         
+      },
+      "form":[
+      	"status",
+      	"evidence",
+      	"end",
+      	"begin",
+      	"ref",
+      	"original",
+      	"variation",
+      	"description"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "feature_type"
+        ]
+      }
+    },
+    "protein_protein_interaction":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "experiments": {
+            "title": "Status",
+            "type": "string"
+          },
+          "organisms_differ": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "int_act_id_1": {
+            "title": "Int act ID 1",
+            "type": "string"
+          },
+          "int_act_id_2": {
+            "title": "Int act ID 2",
+            "type": "string"
+          }          
+        }         
+      },
+      "form":[
+      	"experiments",
+      	"organisms_differ",
+      	"int_act_id_1",
+      	"int_act_id_2"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "protein"
+        ]
+      }
+    },
+    "protein_isoform_interaction":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "experiments": {
+            "title": "Status",
+            "type": "string"
+          },
+          "organisms_differ": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "int_act_id_1": {
+            "title": "Int act ID 1",
+            "type": "string"
+          },
+          "int_act_id_2": {
+            "title": "Int act ID 2",
+            "type": "string"
+          }          
+        }         
+      },
+      "form":[
+      	"experiments",
+      	"organisms_differ",
+      	"int_act_id_1",
+      	"int_act_id_2"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "isoform"
+        ]
+      }
+    },
+    "protein_isoform":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "isoform"
+        ]
+      }
+    },
+    "isoform_protein_interaction":{
+      "schema":{
+        "type": "object",
+        "properties":{
+          "experiments": {
+            "title": "Status",
+            "type": "string"
+          },
+          "organisms_differ": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "int_act_id_1": {
+            "title": "Int act ID 1",
+            "type": "string"
+          },
+          "int_act_id_2": {
+            "title": "Int act ID 2",
+            "type": "string"
+          }          
+        }         
+      },
+      "form":[
+      	"experiments",
+      	"organisms_differ",
+      	"int_act_id_1",
+      	"int_act_id_2"
+      ],
+      "restrictions":{
+        "allowed_sources":[
+          "isoform"
+        ],
+        "allowed_targets":[
+          "protein"
+        ]
+      }
+    },
+    "protein_reference":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "reference"
+        ]
+      }
+    },
+    "protein_article":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "protein"
+        ],
+        "allowed_targets":[
+          "article"
+        ]
+      }
+    },
+    "reference_article":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "article"
+        ]
+      }
+    },
+    "reference_author":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "person",
+          "consortium"
+        ]
+      }
+    },
+    "reference_thesis":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "thesis"
+        ]
+      }
+    },
+    "reference_submission":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "submission"
+        ]
+      }
+    },
+    "reference_online_article":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "online_article"
+        ]
+      }
+    },
+    "reference_patent":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "patent"
+        ]
+      }
+    },
+    "reference_book":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "book"
+        ]
+      }
+    },
+    "reference_unpublished_observation":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "reference"
+        ],
+        "allowed_targets":[
+          "unpublished_observation"
+        ]
+      }
+    },
+    "thesis_institute":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "thesis"
+        ],
+        "allowed_targets":[
+          "institute"
+        ]
+      }
+    },
+    "subcellular_location_parent":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "subcellular_location"
+        ],
+        "allowed_targets":[
+          "subcellular_location"
+        ]
+      }
+    },
+    "submission_db":{
+      "schema":{
+        "type": "object",
+        "properties":{}        
+      },
+      "form":[],
+      "restrictions":{
+        "allowed_sources":[
+          "submission"
+        ],
+        "allowed_targets":[
+          "db"
+        ]
+      }
+    },
+  }
+}
