@@ -80,15 +80,19 @@
  /**
  Link type x position used in the link type selector
  */
- var linkTypeCellDefaultX = 15;
+ var linkTypeCellMarginLeft = 15;
  /**
  Link type y position used in the link type selector
  */
- var linkTypeCellDefaultY = 30;
+ var linkTypeCellMarginTop = 30;
  /**
  Link type maximum width allowed for links in the node type selector
  */
  var linkTypeCellMaxWidth = 120;
+ var linkTypeCellGap = 20;
+ var numberOfLinkTypeRows;
+ var numberOfLinkTypes;
+ var numberOfLinkTypesPerRow;
  //----------------------------------------------
 
  //-----background cells------------------------
@@ -290,6 +294,9 @@
     //console.log("mouse up!");
     paperIsPanning = false;
     nodeIsBeingDragged = false;
+    if(selectedNodeIsBeingDragged){
+      updateSelectionRectPosition();
+    }
     selectedNodeIsBeingDragged = false;
     nodeBeingDragged = null;
     $("#graph-container").css("cursor", "pointer");
@@ -634,20 +641,37 @@
   }
 
   function calculateSizeOfLinkTypesPaper(){
-    var numberOfTypes = link_types_graph.getLinks().length;
-    link_types_paper.setDimensions(linkTypeCellMaxWidth + linkTypeCellDefaultX, linkTypeCellHeight*numberOfTypes);
+    numberOfLinkTypes = link_types_graph.getLinks().length;
+    numberOfLinkTypesPerRow = Math.floor(($('#link_types_list').width() - linkTypeCellMarginLeft) / linkTypeCellMaxWidth);
+    numberOfLinkTypeRows = Math.ceil(numberOfLinkTypes / numberOfLinkTypesPerRow);
+
+    var tempPaperWidth = (numberOfLinkTypesPerRow * linkTypeCellMaxWidth) + linkTypeCellMarginLeft;
+    var tempPaperHeight = (numberOfLinkTypeRows * linkTypeCellHeight) + linkTypeCellMarginTop;
+
+    link_types_paper.setDimensions(tempPaperWidth, tempPaperHeight);
     link_types_paper.render();
+
   }
 
   function positionLinkTypesOnPaper(){
 
+    var currentRow = 0;
+    var currentColumn = 0;
     var linkTypes = link_types_graph.getLinks();
 
     for(var i=0; i<linkTypes.length;i++){
       var currentLinkType = linkTypes[i];
-      var currentY = (linkTypeCellHeight * i) + linkTypeCellDefaultY;
-      currentLinkType.prop("source", {"x":linkTypeCellDefaultX,"y":currentY});
-      currentLinkType.prop("target", {"x":120,"y":currentY});
+      var currentX = (currentColumn * linkTypeCellMaxWidth) + linkTypeCellMarginLeft ;
+      var currentXEnd = currentX + 120 - linkTypeCellGap;
+      var currentY = (linkTypeCellHeight * currentRow) + linkTypeCellMarginTop;
+      currentLinkType.prop("source", {"x":currentX,"y":currentY});
+      currentLinkType.prop("target", {"x":currentXEnd,"y":currentY});
+
+      currentColumn++;
+      currentColumn = currentColumn % numberOfLinkTypesPerRow;
+      if(currentColumn == 0){
+        currentRow++;
+      }
     }
     link_types_paper.render();
   }
@@ -791,9 +815,9 @@
     numberOfNodeTypesPerRow = Math.floor(($('#node_types_list').width() - nodeTypeCellMarginLeft) / nodeTypeCellMaxWidth);
     numberOfNodeTypeRows = Math.ceil(numberOfNodeTypes / numberOfNodeTypesPerRow);
 
-    console.log("numberOfNodeTypes",numberOfNodeTypes);
-    console.log("numberOfNodeTypesPerRow",numberOfNodeTypesPerRow);
-    console.log("numberOfNodeTypeRows",numberOfNodeTypeRows);
+    //console.log("numberOfNodeTypes",numberOfNodeTypes);
+    //console.log("numberOfNodeTypesPerRow",numberOfNodeTypesPerRow);
+    //console.log("numberOfNodeTypeRows",numberOfNodeTypeRows);
 
     var tempPaperWidth = (numberOfNodeTypesPerRow * nodeTypeCellMaxWidth) + nodeTypeCellMarginLeft;
     var tempPaperHeight = (numberOfNodeTypeRows * nodeTypeCellHeight) + nodeTypeCellMarginTop;
