@@ -56,13 +56,20 @@
  */
  var nodeTypeCellHeight = 100;
  /**
- Node type x position used in the node type selector
+ Node type margin left used in the node type selector
  */
- var nodeTypeCellDefaultX = 15;
+ var nodeTypeCellMarginLeft = 15;
+ /**
+ Node type margin top used in the node type selector
+ */
+ var nodeTypeCellMarginTop = 15;
  /**
  Node type maximum width allowed for nodes in the node type selector
  */
  var nodeTypeCellMaxWidth = 80;
+ var numberOfNodeTypeRows;
+ var numberOfNodeTypes;
+ var numberOfNodeTypesPerRow;
  //----------------------------------------------
 
  //-----link types cells------------------------
@@ -736,9 +743,9 @@
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
-          ////console.log(xobj.responseText);
+          //console.log(xobj.responseText);
           typeDefinitionsJSON = JSON.parse(xobj.responseText);
-          ////console.log(typeDefinitionsJSON);
+          //console.log(typeDefinitionsJSON);
         }
     };
     xobj.send(null);
@@ -780,22 +787,42 @@
   }
 
   function calculateSizeOfNodeTypesPaper(){
-    var numberOfTypes = node_types_graph.getElements().length;
-    node_types_paper.setDimensions(100, nodeTypeCellHeight*numberOfTypes);
+    numberOfNodeTypes = node_types_graph.getElements().length;
+    numberOfNodeTypesPerRow = Math.floor(($('#node_types_list').width() - nodeTypeCellMarginLeft) / nodeTypeCellMaxWidth);
+    numberOfNodeTypeRows = Math.ceil(numberOfNodeTypes / numberOfNodeTypesPerRow);
+
+    console.log("numberOfNodeTypes",numberOfNodeTypes);
+    console.log("numberOfNodeTypesPerRow",numberOfNodeTypesPerRow);
+    console.log("numberOfNodeTypeRows",numberOfNodeTypeRows);
+
+    var tempPaperWidth = (numberOfNodeTypesPerRow * nodeTypeCellMaxWidth) + nodeTypeCellMarginLeft;
+    var tempPaperHeight = (numberOfNodeTypeRows * nodeTypeCellHeight) + nodeTypeCellMarginTop;
+
+    node_types_paper.setDimensions(tempPaperWidth, tempPaperHeight);
     node_types_paper.render();
   }
 
   function positionNodeTypesOnPaper(){
 
+    var currentRow = 0;
+    var currentColumn = 0;
     var nodeTypes = node_types_graph.getElements();
-    for(var i=0; i<nodeTypes.length;i++){
+
+    for(var i=0; i<numberOfNodeTypes;i++){
       var currentNodeType = nodeTypes[i];
-      var currentY = nodeTypeCellHeight * i;
-      currentNodeType.prop("position", {"x":nodeTypeCellDefaultX,"y":currentY});
+      var currentX = (currentColumn * nodeTypeCellMaxWidth) + nodeTypeCellMarginLeft;
+      var currentY = (nodeTypeCellHeight * currentRow) + nodeTypeCellMarginTop;
+      currentNodeType.prop("position", {"x":currentX,"y":currentY});
       var currentText = currentNodeType.attr("text/text");
       var brokenText = joint.util.breakText(currentText, { width: nodeTypeCellMaxWidth });
       ////console.log(currentText,brokenText);
       currentNodeType.attr("text/text", brokenText);
+
+      currentColumn++;
+      currentColumn = currentColumn % numberOfNodeTypesPerRow;
+      if(currentColumn == 0){
+        currentRow++;
+      }
     }
     node_types_paper.render();
   }

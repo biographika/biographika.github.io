@@ -1,0 +1,786 @@
+{
+  "theme":"bio4j",
+  "cells":[
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"is_a",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }        
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "is a"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"part_of",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "part of"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"hast_part_of",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "has part of"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"negatively_regulates",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "negatively regulates"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"positively_regulates",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "positively regulates"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"regulates",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "regulates"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"ncbi_taxon_parent",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+        
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "NCBI taxon parent"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"article_pubmed",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "article PubMed"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"article_journal",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "article journal"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"book_city",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "book city"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"book_editor",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "book editor"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"book_publisher",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "book publisher"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"institute_country",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "institute country"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"isoform_event_generator",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "isoform event generator"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"online_article_online_journal",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "online article online journal"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_dataset",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein dataset"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_disease",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein disease"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_organism",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein organism"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_keyword",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein keyword"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_gene_location",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein gene location"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_gene_name",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein gene name"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_interpro",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein interpro"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_reactome",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein reactome"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_pfam",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein pfam"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_kegg",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein kegg"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_pir",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein PIR"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_ensembl",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein EnsEMBL"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_embl",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein EMBL"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_refseq",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein RefSeq"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_sequence_caution",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein sequence caution"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_subcellular_location",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein subcellular location"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_unigene",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein UniGene"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"taxon_parent",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "taxon parent"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"organism_taxon",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "organism taxon"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_comment",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein comment"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_feature",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein feature"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_protein_interaction",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein protein interaction"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_isoform_interaction",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein isoform interaction"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_isoform",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein isoform"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"isoform_protein_interaction",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "isoform protein interaction"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"protein_article",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "protein article"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_article",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference article"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_author",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference author"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_thesis",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference thesis"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_submission",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference submission"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_online_article",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference online article"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_patent",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference patent"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_book",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference book"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"reference_unpublished_observation",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "reference unpublished observation"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"thesis_institute",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "thesis institute"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"subcellular_location_parent",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "subcellular location parent"}
+          }
+        }
+      ]
+    },
+	{
+      "type":"link",
+      "smooth": true,
+      "link_type":"submission_db",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "submission DB"}
+          }
+        }
+      ]
+    }
+  ]
+}
