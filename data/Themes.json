@@ -16,5 +16,11 @@
 		"links":"data/themes/basic/Links.json",
 		"elements":"data/themes/basic/Elements.json",
 		"type_definitions":"data/themes/basic/TypeDefinitions.json"
+	},
+	"bio4j":{
+		"backgrounds":"data/themes/bio4j/Backgrounds.json",
+		"links":"data/themes/bio4j/Links.json",
+		"elements":"data/themes/bio4j/Elements.json",
+		"type_definitions":"data/themes/bio4j/TypeDefinitions.json"
 	}
 }
