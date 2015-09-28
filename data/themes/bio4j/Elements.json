@@ -203,7 +203,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -214,10 +214,7 @@
          },
          "node_type":"dataset",
          "attrs":{
-            "text":"Dataset",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/dataset.png","width":60,"height":60},
             "text":{
                "text":"Dataset"
             }
@@ -302,7 +299,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -313,10 +310,7 @@
          },
          "node_type":"keyword",
          "attrs":{
-            "text":"Keyword",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/keyword.png","width":60,"height":60},
             "text":{
                "text":"Keyword"
             }
@@ -533,7 +527,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -544,12 +538,9 @@
          },
          "node_type":"patent",
          "attrs":{
-            "text":"patent",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/patent.png","width":60,"height":60},
             "text":{
-               "text":"patent"
+               "text":"Patent"
             }
          }
       },
@@ -611,7 +602,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -622,10 +613,7 @@
          },
          "node_type":"taxon",
          "attrs":{
-            "text":"Taxon",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/taxon.png","width":60,"height":60},
             "text":{
                "text":"Taxon"
             }
@@ -818,7 +806,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -829,10 +817,7 @@
          },
          "node_type":"comment_type",
          "attrs":{
-            "text":"Comment type",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/comment.png","width":60,"height":60},
             "text":{
                "text":"Comment type"
             }
