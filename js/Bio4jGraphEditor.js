@@ -606,11 +606,23 @@
       height: $('#link_types_list').height(),
       interactive: false      });
 
-      link_types_paper.on('cell:pointerclick',
-        function(linkView, evt, x, y) {
-            selectLinkType(linkView);
-        }
-      );
+    link_types_paper.on('cell:pointerclick',
+      function(linkView, evt, x, y) {
+        selectLinkType(linkView);
+      }
+    );
+
+    link_types_paper.on("cell:mouseover",
+      function(linkView, evt, x, y){
+        $(".element").css("cursor","pointer");
+      }
+    );
+    link_types_paper.on("cell:mouseout",
+      function(linkView, evt, x, y){
+        $(".element").css("cursor","auto");
+      }
+    );
+
     loadLinkTypesTheme(themeURL);
   }
   /**
@@ -723,6 +735,19 @@
     node_types_paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
           selectNodeTypeCell(cellView);
+      }
+    );
+
+    node_types_paper.on("cell:mouseover",
+      function(cellView, evt, x, y){
+        $(".element").css("cursor","pointer");
+        //console.log("ponter!");
+      }
+    );
+    node_types_paper.on("cell:mouseout",
+      function(cellView, evt, x, y){
+        $(".element").css("cursor","auto");
+        //console.log("auto!");
       }
     );
 
@@ -1770,6 +1795,8 @@
   Opens the modal dialog where the current link type can be selected
   */
   function openDialogselectLinkType(){
+    $('.link-tools .tool-remove').css({"display":"none"});
+    $('.link-tools .tool-options').css({"display":"none"});
     $('#link_types_dialog').modal({
          show: true
      });
@@ -1784,6 +1811,8 @@
   }
 
   function setSelectedLinkType(){
+    $('.link-tools .tool-remove').css({"display":""});
+    $('.link-tools .tool-options').css({"display":""});
     $('#link_types_dialog').modal('hide');
   }
 

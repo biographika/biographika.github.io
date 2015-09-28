@@ -2,7 +2,7 @@
    "theme":"bio4j",
    "cells":[
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -13,13 +13,9 @@
          },
          "node_type":"enzyme",
          "attrs":{
-            "text":"Enzyme",
-            "rect":{
-               "fill":"blue"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/enzyme.svg","width":60,"height":60},
             "text":{
-               "text":"Enzyme",
-               "fill":"white"
+               "text":"Enzyme"
             }
          }
       },
@@ -42,7 +38,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -53,18 +49,14 @@
          },
          "node_type":"ncbi_taxon",
          "attrs":{
-            "text":"NCBI taxon",
-            "rect":{
-               "fill":"blue"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/ncbi_taxon.png","width":60,"height":60},
             "text":{
-               "text":"NCBI taxon",
-               "fill":"white"
+               "text":"NCBI taxon"
             }
          }
       },
       {
-         "type":"basic.Circle",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -75,18 +67,14 @@
          },
          "node_type":"protein",
          "attrs":{
-            "text":"Protein",
-            "circle":{
-               "fill":"red"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/protein.png","width":60,"height":60},
             "text":{
-               "text":"Protein",
-               "fill":"white"
+               "text":"Protein"
             }
          }
       },
       {
-         "type":"basic.Circle",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -97,17 +85,14 @@
          },
          "node_type":"alternative_product",
          "attrs":{
-            "text":"Alternative product",
-            "circle":{
-               "fill":"yellow"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/alternative_product.png","width":60,"height":60},
             "text":{
                "text":"Alternative product"
             }
          }
       },
       {
-         "type":"basic.Circle",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -118,17 +103,14 @@
          },
          "node_type":"article",
          "attrs":{
-            "text":"Article",
-            "circle":{
-               "fill":"red"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/article.png","width":60,"height":60},
             "text":{
                "text":"Article"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -139,17 +121,14 @@
          },
          "node_type":"db",
          "attrs":{
-            "text":"DB",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/db.png","width":60,"height":60},
             "text":{
                "text":"DB"
             }
          }
       },
       {
-         "type":"basic.Circle",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -160,17 +139,14 @@
          },
          "node_type":"book",
          "attrs":{
-            "text":"Book",
-            "circle":{
-               "fill":"blue"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/book.png","width":60,"height":60},
             "text":{
                "text":"Book"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -181,17 +157,14 @@
          },
          "node_type":"city",
          "attrs":{
-            "text":"City",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/city.png","width":60,"height":60},
             "text":{
                "text":"City"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -202,10 +175,7 @@
          },
          "node_type":"consortium",
          "attrs":{
-            "text":"Consortium",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/consortium.png","width":60,"height":60},
             "text":{
                "text":"Consortium"
             }
@@ -254,7 +224,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -265,17 +235,14 @@
          },
          "node_type":"gene_location",
          "attrs":{
-            "text":"Gene location",
-            "rect":{
-               "fill":"green"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/gene_location.png","width":60,"height":60},
             "text":{
                "text":"Gene location"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -286,10 +253,7 @@
          },
          "node_type":"gene_name",
          "attrs":{
-            "text":"Gene name",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/gene_name.png","width":60,"height":60},
             "text":{
                "text":"Gene name"
             }
@@ -359,7 +323,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -370,10 +334,7 @@
          },
          "node_type":"interpro",
          "attrs":{
-            "text":"Interpro",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/interpro.png","width":60,"height":60},
             "text":{
                "text":"Interpro"
             }
@@ -401,7 +362,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -412,10 +373,7 @@
          },
          "node_type":"institute",
          "attrs":{
-            "text":"Institute",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/institute.png","width":60,"height":60},
             "text":{
                "text":"Institute"
             }
