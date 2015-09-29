@@ -1,0 +1,141 @@
+{
+  "theme":"hospital",
+  "cells":[
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"inside_of",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }        
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "Inside"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": false,
+      "link_type":"located_on",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "located on"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": false,
+      "link_type":"relates_to",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "relates to"}
+          }
+        }
+      ]
+    },    
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"edit",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "edit"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": false,
+      "link_type":"do",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "do"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"send",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+        
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "send"}
+          }
+        }
+      ]
+    },    
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"is_part_of",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "is part of"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": false,
+      "link_type":"in",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "in"}
+          }
+        }
+      ]
+    },
+    {
+      "type":"link",
+      "smooth": true,
+      "link_type":"go_to",
+      "attrs": {
+        ".marker-target": { "d": "M 10 0 L 0 5 L 10 10 z" }
+      },
+      "labels": [
+        { "position": ".5",
+          "attrs": {
+            "text": { "text": "go to"}
+          }
+        }
+      ]
+    }
+  ]
+}

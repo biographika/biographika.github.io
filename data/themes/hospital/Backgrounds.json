@@ -1,0 +1,57 @@
+{
+  "theme":"hospital",
+  "cells":[
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":0},
+      "size":{"width":150,"height":120},
+      "attrs":{
+        "text":{
+          "text":"Building map"
+          },
+        "image":{"xlink:href":"data/themes/hospital/images/building_map.png","width":200,"height":250}
+      },
+      "node_type":"building_map",
+      "real_size":{"width":1024,"height":740}
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":0},
+      "size":{"width":200,"height":150},
+      "attrs":{
+        "text":{
+          "text":"Map 1"
+        },
+        "image":{"xlink:href":"data/themes/hospital/images/map1.jpg","width":200,"height":97}
+      },
+      "node_type":"map1",
+      "real_size":{"width":2000,"height":978}
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":0},
+      "size":{"width":200,"height":150},
+      "attrs":{
+        "text":{
+          "text":"Map 5"
+        },
+        "image":{"xlink:href":"data/themes/hospital/images/map5.jpg","width":200,"height":97}
+      },
+      "node_type":"map5",
+      "real_size":{"width":1538,"height":1248}
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":0},
+      "size":{"width":200,"height":150},
+      "attrs":{
+        "text":{
+          "text":"P1"
+        },
+        "image":{"xlink:href":"data/themes/hospital/images/p1.jpg","width":200,"height":97}
+      },
+      "node_type":"p1",
+      "real_size":{"width":1538,"height":1248}
+    }
+  ]
+}

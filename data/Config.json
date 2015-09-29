@@ -8,10 +8,10 @@
   	"set":[
 	  	"proteins",
 	  	"doplanning",
-	  	"basic",
-		  "bio4j"
+		"bio4j",
+		"hospital"
   	],
-  	"default":"bio4j"
+  	"default":"hospital"
   }	
 
 }
