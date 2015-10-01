@@ -99,37 +99,46 @@
  /**
  Background height used for cells in the background type selector
  */
- var backgroundCellHeight = 250;
+ var backgroundCellHeight = 150;
  /**
- Background x position used in the background type selector
+ Background margin left used in the background selector
  */
- var backgroundCellDefaultX = 15;
+ var backgroundCellMarginLeft = 15;
+ /**
+ Background margin top used in the background selector
+ */
+ var backgroundCellMarginTop = 15;
  /**
  Background maximum width allowed for background cells in the background type selector
  */
- var backgroundCellMaxWidth = 500;
+ var backgroundCellMaxWidth = 200;
  /**
  Width value for the paper of the background selector
  */
- var backgroundPaperWidth = 500;
+ var backgroundPaperWidth = 600;
  /**
  Height value for the paper of the background selector
  */
  var backgroundPaperHeight = 300;
+ var numberOfBackgroundRows;
+ var numberOfBackgrounds;
+ var numberOfBackgroundsPerRow;
+ var backgroundCellHorizontalGap = 20;
+ var backgroundCellVerticalGap = 40;
  //----------------------------------------------
 
  /**
  Node type currently selected that will be used when creating new nodes
  */
- var selectedNodeTypeCell;
+ var selectedNodeType;
  /**
  Link type currently selected that will be used when creating new links
  */
- var selectedLinkTypeCell;
+ var selectedLinkType;
  /**
  Background type currently selected that will be used when setting a new background
  */
- var selectedBackgroundCell;
+ var selectedBackground;
  /**
  Node currently selected
  */
@@ -169,6 +178,10 @@
  the selected node. Its value is null in the case no node is currently selected.
  */
  var selectionRectCell = null;
+
+ var selectionRectNodeTypeCell = null;
+ var selectionRectLinkTypeCell = null;
+ var selectionRectBackgroundCell = null;
 
  /**
  Flag used to identify the first time the background selector modal is shown
@@ -254,12 +267,18 @@
  var themesFileURL = "data/Themes.json";
  var defaultTheme;
  var currentTheme;
+ var currentThemeName; 
+ var nodeTypesDialogTheme;
+ var linkTypesDialogTheme;
+ var backgroundsDialogTheme;
 
  <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
  <!--===================DOCUMENT EVENT HANDLERS======================== -->
  $(document).mousemove(function( event ) {
+
+   //console.log("document.mousemove");
 
    var tempClientX = event.clientX;
    var tempClientY = event.clientY;
@@ -393,10 +412,28 @@
   <!-- THEMES DROPDOWN... -->
   $("#themesDropDownMenu").on("click", "li", function(event){
 
-    var selectedThemeName = event.currentTarget.getElementsByTagName("a")[0].textContent;
-
+    var selectedThemeName = event.currentTarget.getElementsByTagName("a")[0].textContent;    
     console.log("selectedThemeName",selectedThemeName);
-    loadTheme(selectedThemeName);    
+    console.log("currentThemeName",currentThemeName);
+    if(selectedThemeName != currentThemeName){
+      loadTheme(selectedThemeName);    
+      currentThemeName = selectedThemeName;
+
+      if(node_types_graph){
+        node_types_graph.clear();
+        selectionRectNodeTypeCell = null;
+      }
+      if(link_types_graph){
+        link_types_graph.clear();
+        selectionRectLinkTypeCell = null;
+      }
+      if(backgrounds_graph){
+        backgrounds_graph.clear();
+        selectionRectBackgroundCell = null;
+      }   
+      
+    }
+    
 
   });
 
@@ -411,9 +448,14 @@
     ////console.log("backgrounds! shown.bs.modal");
     if(backgroundsModalFirstTimeShown){
       ////console.log("backgroundsModalFirstTimeShown");
+      backgroundsDialogTheme = currentThemeName;
       initializeBackgroundsPaper(currentTheme.backgrounds);
     }else{
-      loadBackgroundsTheme(currentTheme.backgrounds);
+      if(currentThemeName != backgroundsDialogTheme){
+        loadBackgroundsTheme(currentTheme.backgrounds);
+        backgroundsDialogTheme = currentThemeName;
+      }
+      
     }
     backgroundsModalFirstTimeShown = false;
   });
@@ -424,10 +466,14 @@
     if(nodeTypesModalFirstTimeShown){
       ////console.log("nodeTypesModalFirstTimeShown");
       initializeNodeTypesPaper(currentTheme.elements);
+      nodeTypesDialogTheme = currentThemeName;
     }else{
-      console.log("currentTheme",currentTheme);
-      console.log("currentTheme.elements", currentTheme.elements)
-      loadNodeTypesTheme(currentTheme.elements);
+      
+      if(currentThemeName != nodeTypesDialogTheme){
+        loadNodeTypesTheme(currentTheme.elements);
+        nodeTypesDialogTheme = currentThemeName;
+      }
+      
     }
     nodeTypesModalFirstTimeShown = false;
   });
@@ -439,7 +485,11 @@
       ////console.log("linkTypesModalFirstTimeShown");
       initializeLinkTypesPaper(currentTheme.links);
     }else{
-      loadLinkTypesTheme(currentTheme.links);
+      if(currentThemeName != linkTypesDialogTheme){
+        loadLinkTypesTheme(currentTheme.links);
+        linkTypesDialogTheme = currentThemeName;
+      }
+      
     }
     linkTypesModalFirstTimeShown = false;
   });
@@ -454,7 +504,7 @@
   Listeners for events fired by the paper are declared also here.
   */
   function initializeGraphPaper(){
-    console.log("initializeGraphPaper");
+    //console.log("initializeGraphPaper");
 
     graph = new joint.dia.Graph;
 
@@ -480,7 +530,7 @@
 
     paper.on("cell:mouseout",
       function(cellView, evt){
-        console.log("cell:mouseout");
+       //console.log("cell:mouseout");
         if(currentTooltipCell){
           currentTooltipCell.remove();
           currentTooltipCell = null;
@@ -614,12 +664,13 @@
 
     link_types_paper.on("cell:mouseover",
       function(linkView, evt, x, y){
-        $(".element").css("cursor","pointer");
+        //console.log("cell:mouseover   linktype");
+        $(".connection-wrap").css("cursor","pointer");
       }
     );
     link_types_paper.on("cell:mouseout",
       function(linkView, evt, x, y){
-        $(".element").css("cursor","auto");
+        $(".connection-wrap").css("cursor","auto");
       }
     );
 
@@ -692,9 +743,9 @@
     var linkTypes = link_types_graph.getLinks();
     for(var i=0; i<linkTypes.length;i++){
       var currentLinkType = linkTypes[i];
-      link_types_paper.findViewByModel(currentLinkType).options.interactive = false
+      currentLinkType.findView(link_types_paper).options.interactive = false;      
     }
-    link_types_paper.render();
+    link_types_paper.render();    
   }
 
   function initializeBackgroundsPaper(themeURL){
@@ -711,7 +762,19 @@
 
     backgrounds_paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
-          selectBackgroundCell(cellView);
+          selectBackgroundCell(cellView, true);
+      }
+    );
+
+    backgrounds_paper.on("cell:mouseover",
+      function(linkView, evt, x, y){
+        //console.log("cell:mouseover   linktype");
+        $(".element").css("cursor","pointer");
+      }
+    );
+    backgrounds_paper.on("cell:mouseout",
+      function(linkView, evt, x, y){
+        $(".element").css("cursor","auto");
       }
     );
 
@@ -734,7 +797,7 @@
 
     node_types_paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
-          selectNodeTypeCell(cellView);
+          selectNodeTypeCell(cellView, true);
       }
     );
 
@@ -772,7 +835,7 @@
           calculateSizeOfBackgroundsPaper();
           positionBackgroundsOnPaper();
           //select first node type
-          selectBackgroundCell(backgrounds_graph.getElements()[0].findView(backgrounds_paper));
+          selectBackgroundCell(backgrounds_graph.getElements()[0].findView(backgrounds_paper), true);
           backgrounds_paper.render();
         }
     };
@@ -819,7 +882,7 @@
           positionNodeTypesOnPaper();
           makeNodeTypesNotInteractive();
           //select first node type
-          selectNodeTypeCell(node_types_graph.getElements()[0].findView(node_types_paper));
+          selectNodeTypeCell(node_types_graph.getElements()[0].findView(node_types_paper), true);
         }
     };
     xobj.send(null);
@@ -839,10 +902,6 @@
     numberOfNodeTypes = node_types_graph.getElements().length;
     numberOfNodeTypesPerRow = Math.floor(($('#node_types_list').width() - nodeTypeCellMarginLeft) / nodeTypeCellMaxWidth);
     numberOfNodeTypeRows = Math.ceil(numberOfNodeTypes / numberOfNodeTypesPerRow);
-
-    //console.log("numberOfNodeTypes",numberOfNodeTypes);
-    //console.log("numberOfNodeTypesPerRow",numberOfNodeTypesPerRow);
-    //console.log("numberOfNodeTypeRows",numberOfNodeTypeRows);
 
     var tempPaperWidth = (numberOfNodeTypesPerRow * nodeTypeCellMaxWidth) + nodeTypeCellMarginLeft;
     var tempPaperHeight = (numberOfNodeTypeRows * nodeTypeCellHeight) + nodeTypeCellMarginTop;
@@ -878,21 +937,41 @@
 
   function calculateSizeOfBackgroundsPaper(){
     //console.log("calculateSizeOfBackgroundsPaper");
-    var numberOfBackgrounds = backgrounds_graph.getElements().length;
-    backgrounds_paper.setDimensions(500, backgroundCellHeight*numberOfBackgrounds);
+
+    numberOfBackgrounds = backgrounds_graph.getElements().length;
+    numberOfBackgroundsPerRow = Math.floor(($('#backgrounds_list').width() - backgroundCellMarginLeft) / backgroundCellMaxWidth);
+    numberOfBackgroundRows = Math.ceil(numberOfBackgrounds / numberOfBackgroundsPerRow);
+
+    var tempPaperWidth = (numberOfBackgroundsPerRow * backgroundCellMaxWidth) + backgroundCellMarginLeft + 
+          + (numberOfBackgroundRows * backgroundCellHorizontalGap);
+    var tempPaperHeight = (numberOfBackgroundRows * backgroundCellHeight) + backgroundCellMarginTop 
+          + (numberOfBackgroundRows * backgroundCellVerticalGap);
+
+    backgrounds_paper.setDimensions(tempPaperWidth, tempPaperHeight);
   }
 
   function positionBackgroundsOnPaper(){
     //console.log("positionBackgroundsOnPaper");
+    var currentRow = 0;
+    var currentColumn = 0;
     var backgrounds = backgrounds_graph.getElements();
+
     for(var i=0; i<backgrounds.length;i++){
       var currentBackground = backgrounds[i];
-      var currentY = backgroundCellHeight * i;
-      currentBackground.prop("position", {"x":backgroundCellDefaultX,"y":currentY});
+      var currentX = (currentColumn * backgroundCellMaxWidth) + backgroundCellMarginLeft + (currentColumn * backgroundCellHorizontalGap);
+      var currentY = ((backgroundCellHeight + backgroundCellVerticalGap) * currentRow) + backgroundCellMarginTop;
+
+      currentBackground.prop("position", {"x":currentX,"y":currentY});
       var currentText = currentBackground.attr("text/text");
       var brokenText = joint.util.breakText(currentText, { width: backgroundCellMaxWidth });
       ////console.log(currentText,brokenText);
       currentBackground.attr("text/text", brokenText);
+
+      currentColumn++;
+      currentColumn = currentColumn % numberOfBackgroundsPerRow;
+      if(currentColumn == 0){
+        currentRow++;
+      }
     }
   }
 
@@ -1018,19 +1097,38 @@
 
   }
 
-  function selectNodeTypeCell(cellView){
+  function selectNodeTypeCell(cellView, flag){
 
-    ////console.log("selectNodeTypeCell");
+    //console.log("selectNodeTypeCell , flag", flag);
+
+    var newCellSelected = true;
+    if(selectedNodeType){
+      newCellSelected = cellView.id != selectedNodeType.id;
+    }
+
+    //console.log("newCellSelected",newCellSelected);
 
     var nodeTypeCells = node_types_graph.getElements();
     for (var i = 0; i < nodeTypeCells.length; i++) {
       var currentCell = nodeTypeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
-          selectedNodeTypeCell = currentCell;
-          ////console.log(selectedNodeTypeCell);
+          selectedNodeType = cellView;
+          //console.log("selectedNodeType",selectedNodeType);
           currentCell.attr('text/font-weight',"bold");
       }else {
           currentCell.attr('text/font-weight',"normal");
+      }
+    }
+
+    if(flag){
+      if(newCellSelected){
+        initializeSelectionRectNodeType();
+      }
+    }else{
+      if(selectionRectNodeTypeCell){
+        selectionRectNodeTypeCell.remove();
+        selectionRectNodeTypeCell = null;
+        selectedNodeType = null;
       }
     }
   }
@@ -1043,9 +1141,9 @@
       var currentCell = linkTypeCells[i];
       if(currentCell.attributes.id == cellView.model.id){
 
-          selectedLinkTypeCell = currentCell;
+          selectedLinkType = currentCell;
           currentCell.label(0,{ attrs: { text: { 'font-weight': 'bold', 'font-size': 16 } } });
-          link_types_paper.defaultLink = selectedLinkTypeCell;
+          link_types_paper.defaultLink = selectedLinkType;
           ////console.log("selected",currentCell.label(0));
       }else {
         currentCell.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
@@ -1056,9 +1154,14 @@
     ////console.log(link_types_paper.options);
   }
 
-  function selectBackgroundCell(cellView){
+  function selectBackgroundCell(cellView, flag){
 
-    ////console.log("selectBackgroundCell");
+    ////console.log("selectBackgroundCell, flag", flag);
+
+    var newCellSelected = true;
+    if(selectedBackground){
+      newCellSelected = cellView.id != selectedBackground.id;
+    }
 
     var backgroundCells = backgrounds_graph.getElements();
 
@@ -1067,15 +1170,26 @@
       var currentBackground = backgroundCells[i];
 
       if(currentBackground.attributes.id == cellView.model.id){
-          selectedBackgroundCell = currentBackground;
-          ////console.log(selectedNodeTypeCell);
+          selectedBackground = currentBackground.findView(backgrounds_paper);
           currentBackground.attr('text/font-weight',"bold");
       }else {
           currentBackground.attr('text/font-weight',"normal");
       }
     }
 
-    ////console.log("done with select!");
+    if(flag){
+      if(newCellSelected){
+        initializeSelectionRectBackground();
+      }
+    }else{
+      if(selectionRectBackgroundCell){
+        selectionRectBackgroundCell.remove();
+        selectionRectBackgroundCell = null;
+        selectedBackground = null;
+      }
+    }
+
+
   }
 
   <!-- ++++++++++++++++ NODE CREATION METHODS +++++++++++ -->
@@ -1112,10 +1226,6 @@
     var numberOfLines = brokenTooltipText.split("\n").length;
     tempHeight *= numberOfLines;
 
-
-    //console.log("tooltipText",tooltipText);
-    //console.log("brokenTooltipText",brokenTooltipText);
-
     var cell = new rect({
         position: { x: x, y: y },
         size: { width: tempWidth, height: tempHeight},
@@ -1137,7 +1247,7 @@
   Clones the cell provided at the position provided
   */
   function cloneCellAt(cell, x, y){
-      var clonedCell = cell.clone();
+      var clonedCell = cell.model.clone();
       clonedCell.prop("position", {"x":x,"y":y});
       if(clonedCell.attr("image/width")){
         clonedCell.attr("image/magnet","true");
@@ -1217,7 +1327,9 @@
   Zooms out on the paper by decreasing its scale value
   */
   function zoomOut(){
+    console.log("zoomOut");
     paperScale -= (paperScale * paperScaleFactor);
+    console.log("paperScale",paperScale);
     paper.scale(paperScale, paperScale);
     paper.setDimensions(paperInitialWidth*paperScale, paperInitialHeight*paperScale);
   }
@@ -1236,9 +1348,9 @@
   */
   function getDefaultLink(){
     ////console.log("getDefaultLink");
-    if(selectedLinkTypeCell){
+    if(selectedLinkType){
       ////console.log("true");
-      var tempLink = selectedLinkTypeCell.clone();
+      var tempLink = selectedLinkType.clone();
       tempLink.label(0,{ attrs: { text: { 'font-weight': 'normal', 'font-size': 10  } } });
       return tempLink;
     }else{
@@ -1261,13 +1373,7 @@
 
     var links = graph.getLinks();
 
-    if(!flag){
-      $('.link-tools .tool-remove').css({"display":"none"});
-      $('.link-tools .tool-options').css({"display":"none"});
-    }else{
-      $('.link-tools .tool-remove').css({"display":""});
-      $('.link-tools .tool-options').css({"display":""});
-    }
+    activateLinkCSS(flag);
 
     //making links not editable
     for(var i=0; i<links.length;i++){
@@ -1281,6 +1387,21 @@
       }else{
         currentView.options.interactive = true;
       }
+    }
+  }
+
+  function activateLinkCSS(flag){
+    console.log("activateLinkCSS");
+    if(!flag){
+      $('.link-tools .tool-remove').css({"display":"none"});
+      $('.link-tools .tool-options').css({"display":"none"});
+      $('.connection-wrap').css({"display":"none"});
+      $('.marker-arrowhead').css({"display":"none"});
+    }else{
+      $('.link-tools .tool-remove').css({"display":""});
+      $('.link-tools .tool-options').css({"display":""});
+      $('.connection-wrap').css({"display":""});
+      $('.marker-arrowhead').css({"display":""});
     }
   }
 
@@ -1463,6 +1584,8 @@
 
     if(readOnlyMode){
       paperIsPanning = true;
+    }else{
+      onBackgroundOrBackgroundBoxClick(evt,x,y);
     }
   }
 
@@ -1477,11 +1600,11 @@
         selectNodeCell(selectedNode, false);
     }
     if(!readOnlyMode){
-      if(!selectedNodeTypeCell){
+      if(!selectedNodeType){
         alert("Please select a node type first");
         openDialogSelectNodeType();
       }else{
-        var newCell = cloneCellAt(selectedNodeTypeCell,x,y);
+        var newCell = cloneCellAt(selectedNodeType,x,y);
         selectNodeCell(newCell.findView(paper), true);
       }
     }else{
@@ -1626,14 +1749,14 @@
 
     if(currentBackgroundCell){
       ////console.log("There already was a background for this diagram...");
-      if(currentBackgroundCell.id != selectedBackgroundCell.id){
+      if(currentBackgroundCell.id != selectedBackground.id){
         ////console.log("The background selected is different from the current one");
         currentBackgroundCell.remove();
       }
     }
     ////console.log("let's create the new background cell!");
 
-    var newBackgroundCell = selectedBackgroundCell.clone();
+    var newBackgroundCell = selectedBackground.model.clone();
     var realSize = newBackgroundCell.prop("real_size");
     var realWidth = realSize.width;
     var realHeight = realSize.height;
@@ -1664,12 +1787,12 @@
   Applying this method can result both on either shrinking or expanding the paper.
   */
   function fitPaperToContents(){
+    console.log("fitPaperToContents");
     //first the background box is removed so that it does not influence the calculation
     //of the bbox
     backgroundBox.remove();
     paper.render();
-    var bbox = paper.getContentBBox();
-    ////console.log(bbox);
+    var bbox = graph.getBBox();
     var tempWidth = bbox.width + bbox.x;
     var tempHeight = bbox.height + bbox.y;
     ////console.log(tempWidth, tempHeight);
@@ -1679,6 +1802,8 @@
     paperInitialHeight = tempHeight;
     updatePaperDimensions(paperInitialWidth, paperInitialHeight);
     initializeBackgroundBox(paperInitialWidth,paperInitialHeight);
+    console.log("paperInitialWidth", paperInitialWidth);
+    console.log("paperInitialHeight", paperInitialHeight);
   }
 
   /**
@@ -1795,8 +1920,8 @@
   Opens the modal dialog where the current link type can be selected
   */
   function openDialogselectLinkType(){
-    $('.link-tools .tool-remove').css({"display":"none"});
-    $('.link-tools .tool-options').css({"display":"none"});
+    console.log("openDialogselectLinkType");
+    activateLinkCSS(false);
     $('#link_types_dialog').modal({
          show: true
      });
@@ -1804,15 +1929,15 @@
 
   function setSelectedNodeType(){
     $('#node_types_dialog').modal('hide');
-    ////console.log("thumbnail prop:",selectedNodeTypeCell.prop("thumbnail"));
     $('#currentNodeTypeIcon').remove();
-    $('#currentNodeTypeImage').attr("src",selectedNodeTypeCell.prop("thumbnail"));
+    $('#currentNodeTypeImage').attr("src",selectedNodeType.model.prop("thumbnail"));
     ////console.log("done!");
   }
 
   function setSelectedLinkType(){
-    $('.link-tools .tool-remove').css({"display":""});
-    $('.link-tools .tool-options').css({"display":""});
+    if(modifiableLinks){
+      activateLinkCSS(true);
+    }
     $('#link_types_dialog').modal('hide');
   }
 
@@ -1826,18 +1951,12 @@
 
     if(selectedNode){
 
-      //console.log("selectedNode = true");
-
       if(!selectionRectCell){
 
         var tempPosition = getPositionForSelectionRect();
         tempPosition.x -= 2;
         tempPosition.y -= 2;
         var tempSize = getSizeForSelectionRect();
-
-        ////console.log("selectedNode",selectedNode.model);
-        ////console.log("tempPosition", tempPosition);
-        ////console.log("tempSize", tempSize);
 
         selectionRectCell = new rect({
             position: tempPosition,
@@ -1878,9 +1997,7 @@
   */
   function getPositionForSelectionRect(){
     ////console.log("getPositionForSelectionRect");
-    var tempPosition = selectedNode.model.prop('position');
-    var newPosition = {x: tempPosition.x, y: tempPosition.y};
-    return newPosition;
+    return getPositionForSelectionRectGeneral(selectedNode.model);
   }
   /**
   Calculates the size of the selection rect so that it propertly fits the node
@@ -1888,9 +2005,134 @@
   */
   function getSizeForSelectionRect(){
     ////console.log("getSizeForSelectionRect");
-    var tempSize = selectedNode.model.prop('size');
+    return getSizeForSelectionRectGeneral(selectedNode.model);
+  }
+
+  function initializeSelectionRectNodeType(){
+
+    console.log("initializeSelectionRectNodeType");
+    //console.log("selectedNodeType", selectedNodeType);
+
+    if(selectedNodeType){
+
+      if(!selectionRectNodeTypeCell){
+
+        var tempPosition = getPositionForSelectionRectNodeType();
+        tempPosition.x -= 2;
+        tempPosition.y -= 2;
+        var tempSize = getSizeForSelectionRectNodeType();
+
+        selectionRectNodeTypeCell = new rect({
+            position: tempPosition,
+            size: tempSize,
+            attrs: {
+                rect: { rx: 2, ry: 2, stroke: '#000000', 'stroke-width': 1, 'stroke-dasharray':"5,5" }
+            }
+        });
+        node_types_graph.addCell(selectionRectNodeTypeCell);
+        selectionRectNodeTypeCell.toBack();        
+
+      }else{
+        updateSelectionRectNodeTypePosition();
+        selectionRectNodeTypeCell.prop("size", getSizeForSelectionRectNodeType());
+      }
+    }
+  }
+
+  /**
+  Updates the selection rect node type position so that it stays together with the node
+  type that is currently selected
+  */
+  function updateSelectionRectNodeTypePosition(){
+    //console.log("updateSelectionRectNodeTypePosition");
+    var positionForSelectionRectNodeType = getPositionForSelectionRectNodeType();
+    selectionRectNodeTypeCell.prop("position", positionForSelectionRectNodeType);
+  }
+
+  /**
+  Returns the position of the currently selected node type so that it can be used to
+  properly position the selection rect for it
+  */
+  function getPositionForSelectionRectNodeType(){
+    //console.log("getPositionForSelectionRectNodeType");
+    return getPositionForSelectionRectGeneral(selectedNodeType.model);
+  }
+  /**
+  Calculates the size of the selection rect so that it propertly fits the node type
+  that is currently selected
+  */
+  function getSizeForSelectionRectNodeType(){
+    //console.log("getSizeForSelectionRect");
+    return getSizeForSelectionRectGeneral(selectedNodeType.model);
+  }
+
+  function initializeSelectionRectBackground(){
+
+    //console.log("initializeSelectionRectBackground");
+    //console.log("selectedBackground", selectedBackground);
+
+    if(selectedBackground){
+
+      if(!selectionRectBackgroundCell){
+
+        var tempPosition = getPositionForSelectionRectBackground();
+        tempPosition.x -= 2;
+        tempPosition.y -= 2;
+        var tempSize = getSizeForSelectionRectBackground();
+
+        selectionRectBackgroundCell = new rect({
+            position: tempPosition,
+            size: tempSize,
+            attrs: {
+                rect: { rx: 2, ry: 2, stroke: '#000000', 'stroke-width': 1, 'stroke-dasharray':"5,5" }
+            }
+        });
+        backgrounds_graph.addCell(selectionRectBackgroundCell);
+        selectionRectBackgroundCell.toBack();        
+
+      }else{
+        updateSelectionRectBackgroundPosition();
+        selectionRectBackgroundCell.prop("size", getSizeForSelectionRectBackground());
+      }
+    }
+  }
+
+  /**
+  Updates the selection rect background position so that it stays together with the 
+  background that is currently selected
+  */
+  function updateSelectionRectBackgroundPosition(){
+    console.log("updateSelectionRectBackgroundPosition");
+    selectionRectBackgroundCell.prop("position", getPositionForSelectionRectBackground());
+  }
+
+  /**
+  Returns the position of the currently selected background so that it can be used to
+  properly position the selection rect for it
+  */
+  function getPositionForSelectionRectBackground(){
+    //console.log("getPositionForSelectionRectBackground");
+    return getPositionForSelectionRectGeneral(selectedBackground.model);
+  }
+  /**
+  Calculates the size of the selection rect so that it propertly fits the background
+  that is currently selected
+  */
+  function getSizeForSelectionRectBackground(){
+    console.log("getSizeForSelectionRect");
+    return getSizeForSelectionRectGeneral(selectedBackground.model);
+  }
+
+  function getSizeForSelectionRectGeneral(node){
+    var tempSize = node.prop('size');
     var newSize = {width: tempSize.width + 4, height: tempSize.height + 4};
     return newSize;
+  }
+  function getPositionForSelectionRectGeneral(node){
+    ////console.log("getPositionForSelectionRectGeneral");
+    var tempPosition = node.prop('position');
+    var newPosition = {x: tempPosition.x, y: tempPosition.y};
+    return newPosition;
   }
 
   /**
@@ -1946,10 +2188,11 @@
   }
 
   function populateThemesList(themesJSON){
-    console.log("populateThemesList");
+    //console.log("populateThemesList");
     //console.log("themesJSON",themesJSON);
     var setOfThemes = themesJSON.set;
     defaultTheme = themesJSON.default;
+    currentThemeName = defaultTheme;
     loadTheme(defaultTheme);
     //console.log("setOfThemes",setOfThemes);
     //console.log("defaultTheme",defaultTheme);
@@ -2100,7 +2343,7 @@
 
         if(cellViewT.model.id != backgroundBox.id){                
           
-          //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);
+          //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);        
 
           var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
           var allowedTargets = linkTypeRestrictions.allowed_targets;
@@ -2133,7 +2376,6 @@
           if(connectionValidated){
             if(linkToSelf){
               linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));
-              linkView.model.attr('smooth',true);
             }
           }else{
             if(!currentTooltipCell){
@@ -2208,8 +2450,8 @@
           vertex.x += differenceX;
           vertex.y += differenceY;
           //console.log("vertex", vertex);
-        }
-      }
-      
+        }        
+      }      
     }
+
 }
