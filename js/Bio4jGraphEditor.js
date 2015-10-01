@@ -2447,8 +2447,8 @@
         var vertices = link.get('vertices');
         for(var j=0;j < vertices.length; j++){
           var vertex = vertices[j];
-          vertex.x += differenceX;
-          vertex.y += differenceY;
+          vertex.x += (differenceX/paperScale);
+          vertex.y += (differenceY/paperScale);
           //console.log("vertex", vertex);
         }        
       }      
