@@ -13,7 +13,7 @@
          },
          "node_type":"enzyme",
          "attrs":{
-            "image":{"xlink:href":"data/themes/bio4j/images/enzyme.svg","width":60,"height":60},
+            "image":{"xlink:href":"data/themes/bio4j/images/enzyme.png","width":60,"height":60},
             "text":{
                "text":"Enzyme"
             }
@@ -182,7 +182,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -193,10 +193,7 @@
          },
          "node_type":"country",
          "attrs":{
-            "text":"Country",
-            "rect":{
-               "fill":"brown"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/country.png","width":60,"height":60},
             "text":{
                "text":"Country"
             }
@@ -257,7 +254,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -268,17 +265,14 @@
          },
          "node_type":"disease",
          "attrs":{
-            "text":"Disease",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/disease.png","width":60,"height":60},
             "text":{
                "text":"Disease"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -289,10 +283,7 @@
          },
          "node_type":"organism",
          "attrs":{
-            "text":"Organism",
-            "rect":{
-               "fill":"purple"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/organism.png","width":60,"height":60},
             "text":{
                "text":"Organism"
             }
@@ -335,7 +326,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -346,10 +337,7 @@
          },
          "node_type":"isoform",
          "attrs":{
-            "text":"Isoform",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/isoform.png","width":60,"height":60},
             "text":{
                "text":"Isoform"
             }
@@ -374,7 +362,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -385,17 +373,14 @@
          },
          "node_type":"journal",
          "attrs":{
-            "text":"Journal",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/journal.png","width":60,"height":60},
             "text":{
                "text":"Journal"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -406,10 +391,7 @@
          },
          "node_type":"person",
          "attrs":{
-            "text":"Person",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/person.png","width":60,"height":60},
             "text":{
                "text":"Person"
             }
@@ -722,7 +704,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -733,17 +715,14 @@
          },
          "node_type":"sequence_caution",
          "attrs":{
-            "text":"Sequence caution",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/sequence_caution.png","width":60,"height":60},
             "text":{
                "text":"Sequence caution"
             }
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -754,12 +733,9 @@
          },
          "node_type":"subcellular_location",
          "attrs":{
-            "text":"Subcellular location",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/subcellular_location.png","width":60,"height":60},
             "text":{
-               "text":"Subcellular location"
+               "text":"subcellular location"
             }
          }
       },
@@ -785,7 +761,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -796,12 +772,9 @@
          },
          "node_type":"feature_type",
          "attrs":{
-            "text":"Feature type",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/feature.png","width":60,"height":60},
             "text":{
-               "text":"Feature type"
+               "text":"Feature"
             }
          }
       },
@@ -824,7 +797,7 @@
          }
       },
       {
-         "type":"basic.Rect",
+         "type":"basic.Image",
          "position":{
             "x":0,
             "y":0
@@ -835,10 +808,7 @@
          },
          "node_type":"unpublished_observation",
          "attrs":{
-            "text":"Unpublished observation",
-            "rect":{
-               "fill":"orange"
-            },
+            "image":{"xlink:href":"data/themes/bio4j/images/unpublished_observation.png","width":60,"height":60},
             "text":{
                "text":"Unpublished observation"
             }
