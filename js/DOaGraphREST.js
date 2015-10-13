@@ -142,6 +142,10 @@ function updateNodeProperties(internalID, serverlURL, newProperties, onLoadEnd){
 		}
 	}
 
+	statementSt += "RETURN n";
+
+	console.log("statementSt",statementSt);
+
 	query.statements.push({"statement":statementSt});
 
 	var xhr = new XMLHttpRequest();    

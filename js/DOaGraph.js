@@ -1855,6 +1855,9 @@
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
+    var props = results[0].data[0].row[0];
+    console.log("props", props);
+    selectedNode.model.prop("data", props);
     console.log(this.responseText);
   }
 
