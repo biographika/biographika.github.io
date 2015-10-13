@@ -1063,7 +1063,7 @@
 
   function selectNodeCell(cellView, flag){
 
-    //console.log("selectedNodeCell", flag);
+    //console.log("selectNodeCell", flag);
 
     var newCellSelected = true;
     if(selectedNode){
@@ -1608,15 +1608,27 @@
         alert("Please select a node type first");
         openDialogSelectNodeType();
       }else{
-        var tempNodeType = selectedNodeType.model.prop("node_type");
-        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], serverURL);
+        var tempNodeType = selectedNodeType.model.prop("node_type");     
+        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], serverURL, onNodeCreated);   
         var newCell = cloneCellAt(selectedNodeType,x,y);
         //console.log("selectedNodeType",selectedNodeType);
         selectNodeCell(newCell.findView(paper), true);
+        
       }
     }else{
        paperIsPanning = true;
     }
+  }
+
+  function onNodeCreated(){
+    console.log("onNodeCreated");
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+    var props = results[0].data[0].row[0];
+    console.log("props", props);
+
+    selectedNode.model.prop("data", props);
   }
 
   /**
@@ -1693,7 +1705,14 @@
           }
       });
 
+      getNodeData(data.internal_id, serverURL, onSelectedNodeDataLoaded);
+
     }
+  }
+
+  function onSelectedNodeDataLoaded(){
+      console.log("onSelectedNodeDataLoaded");
+      console.log("this.responseText", this.responseText);
   }
 
   /**
@@ -1818,13 +1837,25 @@
   */
   function saveMetadataChanges(){
     $('#metadata_dialog').modal('hide');
-    if(selectedNode){
-      selectedNode.model.prop("data",alpacaMetadataFormControl.getValue());
+    var tempInternalID = selectedNode.model.prop("data").internal_id;
+    var newData = alpacaMetadataFormControl.getValue();
+    if(selectedNode){      
+      selectedNode.model.prop("data", newData);
+      console.log("selectedNode.model.prop(\"data\")", selectedNode.model.prop("data"));
+      updateNodeProperties(tempInternalID, serverURL, newData, onNodeUpdated);
     }else if(selectedLink){
-      selectedLink.model.prop("data",alpacaMetadataFormControl.getValue());
+      selectedLink.model.prop("data", newData);
     }
     
     ////console.log("saveMetadataChanges", selectedNode.model);
+  }
+
+  function onNodeUpdated(){
+    console.log("onNodeUpdated");
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+    console.log(this.responseText);
   }
 
   /**
@@ -2389,7 +2420,7 @@
             if(linkToSelf){
               linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));
 
-              createEdge(linkType,typeDefinitionsJSON.links[linkType],serverURL,);
+              createEdge(linkType,typeDefinitionsJSON.links[linkType],serverURL,sourceInternalId,targetInternalId);
             }
           }else{
             if(!currentTooltipCell){

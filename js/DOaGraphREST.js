@@ -19,7 +19,7 @@ function initDatabase(serverURL){
 
 }
 
-function createNode(nodeType, nodeTypeJSON, serverURL){
+function createNode(nodeType, nodeTypeJSON, serverURL, onLoadEnd){
 	//console.log("nodeType",nodeType);
 	//console.log("nodeTypeJSON",nodeTypeJSON);
 	var properties = Object.keys(nodeTypeJSON.schema.properties);
@@ -55,9 +55,7 @@ function createNode(nodeType, nodeTypeJSON, serverURL){
 	//console.log("query st", JSON.stringify(query));
 
 	var xhr = new XMLHttpRequest();    
-	xhr.onloadend = function () {
-	    console.log(xhr.responseText);
-	};
+	xhr.onloadend = onLoadEnd;
 	xhr.open("POST", serverURL, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
@@ -110,7 +108,49 @@ function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id){
 
 }
 
-//function 
+function getNodeData(internalID, serverURL, onLoadEnd){
+
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (n) WHERE n.internal_id = '" + internalID + "' RETURN n";
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+
+}
+
+function updateNodeProperties(internalID, serverlURL, newProperties, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (n) WHERE n.internal_id = '" + internalID + "' SET ";
+
+	var propsArray = Object.keys(newProperties);
+	for(var i=0; i<propsArray.length;i++){
+		statementSt += "n." + propsArray[i] + " = '" + newProperties[propsArray[i]] +  "'" ;
+		if(i<propsArray.length -1){
+			statementSt += ",";
+		}
+	}
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
 
 function uuid() {
 
