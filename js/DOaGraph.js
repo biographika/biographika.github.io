@@ -1673,6 +1673,23 @@
     }
   }
 
+  function onNodeDeleted(){
+      console.log("onNodeDeleted");
+      console.log(this.responseText);
+      var resultsJSON = JSON.parse(this.responseText);
+      var results = resultsJSON.results;
+      var errors = resultsJSON.errors;
+
+      graph.removeLinks(selectedNode.model);
+      selectedNode.model.remove();
+      selectedNode = null;
+      if(selectionRectCell){
+        selectionRectCell.remove();
+        selectionRectCell = null;
+      }
+
+  }
+
   /**
   Updates the paper dimensions text inputs so that they reflect the values
   passed as parameter
@@ -2355,14 +2372,11 @@
 
     if(!readOnlyMode){
       if(selectedNode){
-      
-        graph.removeLinks(selectedNode.model);
-        selectedNode.model.remove();
-        selectedNode = null;
-        if(selectionRectCell){
-          selectionRectCell.remove();
-          selectionRectCell = null;
-        }
+
+        var nodeInternalID = selectedNode.model.prop("data").internal_id;
+        console.log("nodeInternalID",nodeInternalID);
+        deleteNode(nodeInternalID, serverURL, onNodeDeleted);      
+        
       }else if(selectedLink){
         selectedLink.model.remove();
         selectedLink = null;

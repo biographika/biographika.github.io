@@ -109,6 +109,25 @@ function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id, onLoa
 
 }
 
+function deleteNode(internalID, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt1 = "MATCH (n { internal_id: '" + internalID + "'})-[r]-() DELETE r";
+	var statementSt2 = "MATCH (n { internal_id: '" + internalID + "'}) DELETE n";
+
+	query.statements.push({"statement":statementSt1});
+	query.statements.push({"statement":statementSt2});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
 function getNodeData(internalID, serverURL, onLoadEnd){
 
 	var query = {
