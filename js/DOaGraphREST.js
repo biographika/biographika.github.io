@@ -62,13 +62,16 @@ function createNode(nodeType, nodeTypeJSON, serverURL, onLoadEnd){
 	xhr.send(JSON.stringify(query));
 }
 
-function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id){
+function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id, onLoadEnd){
 
-	var properties = Object.keys(nodeTypeJSON.schema.properties);
+	var properties = Object.keys(edgeTypeJSON.schema.properties);
 	var propertiesSt = "{";
 
 	var internal_id = uuid();
-	propertiesSt += "internal_id:\"" + internal_id + "\",";
+	propertiesSt += "internal_id:\"" + internal_id + "\"";
+	if(properties.length > 0){
+		propertiesSt += ",";
+	} 
 
 	//console.log("properties",properties);
 	for(var i=0; i<properties.length;i++){
@@ -81,10 +84,10 @@ function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id){
 	//console.log("propertiesJSON",propertiesJSON);
 
 	var statementSt = "MATCH (n1:Node),(n2:Node) WHERE n1.internal_id = '" + node1_id  
-		+ "' AND n2.internal_id = '" + node2_id + "' CREATE (n1) -[e:";
+		+ "' AND n2.internal_id = '" + node2_id + "' CREATE (n1)-[e:";
 	statementSt += edgeType + " ";
 	statementSt += propertiesSt;
-	statementSt += " ] -> (n2) RETURN e";
+	statementSt += " ]->(n2) RETURN e";
 
 	console.log("statementSt", statementSt);
 
@@ -98,9 +101,7 @@ function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id){
 	//console.log("query st", JSON.stringify(query));
 
 	var xhr = new XMLHttpRequest();    
-	xhr.onloadend = function () {
-	    console.log(xhr.responseText);
-	};
+	xhr.onloadend = onLoadEnd;
 	xhr.open("POST", serverURL, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');

@@ -13,6 +13,14 @@
  var pointerDownClientY = 0;
  var lastPositionMouseX = 0;
  var lastPositionMouseY = 0;
+ var xPositionForNewCell = 0;
+ var yPositionForNewCell = 0;
+
+ var linkToBeCreated;
+ var internalSourceIDforLinkToBeCreated;
+ var internalTargetIDforLinkToBeCreated;
+
+ var createdLinkIsValid = false;
  /**
  Flag indicating whether a node is currently being dragged
  */
@@ -226,7 +234,6 @@
  Control variable used to modify the alpaca form used to display/modify nodes metadata
  */
  var alpacaMetadataFormControl;
- var lastLinkSelectedStrokeWidth = 1;
 
  var currentTooltipCell = null;
 
@@ -512,6 +519,12 @@
 
     graph = new joint.dia.Graph;
 
+    graph.on('add', function(cell) { 
+        if(cell.isLink()){
+          console.log("new link!: ",cell);
+        }
+    })
+
     paper = new joint.dia.Paper({
       el: $('#graph-container'),
       gridSize: 1,
@@ -528,6 +541,7 @@
 
     paper.on("blank:pointerdown",
       function(evt, x, y){
+          console.log("blank:pointerdown");
           onStageDown(evt,x,y);
       }
     );
@@ -566,6 +580,7 @@
     );
     paper.on('cell:pointerdown',
       function(cellView, evt, x, y){
+        console.log("cell:pointerdown");
         if(cellView.model == backgroundBox || cellView.model == currentBackgroundCell){
           onStageDown(evt,x,y);
         }else{
@@ -587,17 +602,15 @@
     );
     paper.on('cell:pointerclick',
       function(cellView, evt, x, y) {
+        console.log("cell:pointerclick");
 
         if(cellView.model.isLink()){
           //console.log("Cell is link! ");
           selectLinkCell(cellView, true);
         }else{
-          if(cellView.model == backgroundBox){
-            onBackgroundOrBackgroundBoxClick(evt,x,y);
-          }else if(cellView.model == currentBackgroundCell){
+          if(cellView.model == backgroundBox || cellView.model == currentBackgroundCell){
             onBackgroundOrBackgroundBoxClick(evt,x,y);
           }else{
-
             if(selectedNode){
               if(cellView.id != selectedNode.id){
                 selectNodeCell(selectedNode, false);
@@ -620,10 +633,16 @@
           if(isLinkInvalid(tempLink)){
             tempLink.remove();
           }else{
-            selectLinkCell(cellView,true);
-            if(!modifiableLinks){
-              makeLinksInteractive(false);
+            linkToBeCreated = cellView;
+
+            var linkType = cellView.model.prop("link_type");
+
+            console.log("linkType",linkType);
+          
+            if(createdLinkIsValid){
+              createEdge(linkType,typeDefinitionsJSON.links[linkType],serverURL,internalSourceIDforLinkToBeCreated,internalTargetIDforLinkToBeCreated, onEdgeCreated);
             }
+            
           }
         }
     });
@@ -1251,6 +1270,7 @@
   Clones the cell provided at the position provided
   */
   function cloneCellAt(cell, x, y){
+      console.log("cloneCellAt");
       var clonedCell = cell.model.clone();
       clonedCell.prop("position", {"x":x,"y":y});
       if(clonedCell.attr("image/width")){
@@ -1588,8 +1608,6 @@
 
     if(readOnlyMode){
       paperIsPanning = true;
-    }else{
-      onBackgroundOrBackgroundBoxClick(evt,x,y);
     }
   }
 
@@ -1600,6 +1618,7 @@
   */
   function onBackgroundOrBackgroundBoxClick(evt, x, y){
     ////console.log("onBackgroundOrBackgroundBoxClick");
+    event.stopPropagation();
     if(selectedNode){
         selectNodeCell(selectedNode, false);
     }
@@ -1609,10 +1628,11 @@
         openDialogSelectNodeType();
       }else{
         var tempNodeType = selectedNodeType.model.prop("node_type");     
-        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], serverURL, onNodeCreated);   
-        var newCell = cloneCellAt(selectedNodeType,x,y);
-        //console.log("selectedNodeType",selectedNodeType);
-        selectNodeCell(newCell.findView(paper), true);
+        xPositionForNewCell = x;
+        yPositionForNewCell = y;
+        console.log("create node");
+        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], serverURL, onNodeCreated);       
+
         
       }
     }else{
@@ -1626,9 +1646,31 @@
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
     var props = results[0].data[0].row[0];
-    console.log("props", props);
+    console.log("props", props);    
 
-    selectedNode.model.prop("data", props);
+    var newCell = cloneCellAt(selectedNodeType,xPositionForNewCell,yPositionForNewCell);
+    newCell.prop("data", props);
+    //console.log("selectedNodeType",selectedNodeType);
+    selectNodeCell(newCell.findView(paper), true);
+
+  }
+
+  function onEdgeCreated(){
+    console.log("onEdgeCreated");
+    console.log(this.responseText);
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+    console.log(errors);
+    var props = results[0].data[0].row[0];
+    console.log("props", props);    
+
+    linkToBeCreated.model.prop("data", props);
+
+    selectLinkCell(linkToBeCreated,true);
+    if(!modifiableLinks){
+      makeLinksInteractive(false);
+    }
   }
 
   /**
@@ -2370,12 +2412,11 @@
       var linkType = linkView.model.prop("link_type");
       var targetType = cellViewT.model.prop("node_type");
       var sourceType = cellViewS.model.prop("node_type");
-      var targetInternalId = cellViewT.model.prop("data").internal_id;
-      var sourceInternalId = ellViewS.model.prop("data").internal_id;
+      
 
       //console.log("linkType",linkType);
       //console.log("sourceType",sourceType);
-      //console.log("targetType",targetType);
+      //console.log("targetType",targetType);     
 
 
       if(linkType){
@@ -2383,36 +2424,62 @@
         var linkToSelf = cellViewS.id == cellViewT.id;
 
         if(!linkToSelf){
-            //delete vertices previously created
-            linkView.model.set('vertices',"");
-          }
+          //delete vertices previously created
+          linkView.model.set('vertices',"");
+        }
 
-        if(cellViewT.model.id != backgroundBox.id){                
-          
-          //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);        
-
-          var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
-          var allowedTargets = linkTypeRestrictions.allowed_targets;
-          var allowedSources = linkTypeRestrictions.allowed_sources;
+        if(cellViewT.model.id != backgroundBox.id ){   
 
           var sourceOK = false;
           var targetOK = false;
 
-          //console.log("allowedSources",allowedSources);
-          //console.log("allowedTargets",allowedTargets);
-          var wildCardSources = ($.inArray("*", allowedSources) >= 0);
-          var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
+          var cellViewTData = cellViewT.model.prop("data");
+          var cellViewSData = cellViewS.model.prop("data");
+          //console.log("cellViewT.model" ,cellViewT.model);
 
-          //console.log("wildCardSources",wildCardSources);
-          //console.log("wildCardTargets",wildCardTargets);
-          //console.log("sourceType",sourceType);
+          var allOKToProceed = cellViewTData && cellViewSData;
+          var doNotShowTooltip = false;
 
-          if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
-            sourceOK = true;
+          if(selectionRectCell){
+            if(cellViewT.model.id == selectionRectCell.id){
+                allOKToProceed = false;
+                doNotShowTooltip = true;
+            }
           }
-          if(($.inArray(targetType, allowedTargets) >= 0) || wildCardTargets){
-            targetOK = true;
-          }
+
+          if(allOKToProceed){            
+
+            //console.log("cellViewTData", cellViewTData);
+
+            internalTargetIDforLinkToBeCreated = cellViewTData.internal_id;
+            internalSourceIDforLinkToBeCreated = cellViewSData.internal_id;     
+
+            //console.log("internalTargetIDforLinkToBeCreated",internalTargetIDforLinkToBeCreated);
+            //console.log("internalSourceIDforLinkToBeCreated",internalSourceIDforLinkToBeCreated); 
+            //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);        
+
+            var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
+            var allowedTargets = linkTypeRestrictions.allowed_targets;
+            var allowedSources = linkTypeRestrictions.allowed_sources;          
+
+            //console.log("allowedSources",allowedSources);
+            //console.log("allowedTargets",allowedTargets);
+            var wildCardSources = ($.inArray("*", allowedSources) >= 0);
+            var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
+
+            //console.log("wildCardSources",wildCardSources);
+            //console.log("wildCardTargets",wildCardTargets);
+            //console.log("sourceType",sourceType);
+
+            if(($.inArray(sourceType, allowedSources) >= 0) || wildCardSources){
+              sourceOK = true;
+            }
+            if(($.inArray(targetType, allowedTargets) >= 0) || wildCardTargets){
+              targetOK = true;
+            }
+
+          }           
+          
 
           //console.log("sourceOK", sourceOK);
           //console.log("targetOK", targetOK);
@@ -2421,16 +2488,16 @@
 
           if(connectionValidated){
             if(linkToSelf){
-              linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));
-
-              createEdge(linkType,typeDefinitionsJSON.links[linkType],serverURL,sourceInternalId,targetInternalId);
+              linkView.model.set('vertices',getVerticesForLinkEdgeToSelf(cellViewS));              
             }
           }else{
-            if(!currentTooltipCell){
+            if(!currentTooltipCell && !doNotShowTooltip){
               currentTooltipCell = createLinkTooltipCell(cellViewT, linkTypeRestrictions);
             }
             
           }
+
+          createdLinkIsValid = connectionValidated;
 
           return connectionValidated;
         
