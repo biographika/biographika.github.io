@@ -19,6 +19,7 @@
  var linkToBeCreated;
  var internalSourceIDforLinkToBeCreated;
  var internalTargetIDforLinkToBeCreated;
+ var nodeToBeCreated;
 
  var createdLinkIsValid = false;
  /**
@@ -1267,10 +1268,10 @@
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->
 
   /**
-  Clones the cell provided at the position provided
+  Clones the node provided at the position provided
   */
-  function cloneCellAt(cell, x, y){
-      console.log("cloneCellAt");
+  function cloneNodeAt(cell, x, y){
+      console.log("cloneNodeAt");
       var clonedCell = cell.model.clone();
       clonedCell.prop("position", {"x":x,"y":y});
       if(clonedCell.attr("image/width")){
@@ -1278,9 +1279,7 @@
       }else{
         clonedCell.attr("text/magnet","true");
       }
-      clonedCell.attr('text/font-weight',"normal");
-      graph.addCell(clonedCell);
-      clonedCell.toFront();
+      clonedCell.attr('text/font-weight',"normal");      
       return clonedCell;
   }
 
@@ -1632,7 +1631,14 @@
         xPositionForNewCell = x;
         yPositionForNewCell = y;
         console.log("create node");
-        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], serverURL, onNodeCreated);       
+
+        nodeToBeCreated = cloneNodeAt(selectedNodeType,xPositionForNewCell,yPositionForNewCell);          
+        var graphicalDataSt = JSON.stringify(nodeToBeCreated.toJSON());    
+        console.log("before", graphicalDataSt);
+        graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
+        console.log("after", graphicalDataSt);
+
+        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], graphicalDataSt, serverURL, onNodeCreated);       
 
         
       }
@@ -1646,13 +1652,17 @@
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
+    
+    console.log("errors",errors);
     var props = results[0].data[0].row[0];
-    console.log("props", props);    
+    console.log("props", props);   
+    nodeToBeCreated.prop("data", props); 
 
-    var newCell = cloneCellAt(selectedNodeType,xPositionForNewCell,yPositionForNewCell);
-    newCell.prop("data", props);
+    graph.addCell(nodeToBeCreated);
+    nodeToBeCreated.toFront();
+    
     //console.log("selectedNodeType",selectedNodeType);
-    selectNodeCell(newCell.findView(paper), true);
+    selectNodeCell(nodeToBeCreated.findView(paper), true);
 
   }
 
@@ -1699,7 +1709,7 @@
 
     var newRow = results[0].data[0].row[0];
 
-    
+
 
   }
 

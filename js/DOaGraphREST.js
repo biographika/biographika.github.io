@@ -20,7 +20,7 @@ function initDatabase(serverURL){
 
 }
 
-function createNode(nodeType, nodeTypeJSON, serverURL, onLoadEnd){
+function createNode(nodeType, nodeTypeJSON, graphical_data, serverURL, onLoadEnd){
 	//console.log("nodeType",nodeType);
 	//console.log("nodeTypeJSON",nodeTypeJSON);
 	var properties = Object.keys(nodeTypeJSON.schema.properties);
@@ -28,6 +28,7 @@ function createNode(nodeType, nodeTypeJSON, serverURL, onLoadEnd){
 
 	var internal_id = uuid();
 	propertiesSt += "internal_id:\"" + internal_id + "\",";
+	propertiesSt += "graphical_data:\"" + graphical_data + "\",";
 
 	//console.log("properties",properties);
 	for(var i=0; i<properties.length;i++){
