@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<title>
+  DOaGraph
+</title>
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
+<link href="css/jquery-ui.css" rel="stylesheet" type='text/css'>
+<link type="text/css" href="css/alpaca.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="css/joint.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/Bio4jGraphEditor.css">
+<link rel="stylesheet" href="css/bootstrap-table.min.css">
+<script type="text/javascript" src="js/joint.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/handlebars-v3.0.3.js"></script>
+<script type="text/javascript" src="js/alpaca.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-table.min.js"></script>
+<!--
+<script type="text/javascript" src="js/rgbcolor.js"></script>
+<script type="text/javascript" src="js/StackBlur.js"></script>
+<script type="text/javascript" src="js/canvg.js"></script>
+<script type="text/javascript" src="js/base64-binary.js"></script>
+-->
+
+<script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
+<script type="text/javascript"> window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;</script>
+<body onload="onBodyLoad()">
+  <div id="wrapper">
+    <!-- Navigation -->
+    <nav id="nav_bar" class="navbar navbar-default navbar-static-top navbar-transparent" role="navigation"  >
+      <div class="navbar-header">
+		      <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
+          <!--<a class="navbar-brand"><strong>Biographika: </strong>Bio4j data graph visualization</a>-->
+          <div class="nav navbar-nav btn-group">
+            <ul class="nav navbar-nav">
+              <li id="themesListItem">
+                <div class="dropdown">
+                  <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Themes <span class="caret"></span></button>
+                  <ul id="themesDropDownMenu" class="dropdown-menu">
+                    <!--
+                    <li><a id="doPlanningThemeButton" role="button">Doplanning</a></li>
+                    -->
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <span class="btn btn-default btn-file" title="Load diagram file">
+                      <i class="fa fa-upload"></i>                      
+                      <input type="file" accept=".json">
+                  </span>
+                </div>
+              </li>
+              <li>
+                <div class="dropdown">
+                  <button type="button" class="btn btn-default" data-toggle="dropdown" title="Export diagram to...">
+                    <i class="fa fa-download"></i>
+                    <!--Export to...-->
+                    <span class="caret"></span>
+                  </button>
+                  <ul id="exportDropDownMenu" class="dropdown-menu" >
+                    <li><a id="exportToJSONButton" role="button" data-toggle="modal" >JSON</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <button id="zoomInButton" title="Zoom in" onclick="zoomIn()" type="button" class="btn btn-default">
+                  <i class="fa fa-search-plus"></i><!--Zoom in-->
+                </button>
+              </li>
+              <li>
+                <button id="zoomOutButton" title="Zoom out" onclick="zoomOut()" type="button" class="btn btn-default">
+                  <i class="fa fa-search-minus"></i><!--Zoom out-->
+                </button>
+              </li>
+              <li>
+                <button id="resetZoomButton" title="Reset zoom" onclick="resetZoom()" type="button" class="btn btn-default">
+                  <i class="fa fa-search"></i><!--Reset zoom-->
+                </button>
+              </li>
+              <li>
+                <button id="rotateRightButton" title="Rotate node to the right" onclick="rotateCellToTheRight()" type="button" class="btn btn-default">
+                  <i class="fa fa-undo"></i><!--Rotate to right-->
+                </button>
+              </li>
+              <li>
+                <button id="rotateLeftButton" title="Rotate node to the left" onclick="rotateCellToTheLeft()" type="button" class="btn btn-default">
+                  <i class="fa fa-repeat"></i><!--Rotate to left-->
+                </button>
+              </li>
+              <li>
+                <button id="bringToFrontButton" title="Bring node to front" onclick="bringSelectedNodeToFront()" type="button" class="btn btn-default">
+                  <i class="fa fa-clone"></i><i class="fa fa-arrow-right"></i><!--Bring to front-->
+                </button>
+              </li>
+              <li>
+                <button id="bringToBackButton" title="Bring node to back" onclick="bringSelectedNodeToBack()" type="button" class="btn btn-default">
+                  <i class="fa fa-arrow-left"></i><i class="fa fa-clone"></i><!--Bring to back-->
+                </button>
+              </li>
+              <li>
+                <button id="setBackgroundButton" title="Set background image" onclick="onSetBackgroundButtonClick()" type="button" class="btn btn-default">
+                  <i class="fa fa-picture-o"></i><!--Set background-->
+                </button>
+              </li>
+              <li>
+                <button id="showMetadataButton" title="Show cell metadata" onclick="onShowMetadataButtonClick()" type="button" class="btn btn-default">
+                  <i class="fa fa-newspaper-o"></i><!--Show metadata-->
+                </button>
+              </li>
+              <li>
+                <button id="renameCellButton" title="Rename cell" onclick="onrenameCellButtonClick()" type="button" class="btn btn-default">
+                  <i class="fa fa-pencil-square-o"></i>
+                </button>
+              </li>
+              <li>
+                <button id="fitPaperToContentsButton" title="Fit stage dimensions to contents" onclick="fitPaperToContents()" type="button" class="btn btn-default">
+                  <i class="fa fa-arrows-alt"></i><!--Fit paper to contents-->
+                </button>
+              </li>
+              <li>
+                <button id="deleteCellButton" title="Delete selected node/link" onclick="deleteSelectedCell()" type="button" class="btn btn-default">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </li>
+              <li>
+                <button id="takeSnapshotButton" title="Take snapshot" onclick="takeSnapshot()" type="button" class="btn btn-default">
+                  <i class="fa fa-print"></i>
+                </button>
+              </li>
+              <li>
+                <button id="selectNodeTypeButton" title="Select current node type" onclick="openDialogSelectNodeType()" type="button" class="btn btn-default">
+                  <i id="currentNodeTypeIcon" class="fa fa-bullseye"></i>
+                  <img id="currentNodeTypeImage">
+                  </img>
+                </button>
+              </li>
+              <li>
+                <button id="selectLinkTypeButton" title="Select current link type" onclick="openDialogselectLinkType()" type="button" class="btn btn-default">
+                  <i class="fa fa-arrows-h"></i></button>
+              </li>
+              <li id="paperDimensionsListItem">
+                <form class="navbar-form">
+                  <div class="control-group">
+                    <!--<span class="control-label">Stage dimensions</span>-->
+                    <div class="controls form-inline">
+                        <label for="inputWidth">Width</label>
+                        <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="200" type="number" class="input-small" placeholder="Width" id="inputWidth" min="200" max="2000">
+                        <label for="inputHeight">Height</label>
+                        <input onchange="updatePaperDimensionsBasedOnTextInputs()" value="100" type="number" class="input-small" placeholder="Height" id="inputHeight" min="100" max="1500">
+                    </div>
+                  </div>
+                </form>
+              </li>
+              <li id="lockDiagramCheckBoxListItem">
+                <div class="checkbox">
+                  <label><input id="lockDiagramCheckBox" type="checkbox" >Lock diagram</label>
+                </div>
+                <!-- lock diagram checkbox -->
+              </li>
+              <li id="modifyLinksOnClickCheckBoxListItem">
+                <div class="checkbox">
+                  <label><input id="modifyLinkOnClickCheckBox" type="checkbox" >Modify links on click</label>
+                </div>
+                <!-- lock diagram checkbox -->
+              </li>
+          </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper">
+      <div id="diagram_row" class="row">
+        <div id="graph-container" class="col-xs-12">
+        </div>
+      </div>
+    </div>
+    <!-- page-wrapper -->
+  </div>
+  <footer>
+    <div class="container">
+      <p>This example is part of <a href="http://www.biographika.com/" rel="author">Biographika</a> project.  100% of the code is open source and released under <a href="http://www.gnu.org/licenses/agpl-3.0.en.html" rel="external">AGPLv3</a> license.</p>
+    </div>
+  </footer>
+  <div id="metadata_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Element Metadata</h4>
+        </div>
+        <div class="modal-body">
+          <div id="metadata_form">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+          <button id="saveMetadataChangesButton" type="button" onclick="saveMetadataChanges()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="background_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Background selector</h4>
+        </div>
+        <div class="modal-body">
+          <div id="backgrounds_list">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="setSelectedBackground()" class="btn btn-primary">Set background</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="networks_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Network selector</h4>
+        </div>
+        <div class="modal-body">
+          <table id="table">
+              <thead>
+              <tr>
+                  <th data-field="name">Name</th>
+                  <th data-field="creation_time">Creation time</th>
+              </tr>
+              </thead>
+          </table>
+          <div class="form-group">
+            <label for="new_network_name">New network name:</label>
+            <input type="text" class="form-control" id="new_network_name">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="createNewNetwork()" class="btn btn-primary">Create network</button>
+          <button type="button" onclick="setSelectedNodeType()" class="btn btn-primary">Select network</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="node_types_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Node type selector</h4>
+        </div>
+        <div class="modal-body">
+          <div id="node_types_list">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="setSelectedNodeType()" class="btn btn-primary">Select node type</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="link_types_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Link type selector</h4>
+        </div>
+        <div class="modal-body">
+          <div id="link_types_list">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="setSelectedLinkType()" class="btn btn-primary">Select link type</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="rename_cell_dialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mainLabel">Rename node</h4>
+        </div>
+        <div class="modal-body">
+          <label for="inputCellName">New label</label>
+          <br/>
+          <textarea id="inputCellName" ></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="applyRenameCell()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--
+  canvas id="snapshotCanvas" width="1000px" height="600px" style="display:none"></canvas>
+  <img id="snapshotImage"/>
+
+  -->
+  <script type="text/javascript" src="js/DOaGraphREST.js"></script>
+  <script type="text/javascript" src="js/DOaGraph.js"></script>
+
+</body>
+</html>

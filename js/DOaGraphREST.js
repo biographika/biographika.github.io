@@ -8,6 +8,7 @@ function initDatabase(serverURL){
 	    "statements" : [ ]
 	};
 	query.statements.push({"statement":"CREATE INDEX ON :Node(internal_id)"});
+	query.statements.push({"statement":"CREATE INDEX ON :Network(internal_id)"});
 	var xhr = new XMLHttpRequest();    
 	xhr.onloadend = function () {
 	    console.log(xhr.responseText);
@@ -147,7 +148,80 @@ function getNodeData(internalID, serverURL, onLoadEnd){
 
 }
 
+function getNetworks(serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (n:Network) RETURN n";
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
+function createNetwork(networkName, serverURL, onLoadEnd){
+
+	var propertiesSt = "{ name:\"" + networkName + "\", ";
+	propertiesSt += "creation_time: \"" + getCurrentTime() + "\",";
+
+
+	var internal_id = uuid();
+	propertiesSt += "internal_id:\"" + internal_id + "\"}";
+
+	var statementSt = "CREATE (n:Network ";
+	statementSt += propertiesSt;
+	statementSt += ") RETURN n";
+
+	var query = {
+	   "statements" : [ ]
+	};
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
 function updateNodeProperties(internalID, serverlURL, newProperties, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (n) WHERE n.internal_id = '" + internalID + "' SET ";
+
+	var propsArray = Object.keys(newProperties);
+	for(var i=0; i<propsArray.length;i++){
+		statementSt += "n." + propsArray[i] + " = '" + newProperties[propsArray[i]] +  "'" ;
+		if(i<propsArray.length -1){
+			statementSt += ",";
+		}
+	}
+
+	statementSt += "RETURN n";
+
+	console.log("statementSt",statementSt);
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
+function updateEdgeProperties(internalID, serverlURL, newProperties, onLoadEnd){
 	var query = {
 	    "statements" : [ ]
 	};
@@ -185,4 +259,15 @@ function uuid() {
      var v = c == 'x' ? r : (r&0x3|0x8);
      return v.toString(16);
    });
+}
+
+function getCurrentTime(){
+	var currentdate = new Date(); 
+	var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+    return datetime;
 }

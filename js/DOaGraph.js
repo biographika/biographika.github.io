@@ -1337,7 +1337,8 @@
     //console.log("onBodyLoad");
     loadThemesJSON();
     loadConfigJSON();
-    initializeJoint();        
+    initializeJoint();   
+    openDialogSelectNetwork();     
   }
   /**
   Zooms in on the paper by increasing its scale value
@@ -1690,6 +1691,18 @@
 
   }
 
+  function onNetworkCreated(){
+    console.log("onNetworkCreated");
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    var newRow = results[0].data[0].row[0];
+
+    
+
+  }
+
   /**
   Updates the paper dimensions text inputs so that they reflect the values
   passed as parameter
@@ -2013,6 +2026,14 @@
   */
   function openDialogSelectNodeType(){
     $('#node_types_dialog').modal({
+         show: true
+     });
+  }
+  /**
+  Opens the modal dialog where a network can be selected/created
+  */
+  function openDialogSelectNetwork(){
+    $('#networks_dialog').modal({
          show: true
      });
   }
@@ -2586,6 +2607,14 @@
         link.set('vertices', newVertices);  
         console.log          
       }      
+    }
+  }
+
+  function createNewNetwork(){
+    var newNetworkName = $('#new_network_name').val();
+    
+    if(newNetworkName){
+      createNetwork(newNetworkName, serverURL, onNetworkCreated);
     }
   }
 
