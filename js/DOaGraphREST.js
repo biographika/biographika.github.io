@@ -20,15 +20,18 @@ function initDatabase(serverURL){
 
 }
 
-function createNode(nodeType, nodeTypeJSON, graphical_data, serverURL, onLoadEnd){
-	//console.log("nodeType",nodeType);
+function createNode(nodeType, nodeTypeJSON, networkName, graphical_data, serverURL, onLoadEnd){
+	console.log("networkName",networkName);
 	//console.log("nodeTypeJSON",nodeTypeJSON);
 	var properties = Object.keys(nodeTypeJSON.schema.properties);
 	var propertiesSt = "{";
 
 	var internal_id = uuid();
 	propertiesSt += "internal_id:\"" + internal_id + "\",";
-	propertiesSt += "graphical_data:\"" + graphical_data + "\",";
+	propertiesSt += "graphical_data:\"" + graphical_data + "\"";
+	if(properties.length > 0){
+		propertiesSt += ",";
+	}
 
 	//console.log("properties",properties);
 	for(var i=0; i<properties.length;i++){
@@ -41,7 +44,7 @@ function createNode(nodeType, nodeTypeJSON, graphical_data, serverURL, onLoadEnd
 	//console.log("propertiesJSON",propertiesJSON);
 
 	var statementSt = "CREATE (n:Node:";
-	statementSt += nodeType + " ";
+	statementSt += nodeType + ":" + networkName + " ";
 	statementSt += propertiesSt;
 	statementSt += ") RETURN n";
 
@@ -64,12 +67,13 @@ function createNode(nodeType, nodeTypeJSON, graphical_data, serverURL, onLoadEnd
 	xhr.send(JSON.stringify(query));
 }
 
-function createEdge(edgeType, edgeTypeJSON, serverURL, node1_id, node2_id, onLoadEnd){
+function createEdge(edgeType, edgeTypeJSON, graphical_data, serverURL, node1_id, node2_id, onLoadEnd){
 
 	var properties = Object.keys(edgeTypeJSON.schema.properties);
 	var propertiesSt = "{";
 
 	var internal_id = uuid();
+	propertiesSt += "graphical_data:\"" + graphical_data + "\",";
 	propertiesSt += "internal_id:\"" + internal_id + "\"";
 	if(properties.length > 0){
 		propertiesSt += ",";
@@ -147,6 +151,27 @@ function getNodeData(internalID, serverURL, onLoadEnd){
     xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
 	xhr.send(JSON.stringify(query));
 
+}
+
+function getNetworkData(networkName, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt1 = "MATCH (node:Node:" + networkName + ")-[r]-() " 
+					+ "RETURN node, r";
+	var statementSt2 = "MATCH (node:Node:" + networkName + ") " 
+					+ "RETURN node";
+
+	query.statements.push({"statement":statementSt1});
+	query.statements.push({"statement":statementSt2});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
 }
 
 function getNetworks(serverURL, onLoadEnd){

@@ -20,6 +20,7 @@
  var internalSourceIDforLinkToBeCreated;
  var internalTargetIDforLinkToBeCreated;
  var nodeToBeCreated;
+ var networkName;
 
  var createdLinkIsValid = false;
  /**
@@ -350,29 +351,9 @@
           if(fileType != "json"){
               alert("Please select a .json file");
           }else{
-             graph.fromJSON(JSON.parse(contents));
 
-             //var bbox = graph.getBBox(graph.getElements());
-             var contentBBox = paper.getContentBBox();
-             paperInitialWidth = contentBBox.width + contentBBox.x;
-             paperInitialHeight = contentBBox.height + contentBBox.y;
-
-             //console.log("graph loaded!");
-
-             updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
-
-             deletePreviousBackgroundBox();
-             initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
-
-             updatePaperDimensions(paperInitialWidth,paperInitialHeight);
-
-             if(!modifiableLinks){
-                makeLinksInteractive(false);
-             }
-             if(readOnlyMode){
-              applyReadOnlyMode(true);
-             }
-             paper.render();
+            loadGraphFromJSON(JSON.parse(contents));
+             
           }
         }
         reader.readAsText(file);
@@ -641,7 +622,10 @@
             console.log("linkType",linkType);
           
             if(createdLinkIsValid){
-              createEdge(linkType,typeDefinitionsJSON.links[linkType],serverURL,internalSourceIDforLinkToBeCreated,internalTargetIDforLinkToBeCreated, onEdgeCreated);
+              var graphicalDataSt = JSON.stringify(linkToBeCreated.model.toJSON());   
+              console.log("graphicalDataSt",graphicalDataSt);
+              graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
+              createEdge(linkType,typeDefinitionsJSON.links[linkType], graphicalDataSt, serverURL,internalSourceIDforLinkToBeCreated,internalTargetIDforLinkToBeCreated, onEdgeCreated);
             }
             
           }
@@ -1634,11 +1618,9 @@
 
         nodeToBeCreated = cloneNodeAt(selectedNodeType,xPositionForNewCell,yPositionForNewCell);          
         var graphicalDataSt = JSON.stringify(nodeToBeCreated.toJSON());    
-        console.log("before", graphicalDataSt);
         graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
-        console.log("after", graphicalDataSt);
 
-        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], graphicalDataSt, serverURL, onNodeCreated);       
+        createNode(tempNodeType, typeDefinitionsJSON.nodes[tempNodeType], networkName, graphicalDataSt, serverURL, onNodeCreated);       
 
         
       }
@@ -1709,7 +1691,48 @@
 
     var newRow = results[0].data[0].row[0];
 
+    console.log("newRow",newRow);
 
+    $('#networks_table').bootstrapTable('insertRow', {
+        index: 0, row: newRow
+    });
+  }
+
+  function onGetNetworkData(){
+    console.log("onGetNetworkData");    
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    console.log("results.length", results.length);
+    var networkJSON = { cells: []};
+
+    for(var j=0;j<results.length;j++){
+      var currentResult = results[j];
+      console.log("currentResult",currentResult);
+      var tempData = currentResult.data;      
+      for(var i=0;i<tempData.length;i++){
+        var currentData = tempData[i].row[0];
+        console.log("currentData",currentData);
+
+        var cellJSON = JSON.parse(currentData.graphical_data);
+        var newDataForCell = {};
+        var props = Object.keys(currentData);
+        for(var k=0;k<props.length;k++){
+          var currentKey = props[k];
+          if(currentKey != "graphical_data" && props != "internal_id"){
+            newDataForCell[currentKey] = currentData[currentKey];
+          }
+        }
+        cellJSON.data = newDataForCell;
+        console.log("cellJSON",cellJSON)
+        networkJSON.cells.push(cellJSON);
+      }
+    }
+    
+    console.log("networkJSON",networkJSON);
+
+    loadGraphFromJSON(networkJSON);
 
   }
 
@@ -2045,7 +2068,29 @@
   function openDialogSelectNetwork(){
     $('#networks_dialog').modal({
          show: true
-     });
+     });    
+  }
+  function loadNetworks(){
+    getNetworks(serverURL, onLoadNetworks);
+  }
+  function onLoadNetworks(){
+    console.log("onLoadNetworks");
+    //console.log(this.responseText);
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+    
+    //console.log("results[0].data",JSON.stringify(results[0].data));
+    var tempData = results[0].data;
+    var networks = [];  
+    for(var i=0;i<tempData.length;i++){
+      networks.push(tempData[i].row[0]);
+    }
+        
+
+    $('#networks_table').bootstrapTable({
+        data: networks
+    });
   }
   /**
   Opens the modal dialog where the current link type can be selected
@@ -2298,6 +2343,7 @@
         }
 
         initDatabase(serverURL);
+        loadNetworks();
     });
   }
 
@@ -2459,9 +2505,11 @@
       var sourceType = cellViewS.model.prop("node_type");
       
 
-      //console.log("linkType",linkType);
-      //console.log("sourceType",sourceType);
-      //console.log("targetType",targetType);     
+      console.log("linkType",linkType);
+      console.log("cellViewS",cellViewS);
+      console.log("cellViewT",cellViewT);  
+      console.log("sourceType",sourceType);
+      console.log("targetType",targetType);     
 
 
       if(linkType){
@@ -2485,6 +2533,8 @@
           var allOKToProceed = cellViewTData && cellViewSData;
           var doNotShowTooltip = false;
 
+          var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
+
           if(selectionRectCell){
             if(cellViewT.model.id == selectionRectCell.id){
                 allOKToProceed = false;
@@ -2494,7 +2544,8 @@
 
           if(allOKToProceed){            
 
-            //console.log("cellViewTData", cellViewTData);
+            console.log("cellViewTData", cellViewTData);
+            console.log("cellViewSData", cellViewSData);
 
             internalTargetIDforLinkToBeCreated = cellViewTData.internal_id;
             internalSourceIDforLinkToBeCreated = cellViewSData.internal_id;     
@@ -2503,12 +2554,12 @@
             //console.log("internalSourceIDforLinkToBeCreated",internalSourceIDforLinkToBeCreated); 
             //console.log(":typeDefinitionsJSON.links",typeDefinitionsJSON.links);        
 
-            var linkTypeRestrictions = typeDefinitionsJSON.links[linkType].restrictions;
+            
             var allowedTargets = linkTypeRestrictions.allowed_targets;
             var allowedSources = linkTypeRestrictions.allowed_sources;          
 
-            //console.log("allowedSources",allowedSources);
-            //console.log("allowedTargets",allowedTargets);
+            console.log("allowedSources",allowedSources);
+            console.log("allowedTargets",allowedTargets);
             var wildCardSources = ($.inArray("*", allowedSources) >= 0);
             var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
 
@@ -2620,12 +2671,62 @@
     }
   }
 
-  function createNewNetwork(){
+  function onCreateNetworkButtonClick(){
     var newNetworkName = $('#new_network_name').val();
     
     if(newNetworkName){
       createNetwork(newNetworkName, serverURL, onNetworkCreated);
+    }else{
+      //console.log("trying to show an alert...");
+      $('#create_network_alert').show();
     }
+  }
+
+  function onDeleteNetworkButtonClick(){
+
+
+  }
+
+  function onSelectNetworkButtonClick(){
+    var selectionsJSON = $('#networks_table').bootstrapTable('getAllSelections');
+    if(selectionsJSON.length > 0){
+      var internal_id = selectionsJSON[0].internal_id;
+      var network_name = selectionsJSON[0].name;
+      networkName = network_name;
+      console.log("network_name",network_name);
+      getNetworkData(networkName, serverURL, onGetNetworkData);
+      $('#networks_dialog').modal('hide');
+    }else{
+      $('#select_network_alert').show();
+    }
+  }
+
+  function loadGraphFromJSON(jsonValue){
+
+    graph.fromJSON(jsonValue);
+
+             //var bbox = graph.getBBox(graph.getElements());
+             var contentBBox = paper.getContentBBox();
+             paperInitialWidth = contentBBox.width + contentBBox.x;
+             paperInitialHeight = contentBBox.height + contentBBox.y;
+
+             //console.log("graph loaded!");
+
+             updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
+
+             deletePreviousBackgroundBox();
+             initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
+
+             updatePaperDimensions(paperInitialWidth,paperInitialHeight);
+
+             if(!modifiableLinks){
+                makeLinksInteractive(false);
+             }
+             if(readOnlyMode){
+              applyReadOnlyMode(true);
+             }
+             paper.render();
+
   }
 
   
