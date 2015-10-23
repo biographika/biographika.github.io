@@ -42,20 +42,34 @@
 	  border-radius: 8px;
   }
 
+  #tree-container{
+  	margin-top: 10px;
+  	margin-left: 10px;
+  	margin-right: 10px;
+  	margin-right: 10px;
+  }
+
+  #selected-taxon{
+  	font-size:24px; 
+  }
+
 </style>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+<link href="css/bootstrap.css" rel="stylesheet" type='text/css'>
 <script src="js/jquery-1.9.1.min.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/dimple.v2.1.2.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
 <script src="js/jquery-ui.js"></script>
 <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
 <body>
-	<div class='window bottom'>
-		<div id="selected-taxon-container" height="30">
-			<p id="selected-taxon">Please select a taxon to see the corresponding bar chart...</p>
-		</div>
-	</div>
-	<div class='window top' id="tree-container"></div>
+	<nav id="nav_bar" class="navbar navbar-default navbar-static-top navbar-transparent" role="navigation"  >
+      <div class="navbar-header">
+		 <a href="index.html" target="_blank" class="pull-left nav-bar-logo"><img src="images/biographika_logo_tiny.svg"></a>
+		 <p class="pull-left" id="selected-taxon">Please select a taxon to see the corresponding bar chart...</p>
+	  </div>
+	</nav>
+	<div id="tree-container"></div>
 <script type="text/javascript">
 	
 
@@ -261,6 +275,10 @@
 				y.tickFormat = ",.f%";
 				var s = dimpleChart.addSeries("sample", dimple.plot.bar);
 
+				console.log("set margins");
+
+				dimpleChart.setMargins(50,30,10,80);
+
 				dimpleChart.draw();
 
 				
@@ -465,12 +483,12 @@
 	function openBarChartDiv(title){
 
 		var tempWidth = $(window).width() - 50;
-		var tempHeight = $(window).height() - 50;
+		var tempHeight = $(window).height() - 200;
 
         $(barChartDiv).dialog({
                          minWidth: tempWidth,
-                         minHeight: 400,
-                         resizable: tempHeight,
+                         minHeight: tempHeight,
+                         resizable: false,
                          resizeStop: function(event, ui) {
                             updateBarChartSVGDimensionsToFitBarChartDiv();
                             dimpleChart.draw();
@@ -481,10 +499,10 @@
 
         //setting background color of dialog to white
 
-        $(".ui-widget-content").css("background-color","#FFFFFF");
+        //$(".ui-widget-content").css("background-color","#FFFFFF");
         $(".ui-dialog-content").css("background-color","#FFFFFF");
         //$(".ui-widget").css("background-color","#FFFFFF");
-        $(".ui-dialog").css("background-color","#FFFFFF");
+        //$(".ui-dialog").css("background-color","#FFFFFF");
         //$(".ui-widget-header").css("background-color","#FFFFFF");
         //$(".ui-corner-all").css("background-color","#FFFFFF");
 
@@ -492,8 +510,10 @@
 	}
 
 	function updateBarChartSVGDimensionsToFitBarChartDiv(){
-	    barChartSVG.attr("width", barChartDiv.style("width"));
-        barChartSVG.attr("height", barChartDiv.style("height"));
+		var tempWidth = $(window).width() - 100;
+		var tempHeight = $(window).height() - 250;
+	    barChartSVG.attr("width", tempWidth);
+        barChartSVG.attr("height", tempHeight);
 	}
 
 	
