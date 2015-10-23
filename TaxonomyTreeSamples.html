@@ -455,9 +455,11 @@
 		root.x0 = viewerHeight / 2;
 		root.y0 = 0;
 
-		// Layout the tree initially and center on the root node.
+		// Layout the tree initially and center on the first child of the root
 		update(root);
-		centerNode(root.children[0]);
+		var firstChild = root.children[0];
+		console.log("firstChild", firstChild);
+		centerNode(firstChild);
 	});
 
 	function openBarChartDiv(title){
