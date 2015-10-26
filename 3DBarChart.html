@@ -96,7 +96,7 @@
   .x3d-panel {
     width: 100%;
     height: 100%;
-    min-height: 400px;
+    min-height: 600px;
   }
 
   .x3d-container {
@@ -147,7 +147,28 @@
       <!-- /.navbar-static-side -->
     </nav>
     <div id="page-wrapper">
-      <div id="bar-chart-row" class="row" style="min-height:400px">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <i class="fa fa-fw">
+              </i>
+              Tools
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+              <div id="slider-container">
+                  Current value: <strong><span id="sliderValueText">0</span></strong>  <span class="pull-right"><i>(Move the slider in order to highlight bars above/below the threshold specified by the slider)</i></span>
+                  <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)" style="margin-botton:10px">
+                <input type="button" value="Take screenshot!" onclick="takeScreenshot()" class="pull-right"/>
+                  <input type="checkbox" id="tooltips-checkbox" class="pull-left">Tooltips activated</input>
+              </div>
+            </div>
+            <!-- /.panel-body -->
+          </div>
+        </div>
+      </div>
+      <div id="bar-chart-row" class="row" style="min-height:600px">
         <div class="col-md-12">
           <div class="panel panel-info">
             <div class="panel-heading">
@@ -162,6 +183,7 @@
                   <x3d id="x3d">
                     <scene id="scene" render"false">
                       <viewpoint id="viewpoint"/>
+                      <navigationInfo  type='"turntable"' id="navigation_info" explorationMode='"pan"'><navigationInfo/>
                     </scene>
                   </x3d>
                 </div>
@@ -170,28 +192,7 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <i class="fa fa-fw">
-              </i>
-              Tools
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-              <div id="slider-container">
-                  Current value: <strong><span id="sliderValueText">0</span></strong>  <span class="pull-right"><i>(Move the slider in order to highlight bars above/below the threshold specified by the slider)</i></span>
-                  <input type="range" min="0" max="1" value="0" id="slider" step="1" oninput="onSlideChange(value)" style="margin-botton:10px">
-            	  <input type="button" value="Take screenshot!" onclick="takeScreenshot()" class="pull-right"/>
-                  <input type="checkbox" checked="true" id="tooltips-checkbox" class="pull-left">Tooltips activated</input>
-            	</div>
-            </div>
-            <!-- /.panel-body -->
-          </div>
-        </div>
-      </div>
+      </div>      
     </div>
     <!-- page-wrapper -->
   </div>
@@ -539,6 +540,8 @@
            var currentGroup = groups[i];
            currentGroup.setAttribute("render","true");
         }
+
+        console.log("navigation_info",document.getElementById('navigation_info').getAttribute("type")); 
 
         onWindowResize();
 
