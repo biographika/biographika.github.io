@@ -644,9 +644,9 @@
   Initializes the white paper-sized rect cell that is permanently located behind
   all the rest of elements.
   */
-  function initializeBackgroundBox(width, height){
-    ////console.log("initializeBackgroundBox");
-    backgroundBox  = createBackgroundBox(0, 0, width, height, '#FFFFFF');
+  function initializeBackgroundBox(width, height){    
+    console.log("initializeBackgroundBox");
+    backgroundBox = createBackgroundBox(0, 0, width, height, '#FFFFFF');
     backgroundBox.findView(paper).options.interactive = false;
     /**This is a flag used so that the background box cell can be identified for
     example when importing a diagram file    */
@@ -761,7 +761,7 @@
   }
 
   function initializeBackgroundsPaper(themeURL){
-    ////console.log("initializeBackgroundsPaper");
+    console.log("initializeBackgroundsPaper");
     backgrounds_graph = new joint.dia.Graph;
 
     backgrounds_paper = new joint.dia.Paper({
@@ -847,7 +847,9 @@
           calculateSizeOfBackgroundsPaper();
           positionBackgroundsOnPaper();
           //select first node type
-          selectBackgroundCell(backgrounds_graph.getElements()[0].findView(backgrounds_paper), true);
+          if(backgrounds_graph.getElements().length > 0){
+            selectBackgroundCell(backgrounds_graph.getElements()[0].findView(backgrounds_paper), true);
+          }          
           backgrounds_paper.render();
         }
     };
@@ -1259,8 +1261,9 @@
   Clones the node provided at the position provided
   */
   function cloneNodeAt(cell, x, y){
-      console.log("cloneNodeAt");
+      //console.log("cloneNodeAt");
       var clonedCell = cell.model.clone();
+
       clonedCell.prop("position", {"x":x,"y":y});
       if(clonedCell.attr("image/width")){
         clonedCell.attr("image/magnet","true");
@@ -1403,7 +1406,7 @@
   }
 
   function activateLinkCSS(flag){
-    console.log("activateLinkCSS");
+    //console.log("activateLinkCSS");
     if(!flag){
       $('.link-tools .tool-remove').css({"display":"none"});
       $('.link-tools .tool-options').css({"display":"none"});
@@ -1515,6 +1518,7 @@
   Brings the selected node to the front
   */
   function bringSelectedNodeToFront(){
+    console.log("bringSelectedNodeToFront");
     if(selectedNode){
       if(!readOnlyMode){
         if(selectionRectCell){
@@ -1525,6 +1529,7 @@
         for (var i = 0; i < links.length; i++) {
           links[i].toFront();
         };
+        updateNodeGraphicalData(selectedNode);
       }      
     }
   }
@@ -1533,6 +1538,7 @@
   Brings the selected node to the back
   */
   function bringSelectedNodeToBack(){
+    console.log("bringSelectedNodeToBack");
     if(selectedNode){
       if(!readOnlyMode){
         selectedNode.model.toBack();
@@ -1548,6 +1554,7 @@
         }
         backgroundBox.toBack();
         paper.render();
+        updateNodeGraphicalData(selectedNode);
       }      
     }
   }
@@ -1563,6 +1570,8 @@
     paperInitialWidth = tempWidth;
     paperInitialHeight = tempHeight;
     updatePaperDimensions(tempWidth, tempHeight);
+
+    updateNetworkStageSize(networkName, tempWidth, tempHeight, serverURL, onUpdateNetworkStageSize);
   }
 
   /**
@@ -1590,7 +1599,7 @@
   It emulates the logic that would otherwise be associated to blank:pointer_down events
   */
   function onStageDown(evt, x, y){
-    console.log("onStageDown");
+    //console.log("onStageDown");
 
     pointerDownClientX = evt.clientX;
     pointerDownClientY = evt.clientY;
@@ -1622,9 +1631,11 @@
         var tempNodeType = selectedNodeType.model.prop("node_type");     
         xPositionForNewCell = x;
         yPositionForNewCell = y;
-        console.log("create node");
+        //console.log("create node");
 
-        nodeToBeCreated = cloneNodeAt(selectedNodeType,xPositionForNewCell,yPositionForNewCell);          
+        //console.log("selectedNodeType",selectedNodeType)
+        nodeToBeCreated = cloneNodeAt(selectedNodeType,xPositionForNewCell,yPositionForNewCell);    
+        //console.log("nodeToBeCreated",nodeToBeCreated);
         var graphicalDataSt = JSON.stringify(nodeToBeCreated.toJSON());    
         graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
 
@@ -1638,14 +1649,14 @@
   }
 
   function onNodeCreated(){
-    console.log("onNodeCreated");
+    //console.log("onNodeCreated");
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
     
-    console.log("errors",errors);
+    //console.log("errors",errors);
     var props = results[0].data[0].row[0];
-    console.log("props", props);   
+    //console.log("props", props);   
     nodeToBeCreated.prop("data", props); 
 
     graph.addCell(nodeToBeCreated);
@@ -1657,14 +1668,14 @@
   }
 
   function onEdgeCreated(){
-    console.log("onEdgeCreated");
-    console.log(this.responseText);
+    //console.log("onEdgeCreated");
+    //console.log(this.responseText);
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
-    console.log(errors);
+    //console.log(errors);
     var props = results[0].data[0].row[0];
-    console.log("props", props);    
+    //console.log("props", props);    
 
     linkToBeCreated.model.prop("data", props);
 
@@ -1675,7 +1686,7 @@
   }
 
   function onNodeDeleted(){
-      console.log("onNodeDeleted");
+      //console.log("onNodeDeleted");
       //console.log(this.responseText);
       var resultsJSON = JSON.parse(this.responseText);
       var results = resultsJSON.results;
@@ -1692,8 +1703,8 @@
   }
 
   function onNetworkDeleted(){
-    console.log("onNetworkDeleted");
-    console.log(this.responseText);
+    //console.log("onNetworkDeleted");
+    //console.log(this.responseText);
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
@@ -1702,7 +1713,7 @@
       return row.internal_id;
     });
 
-    console.log("ids", ids);
+    //console.log("ids", ids);
     $('#networks_table').bootstrapTable('remove', {
       field: 'internal_id',
       values: ids
@@ -1710,14 +1721,14 @@
   }
 
   function onNetworkCreated(){
-    console.log("onNetworkCreated");
+    //console.log("onNetworkCreated");
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
 
     var newRow = results[0].data[0].row[0];
 
-    console.log("newRow",newRow);
+    //console.log("newRow",newRow);
 
     $('#networks_table').bootstrapTable('insertRow', {
         index: 0, row: newRow
@@ -1725,41 +1736,61 @@
   }
 
   function onGetNetworkStageSize(){
-    console.log("onGetNetworkStageSize");    
+    //console.log("onGetNetworkStageSize");    
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
 
-    console.log("resultsJSON", resultsJSON);
+    var tempResults = results[0];
+    var tempData = tempResults.data[0];
+    var tempRow = tempData.row;
+
+    var tempWidth = tempRow[0];
+    var tempHeight = tempRow[1];
+
+    //console.log("tempWidth", tempWidth);
+    //console.log("tempHeight", tempHeight);
+
+    paperInitialWidth = tempWidth;
+    paperInitialHeight = tempHeight
+
     
     
   }
 
   function onGetNetworkData(){
-    console.log("onGetNetworkData");    
+    //console.log("onGetNetworkData");    
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
 
-    console.log("resultsJSON", resultsJSON);
+    //console.log("resultsJSON", resultsJSON);
     //console.log("results.length", results.length);
     var networkJSON = { cells: []};
 
     for(var j=0;j<results.length;j++){
       var currentResult = results[j];
+
       //console.log("currentResult",currentResult);
-      var tempData = currentResult.data;      
+
+      var tempData = currentResult.data;   
+
       for(var i=0;i<tempData.length;i++){
 
         var currentData = tempData[i];
+        //console.log("currentData", currentData);
 
         for(var l=0;l<currentData.row.length; l++){
           var currentRow = currentData.row[l];
+          //console.log("currentRow",currentRow);
+          //console.log("currentRow.graphical_data",currentRow.graphical_data);
           var cellJSON = JSON.parse(currentRow.graphical_data);
+          //console.log("asdflkjasdf");
           var newDataForCell = {};
           var props = Object.keys(currentRow);
           for(var k=0;k<props.length;k++){
             var currentKey = props[k];
+            //console.log("currentKey",currentKey);
             if(currentKey != "graphical_data" && props != "internal_id"){
               newDataForCell[currentKey] = currentRow[currentKey];
             }
@@ -1929,28 +1960,30 @@
     }
     ////console.log("let's create the new background cell!");
 
-    var newBackgroundCell = selectedBackground.model.clone();
-    var realSize = newBackgroundCell.prop("real_size");
-    var realWidth = realSize.width;
-    var realHeight = realSize.height;
-    //var nodeType = newBackgroundCell.attr("node_type");
-    ////console.log(realWidth, realHeight, realSize, nodeType);
+    if(selectedBackground){
+      var newBackgroundCell = selectedBackground.model.clone();
+      var realSize = newBackgroundCell.prop("real_size");
+      var realWidth = realSize.width;
+      var realHeight = realSize.height;
+      //var nodeType = newBackgroundCell.attr("node_type");
+      ////console.log(realWidth, realHeight, realSize, nodeType);
 
-    newBackgroundCell.prop("size", {"width":realWidth,"height":realHeight});
-    newBackgroundCell.prop("position", {"x":0,"y":0});
-    newBackgroundCell.attr("image/magnet","");
-    newBackgroundCell.attr("image/width", realWidth);
-    newBackgroundCell.attr("image/height", realHeight);
-    newBackgroundCell.attr('text/font-weight',"normal");
+      newBackgroundCell.prop("size", {"width":realWidth,"height":realHeight});
+      newBackgroundCell.prop("position", {"x":0,"y":0});
+      newBackgroundCell.attr("image/magnet","");
+      newBackgroundCell.attr("image/width", realWidth);
+      newBackgroundCell.attr("image/height", realHeight);
+      newBackgroundCell.attr('text/font-weight',"normal");
 
-    graph.addCell(newBackgroundCell);
-    newBackgroundCell.toBack();
-    backgroundBox.toBack();
-    ////console.log(newBackgroundCell);
-    currentBackgroundCell = newBackgroundCell;
-    currentBackgroundCell.findView(paper).options.interactive = false;
-    paper.render();
-    ////console.log("done!");
+      graph.addCell(newBackgroundCell);
+      newBackgroundCell.toBack();
+      backgroundBox.toBack();
+      ////console.log(newBackgroundCell);
+      currentBackgroundCell = newBackgroundCell;
+      currentBackgroundCell.findView(paper).options.interactive = false;
+      paper.render();
+      ////console.log("done!");
+    }    
 
   }
 
@@ -2003,9 +2036,9 @@
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
     var props = results[0].data[0].row[0];
-    console.log("props", props);
+    //console.log("props", props);
     selectedNode.model.prop("data", props);
-    console.log(this.responseText);
+    //console.log(this.responseText);
   }
 
   /**
@@ -2116,7 +2149,7 @@
     getNetworks(serverURL, onLoadNetworks);
   }
   function onLoadNetworks(){
-    console.log("onLoadNetworks");
+    //console.log("onLoadNetworks");
     //console.log(this.responseText);
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
@@ -2138,7 +2171,7 @@
   Opens the modal dialog where the current link type can be selected
   */
   function openDialogselectLinkType(){
-    console.log("openDialogselectLinkType");
+    //console.log("openDialogselectLinkType");
     activateLinkCSS(false);
     $('#link_types_dialog').modal({
          show: true
@@ -2228,7 +2261,7 @@
 
   function initializeSelectionRectNodeType(){
 
-    console.log("initializeSelectionRectNodeType");
+    //console.log("initializeSelectionRectNodeType");
     //console.log("selectedNodeType", selectedNodeType);
 
     if(selectedNodeType){
@@ -2320,7 +2353,7 @@
   background that is currently selected
   */
   function updateSelectionRectBackgroundPosition(){
-    console.log("updateSelectionRectBackgroundPosition");
+    //console.log("updateSelectionRectBackgroundPosition");
     selectionRectBackgroundCell.prop("position", getPositionForSelectionRectBackground());
   }
 
@@ -2337,7 +2370,7 @@
   that is currently selected
   */
   function getSizeForSelectionRectBackground(){
-    console.log("getSizeForSelectionRect");
+    //console.log("getSizeForSelectionRect");
     return getSizeForSelectionRectGeneral(selectedBackground.model);
   }
 
@@ -2493,7 +2526,7 @@
       if(selectedNode){
 
         var nodeInternalID = selectedNode.model.prop("data").internal_id;
-        console.log("nodeInternalID",nodeInternalID);
+        //console.log("nodeInternalID",nodeInternalID);
         deleteNode(nodeInternalID, serverURL, onNodeDeleted);      
         
       }else if(selectedLink){
@@ -2538,7 +2571,7 @@
   }
 
   function validateConnectionOverriden(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-    console.log("validateConnectionOverriden");
+    //console.log("validateConnectionOverriden");
 
     if(!cellViewT.model.isLink()){
 
@@ -2547,11 +2580,11 @@
       var sourceType = cellViewS.model.prop("node_type");
       
 
-      console.log("linkType",linkType);
-      console.log("cellViewS",cellViewS);
-      console.log("cellViewT",cellViewT);  
-      console.log("sourceType",sourceType);
-      console.log("targetType",targetType);     
+      //console.log("linkType",linkType);
+      //console.log("cellViewS",cellViewS);
+      //console.log("cellViewT",cellViewT);  
+      //console.log("sourceType",sourceType);
+      //console.log("targetType",targetType);     
 
 
       if(linkType){
@@ -2586,8 +2619,8 @@
 
           if(allOKToProceed){            
 
-            console.log("cellViewTData", cellViewTData);
-            console.log("cellViewSData", cellViewSData);
+            //console.log("cellViewTData", cellViewTData);
+            //console.log("cellViewSData", cellViewSData);
 
             internalTargetIDforLinkToBeCreated = cellViewTData.internal_id;
             internalSourceIDforLinkToBeCreated = cellViewSData.internal_id;     
@@ -2600,8 +2633,8 @@
             var allowedTargets = linkTypeRestrictions.allowed_targets;
             var allowedSources = linkTypeRestrictions.allowed_sources;          
 
-            console.log("allowedSources",allowedSources);
-            console.log("allowedTargets",allowedTargets);
+            //console.log("allowedSources",allowedSources);
+            //console.log("allowedTargets",allowedTargets);
             var wildCardSources = ($.inArray("*", allowedSources) >= 0);
             var wildCardTargets = ($.inArray("*", allowedTargets) >= 0);
 
@@ -2708,7 +2741,7 @@
           //console.log("vertex", vertex);
         } 
         link.set('vertices', newVertices);  
-        console.log          
+        //console.log          
       }      
     }
   }
@@ -2740,7 +2773,7 @@
       var internal_id = selectionsJSON[0].internal_id;
       var network_name = selectionsJSON[0].name;
       networkName = network_name;
-      console.log("network_name",network_name);
+      //console.log("network_name",network_name);
       getNetworKStageSize(networkName, serverURL, onGetNetworkStageSize);
       getNetworkData(networkName, serverURL, onGetNetworkData);
       $('#networks_dialog').modal('hide');
@@ -2754,11 +2787,13 @@
     graph.fromJSON(jsonValue);
 
              //var bbox = graph.getBBox(graph.getElements());
-             var contentBBox = paper.getContentBBox();
-             paperInitialWidth = contentBBox.width + contentBBox.x;
-             paperInitialHeight = contentBBox.height + contentBBox.y;
+             //var contentBBox = paper.getContentBBox();
+             //paperInitialWidth = contentBBox.width + contentBBox.x;
+             //paperInitialHeight = contentBBox.height + contentBBox.y;
 
              //console.log("graph loaded!");
+
+             //console.log(paperInitialWidth)
 
              updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
 
@@ -2781,14 +2816,19 @@
     var tempInternalID = node.model.prop("data").internal_id;
     var graphicalDataSt = JSON.stringify(node.model.toJSON());   
     var newProperties = {"graphical_data" : graphicalDataSt};
-    console.log("graphicalDataSt",graphicalDataSt);
+    //console.log("graphicalDataSt",graphicalDataSt);
     graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
     updateNodeProperties(tempInternalID,serverURL,newProperties,onUpdateNodeGraphicalData);
   }
 
   function onUpdateNodeGraphicalData(){
-    console.log("onUpdateNodeGraphicalData");
-    console.log(this.responseText);
+    //console.log("onUpdateNodeGraphicalData");
+    //console.log(this.responseText);
+  }
+
+  function onUpdateNetworkStageSize(){
+    //console.log("onUpdateNetworkStageSize");
+    //console.log(this.responseText);
   }
 
   

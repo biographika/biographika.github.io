@@ -176,12 +176,32 @@ function getNodeData(internalID, serverURL, onLoadEnd){
 
 }
 
+function updateNetworkStageSize(networkName, width, height, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (n:Network) WHERE n.name = '" + networkName + "' SET n.width = " 
+						+ width + ", n.height = " + height;
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
 function getNetworKStageSize(networkName, serverURL, onLoadEnd){
 	var query = {
 	    "statements" : [ ]
 	};
 
-	var statementSt = "MATCH (n:Network) WHERE n.name = '" + name + "' RETURN n.width, n.height";
+	var statementSt = "MATCH (n:Network) WHERE n.name = '" + networkName + "' RETURN n.width AS width, n.height AS height";
+
+	//console.log("statementSt",statementSt);
 
 	query.statements.push({"statement":statementSt});
 
@@ -277,7 +297,7 @@ function updateNodeProperties(internalID, serverlURL, newProperties, onLoadEnd){
 
 	statementSt += "RETURN n";
 
-	console.log("statementSt",statementSt);
+	//console.log("statementSt",statementSt);
 
 	query.statements.push({"statement":statementSt});
 
