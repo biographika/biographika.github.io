@@ -323,6 +323,10 @@
 
   });
  $(document).mouseup(function( event ) {
+
+    if(nodeIsBeingDragged){
+      updateNodeGraphicalData(nodeBeingDragged);
+    }
     //console.log("mouse up!");
     paperIsPanning = false;
     nodeIsBeingDragged = false;
@@ -1474,6 +1478,8 @@
        var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
        selectedNode.model.attr("image/transform","rotate("+newDegrees+","
             + rotationCenterPointX + "," + rotationCenterPointY + ")");
+
+       updateNodeGraphicalData(selectedNode);
       }
      }
      
@@ -1499,6 +1505,8 @@
         var rotationCenterPointY = selectedNode.model.attr("image/height")/2;
         selectedNode.model.attr("image/transform","rotate("+newDegrees+","
              + rotationCenterPointX + "," + rotationCenterPointY + ")");
+
+        updateNodeGraphicalData(selectedNode);
       }      
     }
   }
@@ -1668,7 +1676,7 @@
 
   function onNodeDeleted(){
       console.log("onNodeDeleted");
-      console.log(this.responseText);
+      //console.log(this.responseText);
       var resultsJSON = JSON.parse(this.responseText);
       var results = resultsJSON.results;
       var errors = resultsJSON.errors;
@@ -1681,6 +1689,24 @@
         selectionRectCell = null;
       }
 
+  }
+
+  function onNetworkDeleted(){
+    console.log("onNetworkDeleted");
+    console.log(this.responseText);
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    var ids = $.map($('#networks_table').bootstrapTable('getAllSelections'), function (row) {      
+      return row.internal_id;
+    });
+
+    console.log("ids", ids);
+    $('#networks_table').bootstrapTable('remove', {
+      field: 'internal_id',
+      values: ids
+    });
   }
 
   function onNetworkCreated(){
@@ -1698,39 +1724,55 @@
     });
   }
 
+  function onGetNetworkStageSize(){
+    console.log("onGetNetworkStageSize");    
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    console.log("resultsJSON", resultsJSON);
+    
+    
+  }
+
   function onGetNetworkData(){
     console.log("onGetNetworkData");    
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
 
-    console.log("results.length", results.length);
+    console.log("resultsJSON", resultsJSON);
+    //console.log("results.length", results.length);
     var networkJSON = { cells: []};
 
     for(var j=0;j<results.length;j++){
       var currentResult = results[j];
-      console.log("currentResult",currentResult);
+      //console.log("currentResult",currentResult);
       var tempData = currentResult.data;      
       for(var i=0;i<tempData.length;i++){
-        var currentData = tempData[i].row[0];
-        console.log("currentData",currentData);
 
-        var cellJSON = JSON.parse(currentData.graphical_data);
-        var newDataForCell = {};
-        var props = Object.keys(currentData);
-        for(var k=0;k<props.length;k++){
-          var currentKey = props[k];
-          if(currentKey != "graphical_data" && props != "internal_id"){
-            newDataForCell[currentKey] = currentData[currentKey];
+        var currentData = tempData[i];
+
+        for(var l=0;l<currentData.row.length; l++){
+          var currentRow = currentData.row[l];
+          var cellJSON = JSON.parse(currentRow.graphical_data);
+          var newDataForCell = {};
+          var props = Object.keys(currentRow);
+          for(var k=0;k<props.length;k++){
+            var currentKey = props[k];
+            if(currentKey != "graphical_data" && props != "internal_id"){
+              newDataForCell[currentKey] = currentRow[currentKey];
+            }
           }
-        }
-        cellJSON.data = newDataForCell;
-        console.log("cellJSON",cellJSON)
-        networkJSON.cells.push(cellJSON);
+          cellJSON.data = newDataForCell;
+          //console.log("cellJSON",cellJSON)
+          networkJSON.cells.push(cellJSON);
+        }        
+        
       }
     }
     
-    console.log("networkJSON",networkJSON);
+    //console.log("networkJSON",networkJSON);
 
     loadGraphFromJSON(networkJSON);
 
@@ -2675,7 +2717,7 @@
     var newNetworkName = $('#new_network_name').val();
     
     if(newNetworkName){
-      createNetwork(newNetworkName, serverURL, onNetworkCreated);
+      createNetwork(newNetworkName, paperDefaultSize, serverURL, onNetworkCreated);
     }else{
       //console.log("trying to show an alert...");
       $('#create_network_alert').show();
@@ -2683,8 +2725,13 @@
   }
 
   function onDeleteNetworkButtonClick(){
-
-
+    var selectionsJSON = $('#networks_table').bootstrapTable('getAllSelections');
+    if(selectionsJSON.length > 0){
+      var tempNetworkName = selectionsJSON[0].name;
+      deleteNetwork(tempNetworkName,serverURL,onNetworkDeleted);
+    }else{
+      $('#select_network_alert').show();
+    }
   }
 
   function onSelectNetworkButtonClick(){
@@ -2694,6 +2741,7 @@
       var network_name = selectionsJSON[0].name;
       networkName = network_name;
       console.log("network_name",network_name);
+      getNetworKStageSize(networkName, serverURL, onGetNetworkStageSize);
       getNetworkData(networkName, serverURL, onGetNetworkData);
       $('#networks_dialog').modal('hide');
     }else{
@@ -2727,6 +2775,20 @@
              }
              paper.render();
 
+  }
+
+  function updateNodeGraphicalData(node){
+    var tempInternalID = node.model.prop("data").internal_id;
+    var graphicalDataSt = JSON.stringify(node.model.toJSON());   
+    var newProperties = {"graphical_data" : graphicalDataSt};
+    console.log("graphicalDataSt",graphicalDataSt);
+    graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
+    updateNodeProperties(tempInternalID,serverURL,newProperties,onUpdateNodeGraphicalData);
+  }
+
+  function onUpdateNodeGraphicalData(){
+    console.log("onUpdateNodeGraphicalData");
+    console.log(this.responseText);
   }
 
   

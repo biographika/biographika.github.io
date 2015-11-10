@@ -134,6 +134,29 @@ function deleteNode(internalID, serverURL, onLoadEnd){
 	xhr.send(JSON.stringify(query));
 }
 
+function deleteNetwork(networkName, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt1 = "MATCH (n:" + networkName + ")-[r]-() DELETE r";
+	var statementSt2 = "MATCH (n:" + networkName + ") DELETE n";
+	var statementSt3 = "MATCH (n:Network {name: '" + networkName + "'}) DELETE n";
+
+	console.log("statementSt1",statementSt1,"statementSt2",statementSt2,"statementSt3",statementSt3);
+
+	query.statements.push({"statement":statementSt1});
+	query.statements.push({"statement":statementSt2});
+	query.statements.push({"statement":statementSt3});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
 function getNodeData(internalID, serverURL, onLoadEnd){
 
 	var query = {
@@ -151,6 +174,23 @@ function getNodeData(internalID, serverURL, onLoadEnd){
     xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
 	xhr.send(JSON.stringify(query));
 
+}
+
+function getNetworKStageSize(networkName, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (n:Network) WHERE n.name = '" + name + "' RETURN n.width, n.height";
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
 }
 
 function getNetworkData(networkName, serverURL, onLoadEnd){
@@ -191,10 +231,12 @@ function getNetworks(serverURL, onLoadEnd){
 	xhr.send(JSON.stringify(query));
 }
 
-function createNetwork(networkName, serverURL, onLoadEnd){
+function createNetwork(networkName, stageDefaultSize, serverURL, onLoadEnd){
 
 	var propertiesSt = "{ name:\"" + networkName + "\", ";
 	propertiesSt += "creation_time: \"" + getCurrentTime() + "\",";
+	propertiesSt += "width:\"" + stageDefaultSize.width + "\", ";
+	propertiesSt += "height:\"" + stageDefaultSize.height + "\", ";
 
 
 	var internal_id = uuid();
