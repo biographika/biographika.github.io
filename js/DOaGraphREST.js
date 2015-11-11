@@ -121,8 +121,8 @@ function deleteNode(internalID, serverURL, onLoadEnd){
 	    "statements" : [ ]
 	};
 
-	var statementSt1 = "MATCH (n { internal_id: '" + internalID + "'})-[r]-() DELETE r";
-	var statementSt2 = "MATCH (n { internal_id: '" + internalID + "'}) DELETE n";
+	var statementSt1 = "MATCH (n:Node { internal_id: '" + internalID + "'})-[r]-() DELETE r";
+	var statementSt2 = "MATCH (n:Node { internal_id: '" + internalID + "'}) DELETE n";
 
 	query.statements.push({"statement":statementSt1});
 	query.statements.push({"statement":statementSt2});
@@ -279,6 +279,26 @@ function createNetwork(networkName, stageDefaultSize, serverURL, onLoadEnd){
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
 	xhr.send(JSON.stringify(query));
+}
+
+function deleteBackground(internal_id, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt1 = "MATCH (n:Background { internal_id: '" + internalID + "'})-[r]-() DELETE r";
+	var statementSt2 = "MATCH (n:Background { internal_id: '" + internalID + "'}) DELETE n";
+
+	query.statements.push({"statement":statementSt1});
+	query.statements.push({"statement":statementSt2});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+
 }
 
 function createBackground(networkName, graphical_data, serverURL, onLoadEnd){
