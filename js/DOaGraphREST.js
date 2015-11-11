@@ -9,6 +9,7 @@ function initDatabase(serverURL){
 	};
 	query.statements.push({"statement":"CREATE INDEX ON :Node(internal_id)"});
 	query.statements.push({"statement":"CREATE INDEX ON :Network(internal_id)"});
+	query.statements.push({"statement":"CREATE INDEX ON :Background(internal_id)"});
 	var xhr = new XMLHttpRequest();    
 	xhr.onloadend = function () {
 	    console.log(xhr.responseText);
@@ -280,7 +281,39 @@ function createNetwork(networkName, stageDefaultSize, serverURL, onLoadEnd){
 	xhr.send(JSON.stringify(query));
 }
 
-function updateNodeProperties(internalID, serverlURL, newProperties, onLoadEnd){
+function createBackground(networkName, graphical_data, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var propertiesSt = "{";
+
+	var internal_id = uuid();
+	propertiesSt += "internal_id:\"" + internal_id + "\",";
+	propertiesSt += "graphical_data:\"" + graphical_data + "\"";	
+	propertiesSt += "}";
+
+	var statementSt1 = "CREATE (b:Background:";
+	statementSt1 += nodeType + ":" + networkName + " ";
+	statementSt1 += propertiesSt;
+	statementSt1 += ") RETURN b";
+
+	var statementSt2 = "MATCH (n:Network {name: '" + networkName + "'}), " +
+					  "(b:Background {internal_id: '" + internal_id + "'}) " +
+					  "CREATE (n)-[e:network_background]->(b) RETURN e";
+
+	query.statements.push({"statement":statementSt1});
+	query.statements.push({"statement":statementSt2});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+}
+
+function updateNodeProperties(internalID, serverURL, newProperties, onLoadEnd){
 	var query = {
 	    "statements" : [ ]
 	};
@@ -309,7 +342,7 @@ function updateNodeProperties(internalID, serverlURL, newProperties, onLoadEnd){
 	xhr.send(JSON.stringify(query));
 }
 
-function updateEdgeProperties(internalID, serverlURL, newProperties, onLoadEnd){
+function updateEdgeProperties(internalID, serverURL, newProperties, onLoadEnd){
 	var query = {
 	    "statements" : [ ]
 	};
