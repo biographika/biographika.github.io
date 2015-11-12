@@ -10,7 +10,7 @@
 <link type="text/css" href="css/alpaca.min.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="css/joint.css" />
 <link rel="stylesheet" href="css/font-awesome.min.css">
-<link rel="stylesheet" href="css/Bio4jGraphEditor.css">
+<link rel="stylesheet" href="css/DOaGraph.css">
 <link rel="stylesheet" href="css/bootstrap-table.min.css">
 <script type="text/javascript" src="js/joint.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
@@ -216,6 +216,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="deleteCurrentBackground()" class="btn btn-danger" data-dismiss="modal">Delete current background</button>
           <button type="button" onclick="setSelectedBackground()" class="btn btn-primary">Set background</button>
         </div>
       </div>
@@ -225,17 +226,29 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
           <h4 class="modal-title" id="mainLabel">Network selector</h4>
         </div>
         <div class="modal-body">
-          <table id="table">
-              <thead>
+          <div id="create_network_alert" class="alert alert-info" style="display: none"> 
+            <a class="close" onclick="$('#create_network_alert').hide()">×</a>  
+            Please enter a name for the new network.  
+          </div>
+          <div id="select_network_alert" class="alert alert-info" style="display: none"> 
+            <a class="close" onclick="$('#select_network_alert').hide()">×</a>  
+            Please select a network from the table.  
+          </div>
+          <table id="networks_table" 
+            data-click-to-select="true"
+            data-height="250"
+            data-search="true">
+            <thead>
               <tr>
-                  <th data-field="name">Name</th>
-                  <th data-field="creation_time">Creation time</th>
+                <th data-field="state" data-radio="true"></th>
+                <th data-field="name">Name</th>
+                <th data-field="creation_time">Creation time</th>
               </tr>
-              </thead>
+            </thead>
           </table>
           <div class="form-group">
             <label for="new_network_name">New network name:</label>
@@ -243,9 +256,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" onclick="createNewNetwork()" class="btn btn-primary">Create network</button>
-          <button type="button" onclick="setSelectedNodeType()" class="btn btn-primary">Select network</button>
+          <button type="button" onclick="onDeleteNetworkButtonClick()" class="btn btn-danger">Delete network</button>
+          <button type="button" onclick="onCreateNetworkButtonClick()" class="btn btn-info">Create network</button>
+          <button type="button" onclick="onSelectNetworkButtonClick()" class="btn btn-primary">Select network</button>
         </div>
       </div>
     </div>
@@ -304,7 +317,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>  
   <!--
   canvas id="snapshotCanvas" width="1000px" height="600px" style="display:none"></canvas>
   <img id="snapshotImage"/>

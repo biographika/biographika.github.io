@@ -223,9 +223,12 @@ function getNetworkData(networkName, serverURL, onLoadEnd){
 					+ "RETURN node, r";
 	var statementSt2 = "MATCH (node:Node:" + networkName + ") " 
 					+ "RETURN node";
+	var statementSt3 = "MATCH (b:Background:" + networkName + ") "
+					+ "RETURN b";
 
 	query.statements.push({"statement":statementSt1});
 	query.statements.push({"statement":statementSt2});
+	query.statements.push({"statement":statementSt3});
 
 	var xhr = new XMLHttpRequest();    
 	xhr.onloadend = onLoadEnd;
@@ -314,7 +317,7 @@ function createBackground(networkName, graphical_data, serverURL, onLoadEnd){
 	propertiesSt += "}";
 
 	var statementSt1 = "CREATE (b:Background:";
-	statementSt1 += nodeType + ":" + networkName + " ";
+	statementSt1 += networkName + " ";
 	statementSt1 += propertiesSt;
 	statementSt1 += ") RETURN b";
 
@@ -331,6 +334,25 @@ function createBackground(networkName, graphical_data, serverURL, onLoadEnd){
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
 	xhr.send(JSON.stringify(query));
+}
+
+function updateBackground(internalID,graphical_data, serverURL, onLoadEnd){
+	var query = {
+	    "statements" : [ ]
+	};
+
+	var statementSt = "MATCH (b:Background) WHERE b.internal_id = '" + internalID + "' SET " +
+					" graphical_data = '" + graphical_data + "' RETURN b";
+
+	query.statements.push({"statement":statementSt});
+
+	var xhr = new XMLHttpRequest();    
+	xhr.onloadend = onLoadEnd;
+	xhr.open("POST", serverURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json; charset=UTF-8');
+	xhr.send(JSON.stringify(query));
+
 }
 
 function updateNodeProperties(internalID, serverURL, newProperties, onLoadEnd){

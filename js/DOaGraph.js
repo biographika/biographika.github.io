@@ -36,6 +36,7 @@
  */
  var selectedNodeIsBeingDragged = false;
 
+
  //.........................................
  //.......paper zooming related vars........
  /**
@@ -248,6 +249,7 @@
  var polyline = joint.shapes.basic.Polyline;
  var text = joint.shapes.basic.Text;
  var link = joint.dia.Link; 
+ var image = joint.shapes.basic.Image;
  
 
  //=================Config vars=======================
@@ -1667,6 +1669,21 @@
 
   }
 
+  function onBackgroundCreated(){
+    console.log("onBackgroundCreated");
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    console.log("results",results);
+    console.log("errors",errors);
+    
+    //console.log("errors",errors);
+    var props = results[0].data[0].row[0];
+    console.log("props", props);   
+    currentBackgroundCell.prop("data", props); 
+  }
+
   function onEdgeCreated(){
     //console.log("onEdgeCreated");
     //console.log(this.responseText);
@@ -1765,10 +1782,11 @@
     var errors = resultsJSON.errors;
 
     //console.log("resultsJSON", resultsJSON);
-    //console.log("results.length", results.length);
+    console.log("results.length", results.length);
     var networkJSON = { cells: []};
 
-    for(var j=0;j<results.length;j++){
+
+    for(var j=0;j < 3;j++){
       var currentResult = results[j];
 
       //console.log("currentResult",currentResult);
@@ -1795,15 +1813,17 @@
               newDataForCell[currentKey] = currentRow[currentKey];
             }
           }
+          //----here we are loading the background of the network-----
+          if(j == 2){
+            newDataForCell["background_cell"] = "true";
+          }
           cellJSON.data = newDataForCell;
           //console.log("cellJSON",cellJSON)
           networkJSON.cells.push(cellJSON);
         }        
         
       }
-    }
-    
-    //console.log("networkJSON",networkJSON);
+    }  
 
     loadGraphFromJSON(networkJSON);
 
@@ -1946,6 +1966,28 @@
   }
 
   /**
+  Deletes the current background
+  */
+  function deleteCurrentBackground(){
+    $('#background_dialog').modal('hide');
+    if(currentBackgroundCell){
+      var internal_id = currentBackgroundCell.prop("data").internal_id;
+      
+      deleteBackground(internal_id, serverURL, onBackgroundDeleted);
+    }
+  }
+
+  function onBackgroundDeleted(){
+    console.log("onBackgroundDeleted");
+
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    currentBackgroundCell.remove();
+  }
+
+  /**
   Adds the selected background to the diagram
   */
   function setSelectedBackground(){
@@ -1983,6 +2025,11 @@
       currentBackgroundCell.findView(paper).options.interactive = false;
       paper.render();
       ////console.log("done!");
+
+      var graphicalDataSt = JSON.stringify(currentBackgroundCell.toJSON());  
+      graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
+      createBackground(networkName,graphicalDataSt,serverURL, onBackgroundCreated);
+
     }    
 
   }
@@ -2786,6 +2833,18 @@
 
     graph.fromJSON(jsonValue);
 
+    var tempElems = graph.getElements();
+    for(var i=0;i<tempElems.length;i++){
+      var tempElem = tempElems[i];
+      var tempData = tempElem.prop("data");
+      if(tempData.background_cell){
+        console.log("tempData",tempData);
+        tempElem.findView(paper).options.interactive = false;
+        currentBackgroundCell = tempElem;
+      }
+    }
+
+
              //var bbox = graph.getBBox(graph.getElements());
              //var contentBBox = paper.getContentBBox();
              //paperInitialWidth = contentBBox.width + contentBBox.x;
@@ -2815,9 +2874,9 @@
   function updateNodeGraphicalData(node){
     var tempInternalID = node.model.prop("data").internal_id;
     var graphicalDataSt = JSON.stringify(node.model.toJSON());   
-    var newProperties = {"graphical_data" : graphicalDataSt};
-    //console.log("graphicalDataSt",graphicalDataSt);
     graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
+    var newProperties = {"graphical_data" : graphicalDataSt};
+    //console.log("graphicalDataSt",graphicalDataSt);    
     updateNodeProperties(tempInternalID,serverURL,newProperties,onUpdateNodeGraphicalData);
   }
 
