@@ -20,6 +20,7 @@
  var internalSourceIDforLinkToBeCreated;
  var internalTargetIDforLinkToBeCreated;
  var nodeToBeCreated;
+ var backgroundToBeCreated;
  var networkName;
 
  var createdLinkIsValid = false;
@@ -1669,19 +1670,54 @@
 
   }
 
+  function onBackgroundUpdated(){
+    console.log("onBackgroundUpdated");
+    var resultsJSON = JSON.parse(this.responseText);
+    var results = resultsJSON.results;
+    var errors = resultsJSON.errors;
+
+    console.log("results", results);
+    console.log("errors", errors);
+
+
+    var props = results[0].data[0].row[0];
+
+
+
+    currentBackgroundCell.remove();
+    currentBackgroundCell = backgroundToBeCreated;
+    //console.log("currentBackgroundCell",currentBackgroundCell);
+    currentBackgroundCell.prop("data", props); 
+
+    graph.addCell(currentBackgroundCell);  
+    currentBackgroundCell.toBack();
+    backgroundBox.toBack();
+    ////console.log(newBackgroundCell);
+    
+    currentBackgroundCell.findView(paper).options.interactive = false;
+    paper.render();
+  }
+
   function onBackgroundCreated(){
     console.log("onBackgroundCreated");
     var resultsJSON = JSON.parse(this.responseText);
     var results = resultsJSON.results;
     var errors = resultsJSON.errors;
-
-    console.log("results",results);
-    console.log("errors",errors);
-    
-    //console.log("errors",errors);
     var props = results[0].data[0].row[0];
-    console.log("props", props);   
+    //console.log("props", props);   
+
+    currentBackgroundCell = backgroundToBeCreated;
     currentBackgroundCell.prop("data", props); 
+
+    graph.addCell(currentBackgroundCell);  
+    currentBackgroundCell.toBack();
+    backgroundBox.toBack();
+    ////console.log(newBackgroundCell);
+    
+    currentBackgroundCell.findView(paper).options.interactive = false;
+    paper.render();
+    ////console.log("done!");
+    
   }
 
   function onEdgeCreated(){
@@ -1992,12 +2028,17 @@
   */
   function setSelectedBackground(){
     $('#background_dialog').modal('hide');
+    
+    var updateBackgroundFlag = false;  
+    var currentBackgroundInternalId;  
 
     if(currentBackgroundCell){
       ////console.log("There already was a background for this diagram...");
-      if(currentBackgroundCell.id != selectedBackground.id){
+      updateBackgroundFlag = true;
+      currentBackgroundInternalId = currentBackgroundCell.prop("data").internal_id;
+      if(currentBackgroundCell.id == selectedBackground.id){
         ////console.log("The background selected is different from the current one");
-        currentBackgroundCell.remove();
+        //currentBackgroundCell.remove();        
       }
     }
     ////console.log("let's create the new background cell!");
@@ -2017,18 +2058,17 @@
       newBackgroundCell.attr("image/height", realHeight);
       newBackgroundCell.attr('text/font-weight',"normal");
 
-      graph.addCell(newBackgroundCell);
-      newBackgroundCell.toBack();
-      backgroundBox.toBack();
-      ////console.log(newBackgroundCell);
-      currentBackgroundCell = newBackgroundCell;
-      currentBackgroundCell.findView(paper).options.interactive = false;
-      paper.render();
-      ////console.log("done!");
+      backgroundToBeCreated = newBackgroundCell;     
+          
 
-      var graphicalDataSt = JSON.stringify(currentBackgroundCell.toJSON());  
+      var graphicalDataSt = JSON.stringify(backgroundToBeCreated.toJSON());  
       graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
-      createBackground(networkName,graphicalDataSt,serverURL, onBackgroundCreated);
+      
+      if(updateBackgroundFlag){
+        updateBackground(currentBackgroundInternalId,graphicalDataSt, serverURL, onBackgroundUpdated);
+      }else{
+        createBackground(networkName,graphicalDataSt,serverURL, onBackgroundCreated);
+      }    
 
     }    
 

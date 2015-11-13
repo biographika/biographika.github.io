@@ -266,7 +266,7 @@ function createNetwork(networkName, stageDefaultSize, serverURL, onLoadEnd){
 	var internal_id = uuid();
 	propertiesSt += "internal_id:\"" + internal_id + "\"}";
 
-	var statementSt = "CREATE (n:Network ";
+	var statementSt = "CREATE (n:Network:" + networkName + " ";
 	statementSt += propertiesSt;
 	statementSt += ") RETURN n";
 
@@ -289,8 +289,8 @@ function deleteBackground(internal_id, serverURL, onLoadEnd){
 	    "statements" : [ ]
 	};
 
-	var statementSt1 = "MATCH (n:Background { internal_id: '" + internalID + "'})-[r]-() DELETE r";
-	var statementSt2 = "MATCH (n:Background { internal_id: '" + internalID + "'}) DELETE n";
+	var statementSt1 = "MATCH (n:Background { internal_id: '" + internal_id + "'})-[r]-() DELETE r";
+	var statementSt2 = "MATCH (n:Background { internal_id: '" + internal_id + "'}) DELETE n";
 
 	query.statements.push({"statement":statementSt1});
 	query.statements.push({"statement":statementSt2});
@@ -342,7 +342,7 @@ function updateBackground(internalID,graphical_data, serverURL, onLoadEnd){
 	};
 
 	var statementSt = "MATCH (b:Background) WHERE b.internal_id = '" + internalID + "' SET " +
-					" graphical_data = '" + graphical_data + "' RETURN b";
+					" b.graphical_data = '" + graphical_data + "' RETURN b";
 
 	query.statements.push({"statement":statementSt});
 
