@@ -1,6 +1,31 @@
 {
   "theme":"bio4j",
   "cells":[
-    
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":0},
+      "size":{"width":120,"height":150},
+      "attrs":{
+        "text":{
+          "text":"Ephitelial cell"
+          },
+        "image":{"xlink:href":"images/ephitelial_cell.jpg","width":200,"height":250}
+      },
+      "node_type":"ephitelial_cell",
+      "real_size":{"width":475,"height":600}
+    },
+    {
+      "type":"basic.Image",
+      "position":{"x":0,"y":0},
+      "size":{"width":200,"height":150},
+      "attrs":{
+        "text":{
+          "text":"Nervous cell"
+        },
+        "image":{"xlink:href":"images/nervous_cell.jpg","width":200,"height":150}
+      },
+      "node_type":"nervous_cell",
+      "real_size":{"width":1440,"height":858}
+    }
   ]
 }
