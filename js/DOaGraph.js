@@ -1567,6 +1567,7 @@
   the paper dimensions text inputs
   */
   function updatePaperDimensionsBasedOnTextInputs(){
+    //console.log("updatePaperDimensionsBasedOnTextInputs");
     //---update dimension values on text inputs
     var tempWidth = $('#inputWidth').prop('value');
     var tempHeight = $('#inputHeight').prop('value');
@@ -1574,7 +1575,7 @@
     paperInitialHeight = tempHeight;
     updatePaperDimensions(tempWidth, tempHeight);
 
-    updateNetworkStageSize(networkName, tempWidth, tempHeight, serverURL, onUpdateNetworkStageSize);
+    updateNetworkStageSize(networkName, tempWidth, tempHeight, serverURL, onNetworkStageSizeUpdated);
   }
 
   /**
@@ -2095,8 +2096,9 @@
     paperInitialHeight = tempHeight;
     updatePaperDimensions(paperInitialWidth, paperInitialHeight);
     initializeBackgroundBox(paperInitialWidth,paperInitialHeight);
-    console.log("paperInitialWidth", paperInitialWidth);
-    console.log("paperInitialHeight", paperInitialHeight);
+    //console.log("paperInitialWidth", paperInitialWidth);
+    //console.log("paperInitialHeight", paperInitialHeight);
+    updateNetworkStageSize(networkName, tempWidth, tempHeight, serverURL, onNetworkStageSizeUpdated);
   }
 
   /**
@@ -2881,37 +2883,31 @@
         console.log("tempData",tempData);
         tempElem.findView(paper).options.interactive = false;
         currentBackgroundCell = tempElem;
+        currentBackgroundCell.toBack();
+        backgroundBox.toBack();
       }
     }
 
 
-             //var bbox = graph.getBBox(graph.getElements());
-             //var contentBBox = paper.getContentBBox();
-             //paperInitialWidth = contentBBox.width + contentBBox.x;
-             //paperInitialHeight = contentBBox.height + contentBBox.y;
+    updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
 
-             //console.log("graph loaded!");
+    deletePreviousBackgroundBox();
+    initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
 
-             //console.log(paperInitialWidth)
+     updatePaperDimensions(paperInitialWidth,paperInitialHeight);
 
-             updatePaperDimensionsTextInputs(paperInitialWidth, paperInitialHeight);
-
-             deletePreviousBackgroundBox();
-             initializeBackgroundBox(paperInitialWidth, paperInitialHeight);
-
-             updatePaperDimensions(paperInitialWidth,paperInitialHeight);
-
-             if(!modifiableLinks){
-                makeLinksInteractive(false);
-             }
-             if(readOnlyMode){
-              applyReadOnlyMode(true);
-             }
-             paper.render();
+    if(!modifiableLinks){
+      makeLinksInteractive(false);
+    }
+    if(readOnlyMode){
+      applyReadOnlyMode(true);
+    }
+    paper.render();
 
   }
 
   function updateNodeGraphicalData(node){
+
     var tempInternalID = node.model.prop("data").internal_id;
     var graphicalDataSt = JSON.stringify(node.model.toJSON());   
     graphicalDataSt = graphicalDataSt.replace(/\"/g, '\\"');
@@ -2925,9 +2921,9 @@
     //console.log(this.responseText);
   }
 
-  function onUpdateNetworkStageSize(){
-    //console.log("onUpdateNetworkStageSize");
-    //console.log(this.responseText);
+  function onNetworkStageSizeUpdated(){
+    console.log("onNetworkStageSizeUpdated");
+    console.log(this.responseText);
   }
 
   

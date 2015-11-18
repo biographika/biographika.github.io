@@ -183,7 +183,7 @@ function updateNetworkStageSize(networkName, width, height, serverURL, onLoadEnd
 	};
 
 	var statementSt = "MATCH (n:Network) WHERE n.name = '" + networkName + "' SET n.width = " 
-						+ width + ", n.height = " + height;
+						+ width + ", n.height = " + height + " RETURN n.width AS width, n.height AS height";
 
 	query.statements.push({"statement":statementSt});
 
