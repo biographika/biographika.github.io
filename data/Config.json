@@ -11,7 +11,7 @@
 		"bio4j",
 		"hospital"
   	],
-  	"default":"hospital"
-  }	
-
+  	"default":"bio4j"
+  },
+  "server_url":"http://52.16.230.238:7474/db/data/transaction/commit"	
 }
