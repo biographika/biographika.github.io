@@ -13,5 +13,5 @@
   	],
   	"default":"bio4j"
   },
-  "server_url":"http://52.16.230.238:7474/db/data/transaction/commit"	
+  "server_url":"http://54.72.39.70:7474/db/data/transaction/commit"	
 }
