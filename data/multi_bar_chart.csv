@@ -1,0 +1,173 @@
+Species,Mean Group,Value
+Clostridia,MEAN Male WT ,5.150181102
+Clostridia,MEAN Female WT,3.401514518
+Clostridia,MEAN Male KO,9.340209701
+Clostridia,MEAN Female KO,7.991356457
+Clostridiales,MEAN Male WT ,4.562270088
+Clostridiales,MEAN Female WT,2.966522083
+Clostridiales,MEAN Male KO,9.021350291
+Clostridiales,MEAN Female KO,7.587874894
+Bacteroidia,MEAN Male WT ,4.448895487
+Bacteroidia,MEAN Female WT,3.958295385
+Bacteroidia,MEAN Male KO,3.900552328
+Bacteroidia,MEAN Female KO,4.823342695
+Bacteroidales,MEAN Male WT ,4.448895487
+Bacteroidales,MEAN Female WT,3.958295385
+Bacteroidales,MEAN Male KO,3.900552328
+Bacteroidales,MEAN Female KO,4.823342695
+Proteobacteria,MEAN Male WT ,3.127130507
+Proteobacteria,MEAN Female WT,2.61922478
+Proteobacteria,MEAN Male KO,2.651845281
+Proteobacteria,MEAN Female KO,3.720608816
+No hit,MEAN Male WT ,2.591263064
+No hit,MEAN Female WT,2.574959645
+No hit,MEAN Male KO,2.780089488
+No hit,MEAN Female KO,3.246532681
+uncultured Bacteroidales bacterium,MEAN Male WT ,1.758570161
+uncultured Bacteroidales bacterium,MEAN Female WT,2.649136395
+uncultured Bacteroidales bacterium,MEAN Male KO,1.778353177
+uncultured Bacteroidales bacterium,MEAN Female KO,2.939499827
+environmental samples,MEAN Male WT ,1.758570161
+environmental samples,MEAN Female WT,2.649136395
+environmental samples,MEAN Male KO,1.778353177
+environmental samples,MEAN Female KO,2.939499827
+environmental samples,MEAN Male WT ,2.295567214
+environmental samples,MEAN Female WT,1.865998392
+environmental samples,MEAN Male KO,1.912356881
+environmental samples,MEAN Female KO,1.550111177
+uncultured Bacteroidetes bacterium,MEAN Male WT ,1.914296485
+uncultured Bacteroidetes bacterium,MEAN Female WT,1.53135741
+uncultured Bacteroidetes bacterium,MEAN Male KO,1.44496183
+uncultured Bacteroidetes bacterium,MEAN Female KO,0.880751632
+environmental samples,MEAN Male WT ,1.222367649
+environmental samples,MEAN Female WT,1.068142418
+environmental samples,MEAN Male KO,1.477864859
+environmental samples,MEAN Female KO,0.890302563
+uncultured Firmicutes bacterium,MEAN Male WT ,1.220402253
+uncultured Firmicutes bacterium,MEAN Female WT,1.064780584
+uncultured Firmicutes bacterium,MEAN Male KO,1.475916521
+uncultured Firmicutes bacterium,MEAN Female KO,0.885299135
+delta/epsilon subdivisions,MEAN Male WT ,0.419192101
+delta/epsilon subdivisions,MEAN Female WT,0.47773369
+delta/epsilon subdivisions,MEAN Male KO,1.033798926
+delta/epsilon subdivisions,MEAN Female KO,1.249047934
+Deltaproteobacteria,MEAN Male WT ,0.419192101
+Deltaproteobacteria,MEAN Female WT,0.47773369
+Deltaproteobacteria,MEAN Male KO,1.033798926
+Deltaproteobacteria,MEAN Female KO,1.249047934
+Not assigned due to threshold,MEAN Male WT ,0.615484417
+Not assigned due to threshold,MEAN Female WT,0.694303928
+Not assigned due to threshold,MEAN Male KO,0.508945928
+Not assigned due to threshold,MEAN Female KO,0.953109891
+uncultured rumen bacterium 5cARRO,MEAN Male WT ,0.381270729
+uncultured rumen bacterium 5cARRO,MEAN Female WT,0.334534264
+uncultured rumen bacterium 5cARRO,MEAN Male KO,0.467395051
+uncultured rumen bacterium 5cARRO,MEAN Female KO,0.669359545
+environmental samples,MEAN Male WT ,0.364862221
+environmental samples,MEAN Female WT,0.306611905
+environmental samples,MEAN Male KO,0.647283542
+environmental samples,MEAN Female KO,0.469877388
+uncultured Clostridiales bacterium,MEAN Male WT ,0.362145029
+uncultured Clostridiales bacterium,MEAN Female WT,0.302711513
+uncultured Clostridiales bacterium,MEAN Male KO,0.644764467
+uncultured Clostridiales bacterium,MEAN Female KO,0.467115258
+Bacilli,MEAN Male WT ,0.136677686
+Bacilli,MEAN Female WT,0.46793672
+Bacilli,MEAN Male KO,0.107926353
+Bacilli,MEAN Female KO,0.578305427
+Lactobacillales,MEAN Male WT ,0.13605755
+Lactobacillales,MEAN Female WT,0.467699014
+Lactobacillales,MEAN Male KO,0.106933744
+Lactobacillales,MEAN Female KO,0.576888713
+Lactobacillaceae,MEAN Male WT ,0.128118756
+Lactobacillaceae,MEAN Female WT,0.447783683
+Lactobacillaceae,MEAN Male KO,0.090546284
+Lactobacillaceae,MEAN Female KO,0.555048163
+Actinobacteria phylum,MEAN Male WT ,0.432698533
+Actinobacteria phylum,MEAN Female WT,0.219777558
+Actinobacteria phylum,MEAN Male KO,0.197720286
+Actinobacteria phylum,MEAN Female KO,0.322056542
+Actinobacteria class,MEAN Male WT ,0.432698533
+Actinobacteria class,MEAN Female WT,0.219777558
+Actinobacteria class,MEAN Male KO,0.197720286
+Actinobacteria class,MEAN Female KO,0.322056542
+Lactobacillus,MEAN Male WT ,0.125812419
+Lactobacillus,MEAN Female WT,0.439167808
+Lactobacillus,MEAN Male KO,0.087912283
+Lactobacillus,MEAN Female KO,0.542350725
+Clostridiaceae,MEAN Male WT ,0.612427871
+Clostridiaceae,MEAN Female WT,0.040369769
+Clostridiaceae,MEAN Male KO,0.127308232
+Clostridiaceae,MEAN Female KO,0.057415232
+Coriobacteriales,MEAN Male WT ,0.08561223
+Coriobacteriales,MEAN Female WT,0.164512049
+Coriobacteriales,MEAN Male KO,0.185407417
+Coriobacteriales,MEAN Female KO,0.221967229
+Coriobacteridae,MEAN Male WT ,0.08561223
+Coriobacteridae,MEAN Female WT,0.164512049
+Coriobacteridae,MEAN Male KO,0.185407417
+Coriobacteridae,MEAN Female KO,0.221967229
+Gammaproteobacteria,MEAN Male WT ,0.024680201
+Gammaproteobacteria,MEAN Female WT,0.068765446
+Gammaproteobacteria,MEAN Male KO,0.031730504
+Gammaproteobacteria,MEAN Female KO,0.592818451
+Desulfovibrionales,MEAN Male WT ,0.003442379
+Desulfovibrionales,MEAN Female WT,0.002747141
+Desulfovibrionales,MEAN Male KO,0.513614264
+Desulfovibrionales,MEAN Female KO,0.01078532
+Betaproteobacteria,MEAN Male WT ,0.166974121
+Betaproteobacteria,MEAN Female WT,0.11335167
+Betaproteobacteria,MEAN Male KO,0.110087407
+Betaproteobacteria,MEAN Female KO,0.080983418
+Actinobacteridae,MEAN Male WT ,0.330173222
+Actinobacteridae,MEAN Female WT,0.042342179
+Actinobacteridae,MEAN Male KO,0.007809163
+Actinobacteridae,MEAN Female KO,0.087279213
+Bifidobacteriaceae,MEAN Male WT ,0.328858869
+Bifidobacteriaceae,MEAN Female WT,0.040556786
+Bifidobacteriaceae,MEAN Male KO,0.005900219
+Bifidobacteriaceae,MEAN Female KO,0.075165527
+Bifidobacteriales,MEAN Male WT ,0.328858869
+Bifidobacteriales,MEAN Female WT,0.040556786
+Bifidobacteriales,MEAN Male KO,0.005900219
+Bifidobacteriales,MEAN Female KO,0.075165527
+Bifidobacterium,MEAN Male WT ,0.328858869
+Bifidobacterium,MEAN Female WT,0.040556786
+Bifidobacterium,MEAN Male KO,0.005761009
+Bifidobacterium,MEAN Female KO,0.075165527
+Desulfovibrionaceae,MEAN Male WT ,0.003442379
+Desulfovibrionaceae,MEAN Female WT,0.002637159
+Desulfovibrionaceae,MEAN Male KO,0.331503322
+Desulfovibrionaceae,MEAN Female KO,0.01078532
+Porphyromonadaceae,MEAN Male WT ,0.131408414
+Porphyromonadaceae,MEAN Female WT,0.040901373
+Porphyromonadaceae,MEAN Male KO,0.080807634
+Porphyromonadaceae,MEAN Female KO,0.105892991
+Deferribacteres,MEAN Male WT ,0.106478402
+Deferribacteres,MEAN Female WT,0.021968349
+Deferribacteres,MEAN Male KO,0.115386481
+Deferribacteres,MEAN Female KO,0.054105764
+Deferribacteres,MEAN Male WT ,0.106478402
+Deferribacteres,MEAN Female WT,0.021968349
+Deferribacteres,MEAN Male KO,0.115386481
+Deferribacteres,MEAN Female KO,0.054105764
+Alphaproteobacteria,MEAN Male WT ,0.131194374
+Alphaproteobacteria,MEAN Female WT,0.029835112
+Alphaproteobacteria,MEAN Male KO,0.092337031
+Alphaproteobacteria,MEAN Female KO,0.032521812
+Clostridium,MEAN Male WT ,0.092255857
+Clostridium,MEAN Female WT,0.026685697
+Clostridium,MEAN Male KO,0.090054824
+Clostridium,MEAN Female KO,0.046849732
+Parabacteroides,MEAN Male WT ,0.10865874
+Parabacteroides,MEAN Female WT,0.023269043
+Parabacteroides,MEAN Male KO,0.055920234
+Parabacteroides,MEAN Female KO,0.075872986
+Coriobacteriaceae,MEAN Male WT ,0.025397943
+Coriobacteriaceae,MEAN Female WT,0.079283718
+Coriobacteriaceae,MEAN Male KO,0.064491839
+Coriobacteriaceae,MEAN Female KO,0.072459706
+Coriobacterineae,MEAN Male WT ,0.025397943
+Coriobacterineae,MEAN Female WT,0.079283718
+Coriobacterineae,MEAN Male KO,0.064491839
+Coriobacterineae,MEAN Female KO,0.072459706
