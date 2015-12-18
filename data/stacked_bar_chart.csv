@@ -1,0 +1,676 @@
+Species,Sample,Value
+Bacteroidetes,3EP1,51.05292971
+Bacteroidetes,3EP2,68.21118778
+Bacteroidetes,3EP3,35.33012717
+Bacteroidetes,3EP4,47.15137014
+Bacteroidetes,3EP5,68.77732362
+Bacteroidetes,3EP6,63.31844746
+Bacteroidetes,3EP7,62.42215313
+Bacteroidetes,3EP8,72.17772728
+Bacteroidetes,3EP9,54.3702648
+Bacteroidetes,3EP10,66.82943643
+Bacteroidetes,3EP11,59.31552248
+Bacteroidetes,3EP12,70.27583476
+Bacteroidetes,3EP13,56.61964163
+Bacteroidetes,3EP14,74.29032451
+Bacteroidetes,3EP15,65.49922542
+Bacteroidetes,3EP16,58.93677555
+Bacteroidetes,3EP17,75.86437021
+Bacteroidetes,3EP18,50.06041707
+Bacteroidetes,3EP19,64.94982275
+Bacteroidetes,3EP20,55.77790045
+Bacteroidetes,3EP21,41.07303246
+Bacteroidetes,3EP22,41.67655626
+Bacteroidetes,3EP23,66.57705806
+Bacteroidetes,3EP24,57.04391112
+Bacteroidetes,3EP25,43.83472266
+Bacteroidetes,3EP26,46.02100873
+Bacteroidetes,3EP27,66.48046742
+Firmicutes,3EP1,36.1353148
+Firmicutes,3EP2,22.40428389
+Firmicutes,3EP3,53.82206607
+Firmicutes,3EP4,38.23002724
+Firmicutes,3EP5,19.73964813
+Firmicutes,3EP6,26.86159918
+Firmicutes,3EP7,24.57753689
+Firmicutes,3EP8,21.33770419
+Firmicutes,3EP9,37.24758721
+Firmicutes,3EP10,24.75345168
+Firmicutes,3EP11,31.79478634
+Firmicutes,3EP12,17.26188905
+Firmicutes,3EP13,32.10842978
+Firmicutes,3EP14,14.46158575
+Firmicutes,3EP15,24.65093203
+Firmicutes,3EP16,31.11169652
+Firmicutes,3EP17,15.02660304
+Firmicutes,3EP18,35.45507698
+Firmicutes,3EP19,25.82655914
+Firmicutes,3EP20,20.47382464
+Firmicutes,3EP21,50.1693351
+Firmicutes,3EP22,45.89042327
+Firmicutes,3EP23,18.4871081
+Firmicutes,3EP24,29.79401529
+Firmicutes,3EP25,44.86834989
+Firmicutes,3EP26,43.45997742
+Firmicutes,3EP27,18.65202755
+Proteobacteria,3EP1,2.579011379
+Proteobacteria,3EP2,3.495865605
+Proteobacteria,3EP3,1.5690281
+Proteobacteria,3EP4,2.044301988
+Proteobacteria,3EP5,4.338901724
+Proteobacteria,3EP6,3.812419158
+Proteobacteria,3EP7,4.050385594
+Proteobacteria,3EP8,1.345713275
+Proteobacteria,3EP9,1.320353352
+Proteobacteria,3EP10,1.936002758
+Proteobacteria,3EP11,2.089350515
+Proteobacteria,3EP12,3.491267432
+Proteobacteria,3EP13,2.875942143
+Proteobacteria,3EP14,4.56497426
+Proteobacteria,3EP15,3.330194506
+Proteobacteria,3EP16,2.896733404
+Proteobacteria,3EP17,4.104730039
+Proteobacteria,3EP18,4.286688755
+Proteobacteria,3EP19,1.848579293
+Proteobacteria,3EP20,2.757383384
+Proteobacteria,3EP21,0.805062749
+Proteobacteria,3EP22,1.863739346
+Proteobacteria,3EP23,2.860007894
+Proteobacteria,3EP24,3.911344363
+Proteobacteria,3EP25,3.322373222
+Proteobacteria,3EP26,3.899282187
+Proteobacteria,3EP27,4.610036414
+Actinobacteria,3EP1,1.641870616
+Actinobacteria,3EP2,0.073481592
+Actinobacteria,3EP3,0.060634755
+Actinobacteria,3EP4,0.145215415
+Actinobacteria,3EP5,0.202594633
+Actinobacteria,3EP6,0.101966634
+Actinobacteria,3EP7,0.803126086
+Actinobacteria,3EP8,0.06891542
+Actinobacteria,3EP9,0.248352178
+Actinobacteria,3EP10,0.132130752
+Actinobacteria,3EP11,0.160149596
+Actinobacteria,3EP12,0.403853768
+Actinobacteria,3EP13,0.30223674
+Actinobacteria,3EP14,0.168187756
+Actinobacteria,3EP15,0.274394257
+Actinobacteria,3EP16,0.239199157
+Actinobacteria,3EP17,0.365677509
+Actinobacteria,3EP18,0.112063925
+Actinobacteria,3EP19,0.293459285
+Actinobacteria,3EP20,0.092924832
+Actinobacteria,3EP21,0.086521585
+Actinobacteria,3EP22,0.194195706
+Actinobacteria,3EP23,0.198419048
+Actinobacteria,3EP24,0.41332087
+Actinobacteria,3EP25,0.224925526
+Actinobacteria,3EP26,0.292984739
+Actinobacteria,3EP27,0.480632527
+Deferribacteres,3EP1,0.171600886
+Deferribacteres,3EP2,0.043920032
+Deferribacteres,3EP3,0.232571661
+Deferribacteres,3EP4,0.065459799
+Deferribacteres,3EP5,0.074640128
+Deferribacteres,3EP6,0.05664813
+Deferribacteres,3EP7,0.100508177
+Deferribacteres,3EP8,0
+Deferribacteres,3EP9,0
+Deferribacteres,3EP10,0
+Deferribacteres,3EP11,0
+Deferribacteres,3EP12,0.03079495
+Deferribacteres,3EP13,0.050685664
+Deferribacteres,3EP14,0.037564778
+Deferribacteres,3EP15,0.056701396
+Deferribacteres,3EP16,0.054794521
+Deferribacteres,3EP17,0.04113872
+Deferribacteres,3EP18,0.636328201
+Deferribacteres,3EP19,0
+Deferribacteres,3EP20,0.075443923
+Deferribacteres,3EP21,0
+Deferribacteres,3EP22,0
+Deferribacteres,3EP23,0
+Deferribacteres,3EP24,0
+Deferribacteres,3EP25,0.161396942
+Deferribacteres,3EP26,0.099959499
+Deferribacteres,3EP27,0.009172376
+Tenericutes,3EP1,0.031654532
+Tenericutes,3EP2,0.00422308
+Tenericutes,3EP3,8.31E-04
+Tenericutes,3EP4,0.006771703
+Tenericutes,3EP5,0
+Tenericutes,3EP6,0.001888271
+Tenericutes,3EP7,0
+Tenericutes,3EP8,0.004656447
+Tenericutes,3EP9,0.164520219
+Tenericutes,3EP10,0.046915992
+Tenericutes,3EP11,0.091646301
+Tenericutes,3EP12,0.025515815
+Tenericutes,3EP13,0.131407278
+Tenericutes,3EP14,0.023051114
+Tenericutes,3EP15,0.086064619
+Tenericutes,3EP16,0.014752371
+Tenericutes,3EP17,0.008227744
+Tenericutes,3EP18,0
+Tenericutes,3EP19,0.049266887
+Tenericutes,3EP20,0.139847272
+Tenericutes,3EP21,0.467216559
+Tenericutes,3EP22,0.133060021
+Tenericutes,3EP23,0.03520338
+Tenericutes,3EP24,0.129514714
+Tenericutes,3EP25,0.002575483
+Tenericutes,3EP26,0
+Tenericutes,3EP27,0.006420664
+Cyanobacteria,3EP1,8.33E-04
+Cyanobacteria,3EP2,0
+Cyanobacteria,3EP3,0
+Cyanobacteria,3EP4,0
+Cyanobacteria,3EP5,0
+Cyanobacteria,3EP6,0
+Cyanobacteria,3EP7,0.003757315
+Cyanobacteria,3EP8,0
+Cyanobacteria,3EP9,0
+Cyanobacteria,3EP10,0.001914938
+Cyanobacteria,3EP11,0.00185144
+Cyanobacteria,3EP12,0.004399279
+Cyanobacteria,3EP13,9.39E-04
+Cyanobacteria,3EP14,0.002561235
+Cyanobacteria,3EP15,0
+Cyanobacteria,3EP16,0
+Cyanobacteria,3EP17,0
+Cyanobacteria,3EP18,0.001948938
+Cyanobacteria,3EP19,0.001071019
+Cyanobacteria,3EP20,0.002760144
+Cyanobacteria,3EP21,0
+Cyanobacteria,3EP22,0
+Cyanobacteria,3EP23,0.003200307
+Cyanobacteria,3EP24,0.006757289
+Cyanobacteria,3EP25,0.003433977
+Cyanobacteria,3EP26,8.62E-04
+Cyanobacteria,3EP27,9.17E-04
+Nitrospirae,3EP1,8.33E-04
+Nitrospirae,3EP2,0
+Nitrospirae,3EP3,0
+Nitrospirae,3EP4,0
+Nitrospirae,3EP5,0
+Nitrospirae,3EP6,0
+Nitrospirae,3EP7,0
+Nitrospirae,3EP8,0
+Nitrospirae,3EP9,0.001047899
+Nitrospirae,3EP10,0
+Nitrospirae,3EP11,0.00185144
+Nitrospirae,3EP12,0
+Nitrospirae,3EP13,0
+Nitrospirae,3EP14,8.54E-04
+Nitrospirae,3EP15,0
+Nitrospirae,3EP16,0.001053741
+Nitrospirae,3EP17,0
+Nitrospirae,3EP18,9.74E-04
+Nitrospirae,3EP19,0
+Nitrospirae,3EP20,0
+Nitrospirae,3EP21,0
+Nitrospirae,3EP22,0
+Nitrospirae,3EP23,0
+Nitrospirae,3EP24,0
+Nitrospirae,3EP25,0
+Nitrospirae,3EP26,0.00172344
+Nitrospirae,3EP27,0
+Deinococcus-Thermus,3EP1,0
+Deinococcus-Thermus,3EP2,0
+Deinococcus-Thermus,3EP3,0
+Deinococcus-Thermus,3EP4,0
+Deinococcus-Thermus,3EP5,0
+Deinococcus-Thermus,3EP6,0
+Deinococcus-Thermus,3EP7,0
+Deinococcus-Thermus,3EP8,0
+Deinococcus-Thermus,3EP9,0
+Deinococcus-Thermus,3EP10,0.004787346
+Deinococcus-Thermus,3EP11,0
+Deinococcus-Thermus,3EP12,0
+Deinococcus-Thermus,3EP13,0
+Deinococcus-Thermus,3EP14,0
+Deinococcus-Thermus,3EP15,0
+Deinococcus-Thermus,3EP16,0
+Deinococcus-Thermus,3EP17,0
+Deinococcus-Thermus,3EP18,0
+Deinococcus-Thermus,3EP19,0
+Deinococcus-Thermus,3EP20,0
+Deinococcus-Thermus,3EP21,0.00164803
+Deinococcus-Thermus,3EP22,0
+Deinococcus-Thermus,3EP23,0
+Deinococcus-Thermus,3EP24,0
+Deinococcus-Thermus,3EP25,0
+Deinococcus-Thermus,3EP26,0
+Deinococcus-Thermus,3EP27,0
+Verrucomicrobia,3EP1,0
+Verrucomicrobia,3EP2,0
+Verrucomicrobia,3EP3,0
+Verrucomicrobia,3EP4,0
+Verrucomicrobia,3EP5,0
+Verrucomicrobia,3EP6,9.44E-04
+Verrucomicrobia,3EP7,0
+Verrucomicrobia,3EP8,0
+Verrucomicrobia,3EP9,0
+Verrucomicrobia,3EP10,0
+Verrucomicrobia,3EP11,0
+Verrucomicrobia,3EP12,0
+Verrucomicrobia,3EP13,0
+Verrucomicrobia,3EP14,8.54E-04
+Verrucomicrobia,3EP15,0
+Verrucomicrobia,3EP16,0
+Verrucomicrobia,3EP17,0
+Verrucomicrobia,3EP18,0
+Verrucomicrobia,3EP19,0
+Verrucomicrobia,3EP20,9.20E-04
+Verrucomicrobia,3EP21,0
+Verrucomicrobia,3EP22,0
+Verrucomicrobia,3EP23,0.002133538
+Verrucomicrobia,3EP24,0
+Verrucomicrobia,3EP25,0
+Verrucomicrobia,3EP26,0
+Verrucomicrobia,3EP27,9.17E-04
+Planctomycetes,3EP1,0
+Planctomycetes,3EP2,0
+Planctomycetes,3EP3,8.31E-04
+Planctomycetes,3EP4,0
+Planctomycetes,3EP5,0
+Planctomycetes,3EP6,0
+Planctomycetes,3EP7,0
+Planctomycetes,3EP8,0
+Planctomycetes,3EP9,0
+Planctomycetes,3EP10,9.57E-04
+Planctomycetes,3EP11,0
+Planctomycetes,3EP12,0
+Planctomycetes,3EP13,9.39E-04
+Planctomycetes,3EP14,0
+Planctomycetes,3EP15,0.001012525
+Planctomycetes,3EP16,0
+Planctomycetes,3EP17,0
+Planctomycetes,3EP18,0
+Planctomycetes,3EP19,0
+Planctomycetes,3EP20,0
+Planctomycetes,3EP21,0
+Planctomycetes,3EP22,0
+Planctomycetes,3EP23,0
+Planctomycetes,3EP24,0
+Planctomycetes,3EP25,0
+Planctomycetes,3EP26,8.62E-04
+Planctomycetes,3EP27,9.17E-04
+Acidobacteria,3EP1,8.33E-04
+Acidobacteria,3EP2,0
+Acidobacteria,3EP3,8.31E-04
+Acidobacteria,3EP4,0
+Acidobacteria,3EP5,0
+Acidobacteria,3EP6,0
+Acidobacteria,3EP7,0
+Acidobacteria,3EP8,0
+Acidobacteria,3EP9,0
+Acidobacteria,3EP10,0
+Acidobacteria,3EP11,0
+Acidobacteria,3EP12,0
+Acidobacteria,3EP13,9.39E-04
+Acidobacteria,3EP14,8.54E-04
+Acidobacteria,3EP15,0
+Acidobacteria,3EP16,0
+Acidobacteria,3EP17,0
+Acidobacteria,3EP18,0
+Acidobacteria,3EP19,0
+Acidobacteria,3EP20,0
+Acidobacteria,3EP21,0
+Acidobacteria,3EP22,0
+Acidobacteria,3EP23,0
+Acidobacteria,3EP24,0
+Acidobacteria,3EP25,0
+Acidobacteria,3EP26,8.62E-04
+Acidobacteria,3EP27,0
+Fusobacteria,3EP1,0
+Fusobacteria,3EP2,0
+Fusobacteria,3EP3,0
+Fusobacteria,3EP4,0
+Fusobacteria,3EP5,0
+Fusobacteria,3EP6,0
+Fusobacteria,3EP7,0
+Fusobacteria,3EP8,0
+Fusobacteria,3EP9,0
+Fusobacteria,3EP10,0
+Fusobacteria,3EP11,0
+Fusobacteria,3EP12,0
+Fusobacteria,3EP13,0
+Fusobacteria,3EP14,0
+Fusobacteria,3EP15,0
+Fusobacteria,3EP16,0
+Fusobacteria,3EP17,0
+Fusobacteria,3EP18,0
+Fusobacteria,3EP19,0
+Fusobacteria,3EP20,0
+Fusobacteria,3EP21,0
+Fusobacteria,3EP22,0
+Fusobacteria,3EP23,0
+Fusobacteria,3EP24,0
+Fusobacteria,3EP25,0
+Fusobacteria,3EP26,0.002585159
+Fusobacteria,3EP27,0
+Chlamydiae,3EP1,0
+Chlamydiae,3EP2,8.45E-04
+Chlamydiae,3EP3,0
+Chlamydiae,3EP4,0
+Chlamydiae,3EP5,0
+Chlamydiae,3EP6,0
+Chlamydiae,3EP7,0
+Chlamydiae,3EP8,0
+Chlamydiae,3EP9,0
+Chlamydiae,3EP10,0
+Chlamydiae,3EP11,9.26E-04
+Chlamydiae,3EP12,0
+Chlamydiae,3EP13,0
+Chlamydiae,3EP14,0
+Chlamydiae,3EP15,0
+Chlamydiae,3EP16,0
+Chlamydiae,3EP17,0
+Chlamydiae,3EP18,0
+Chlamydiae,3EP19,0
+Chlamydiae,3EP20,0
+Chlamydiae,3EP21,0
+Chlamydiae,3EP22,0
+Chlamydiae,3EP23,0
+Chlamydiae,3EP24,0
+Chlamydiae,3EP25,0
+Chlamydiae,3EP26,0
+Chlamydiae,3EP27,0
+Lentisphaerae,3EP1,0
+Lentisphaerae,3EP2,0
+Lentisphaerae,3EP3,0
+Lentisphaerae,3EP4,0
+Lentisphaerae,3EP5,0
+Lentisphaerae,3EP6,0
+Lentisphaerae,3EP7,0
+Lentisphaerae,3EP8,0
+Lentisphaerae,3EP9,0
+Lentisphaerae,3EP10,9.57E-04
+Lentisphaerae,3EP11,0
+Lentisphaerae,3EP12,0
+Lentisphaerae,3EP13,0
+Lentisphaerae,3EP14,0
+Lentisphaerae,3EP15,0
+Lentisphaerae,3EP16,0
+Lentisphaerae,3EP17,0
+Lentisphaerae,3EP18,0
+Lentisphaerae,3EP19,0
+Lentisphaerae,3EP20,0
+Lentisphaerae,3EP21,0
+Lentisphaerae,3EP22,0
+Lentisphaerae,3EP23,0
+Lentisphaerae,3EP24,0
+Lentisphaerae,3EP25,0
+Lentisphaerae,3EP26,0
+Lentisphaerae,3EP27,0
+Gemmatimonadetes,3EP1,0
+Gemmatimonadetes,3EP2,0
+Gemmatimonadetes,3EP3,0
+Gemmatimonadetes,3EP4,0
+Gemmatimonadetes,3EP5,0
+Gemmatimonadetes,3EP6,0
+Gemmatimonadetes,3EP7,0
+Gemmatimonadetes,3EP8,0
+Gemmatimonadetes,3EP9,0
+Gemmatimonadetes,3EP10,0
+Gemmatimonadetes,3EP11,0
+Gemmatimonadetes,3EP12,0
+Gemmatimonadetes,3EP13,9.39E-04
+Gemmatimonadetes,3EP14,0
+Gemmatimonadetes,3EP15,0
+Gemmatimonadetes,3EP16,0
+Gemmatimonadetes,3EP17,0
+Gemmatimonadetes,3EP18,0
+Gemmatimonadetes,3EP19,0
+Gemmatimonadetes,3EP20,0
+Gemmatimonadetes,3EP21,0
+Gemmatimonadetes,3EP22,0
+Gemmatimonadetes,3EP23,0
+Gemmatimonadetes,3EP24,0
+Gemmatimonadetes,3EP25,0
+Gemmatimonadetes,3EP26,0
+Gemmatimonadetes,3EP27,0
+Chloroflexi,3EP1,0
+Chloroflexi,3EP2,0
+Chloroflexi,3EP3,0
+Chloroflexi,3EP4,0
+Chloroflexi,3EP5,0
+Chloroflexi,3EP6,0
+Chloroflexi,3EP7,0
+Chloroflexi,3EP8,0
+Chloroflexi,3EP9,0
+Chloroflexi,3EP10,0
+Chloroflexi,3EP11,0
+Chloroflexi,3EP12,8.80E-04
+Chloroflexi,3EP13,0
+Chloroflexi,3EP14,0
+Chloroflexi,3EP15,0
+Chloroflexi,3EP16,0
+Chloroflexi,3EP17,0
+Chloroflexi,3EP18,0
+Chloroflexi,3EP19,0
+Chloroflexi,3EP20,0
+Chloroflexi,3EP21,0
+Chloroflexi,3EP22,0
+Chloroflexi,3EP23,0
+Chloroflexi,3EP24,0
+Chloroflexi,3EP25,0
+Chloroflexi,3EP26,0
+Chloroflexi,3EP27,0
+Euryarchaeota,3EP1,0
+Euryarchaeota,3EP2,0
+Euryarchaeota,3EP3,0
+Euryarchaeota,3EP4,0
+Euryarchaeota,3EP5,0
+Euryarchaeota,3EP6,0
+Euryarchaeota,3EP7,0
+Euryarchaeota,3EP8,0
+Euryarchaeota,3EP9,0
+Euryarchaeota,3EP10,0
+Euryarchaeota,3EP11,0
+Euryarchaeota,3EP12,0
+Euryarchaeota,3EP13,0
+Euryarchaeota,3EP14,0
+Euryarchaeota,3EP15,0
+Euryarchaeota,3EP16,0
+Euryarchaeota,3EP17,0
+Euryarchaeota,3EP18,0
+Euryarchaeota,3EP19,0
+Euryarchaeota,3EP20,0
+Euryarchaeota,3EP21,8.24E-04
+Euryarchaeota,3EP22,0
+Euryarchaeota,3EP23,0
+Euryarchaeota,3EP24,0
+Euryarchaeota,3EP25,0
+Euryarchaeota,3EP26,0
+Euryarchaeota,3EP27,0
+Spirochaetes,3EP1,0
+Spirochaetes,3EP2,0
+Spirochaetes,3EP3,0
+Spirochaetes,3EP4,0
+Spirochaetes,3EP5,0
+Spirochaetes,3EP6,0
+Spirochaetes,3EP7,0
+Spirochaetes,3EP8,0
+Spirochaetes,3EP9,0
+Spirochaetes,3EP10,0
+Spirochaetes,3EP11,0
+Spirochaetes,3EP12,0
+Spirochaetes,3EP13,0
+Spirochaetes,3EP14,0
+Spirochaetes,3EP15,0
+Spirochaetes,3EP16,0
+Spirochaetes,3EP17,0
+Spirochaetes,3EP18,0
+Spirochaetes,3EP19,0
+Spirochaetes,3EP20,0
+Spirochaetes,3EP21,0
+Spirochaetes,3EP22,0
+Spirochaetes,3EP23,0
+Spirochaetes,3EP24,0
+Spirochaetes,3EP25,0
+Spirochaetes,3EP26,0
+Spirochaetes,3EP27,0
+Synergistetes,3EP1,0
+Synergistetes,3EP2,0
+Synergistetes,3EP3,0
+Synergistetes,3EP4,0
+Synergistetes,3EP5,0
+Synergistetes,3EP6,0
+Synergistetes,3EP7,0
+Synergistetes,3EP8,0
+Synergistetes,3EP9,0
+Synergistetes,3EP10,0
+Synergistetes,3EP11,0
+Synergistetes,3EP12,0
+Synergistetes,3EP13,0
+Synergistetes,3EP14,0
+Synergistetes,3EP15,0
+Synergistetes,3EP16,0
+Synergistetes,3EP17,0
+Synergistetes,3EP18,0
+Synergistetes,3EP19,0
+Synergistetes,3EP20,0
+Synergistetes,3EP21,0
+Synergistetes,3EP22,0
+Synergistetes,3EP23,0
+Synergistetes,3EP24,0
+Synergistetes,3EP25,0
+Synergistetes,3EP26,0
+Synergistetes,3EP27,0
+Chlorobi,3EP1,0
+Chlorobi,3EP2,0
+Chlorobi,3EP3,0
+Chlorobi,3EP4,0
+Chlorobi,3EP5,0
+Chlorobi,3EP6,0
+Chlorobi,3EP7,0
+Chlorobi,3EP8,0
+Chlorobi,3EP9,0
+Chlorobi,3EP10,0
+Chlorobi,3EP11,0
+Chlorobi,3EP12,0
+Chlorobi,3EP13,0
+Chlorobi,3EP14,0
+Chlorobi,3EP15,0
+Chlorobi,3EP16,0
+Chlorobi,3EP17,0
+Chlorobi,3EP18,0
+Chlorobi,3EP19,0
+Chlorobi,3EP20,0
+Chlorobi,3EP21,0
+Chlorobi,3EP22,0
+Chlorobi,3EP23,0
+Chlorobi,3EP24,0
+Chlorobi,3EP25,0
+Chlorobi,3EP26,0
+Chlorobi,3EP27,0
+Not assigned at this rank,3EP1,5.118038085
+Not assigned at this rank,3EP2,2.746691217
+Not assigned at this rank,3EP3,5.610791325
+Not assigned at this rank,3EP4,8.783651603
+Not assigned at this rank,3EP5,3.528523192
+Not assigned at this rank,3EP6,3.379060963
+Not assigned at this rank,3EP7,4.632769423
+Not assigned at this rank,3EP8,2.506099946
+Not assigned at this rank,3EP9,3.821689424
+Not assigned at this rank,3EP10,2.682828747
+Not assigned at this rank,3EP11,3.626046064
+Not assigned at this rank,3EP12,3.852888126
+Not assigned at this rank,3EP13,4.745679986
+Not assigned at this rank,3EP14,3.051284459
+Not assigned at this rank,3EP15,3.074025698
+Not assigned at this rank,3EP16,3.35089568
+Not assigned at this rank,3EP17,1.242389337
+Not assigned at this rank,3EP18,6.066068992
+Not assigned at this rank,3EP19,4.264798809
+Not assigned at this rank,3EP20,17.65295795
+Not assigned at this rank,3EP21,3.39411818
+Not assigned at this rank,3EP22,7.134894091
+Not assigned at this rank,3EP23,9.057936229
+Not assigned at this rank,3EP24,4.621985967
+Not assigned at this rank,3EP25,3.699252251
+Not assigned at this rank,3EP26,2.954837264
+Not assigned at this rank,3EP27,2.766388744
+No hit,3EP1,2.38825117
+No hit,3EP2,2.591281874
+No hit,3EP3,2.819931391
+No hit,3EP4,2.945690939
+No hit,3EP5,2.506664297
+No hit,3EP6,1.969466658
+No hit,3EP7,2.917555115
+No hit,3EP8,2.137309318
+No hit,3EP9,2.521246162
+No hit,3EP10,2.651232263
+No hit,3EP11,2.390209583
+No hit,3EP12,3.539659496
+No hit,3EP13,2.542730831
+No hit,3EP14,2.386217141
+No hit,3EP15,2.431072365
+No hit,3EP16,2.390937829
+No hit,3EP17,2.840400051
+No hit,3EP18,2.944845059
+No hit,3EP19,2.354100397
+No hit,3EP20,2.486889318
+No hit,3EP21,3.614130211
+No hit,3EP22,2.829323552
+No hit,3EP23,2.54104394
+No hit,3EP24,3.794218013
+No hit,3EP25,3.303486346
+No hit,3EP26,2.706661956
+No hit,3EP27,3.887253148
+Not assigned due to threshold,3EP1,0.878829782
+Not assigned due to threshold,3EP2,0.42822031
+Not assigned due to threshold,3EP3,0.552357695
+Not assigned due to threshold,3EP4,0.627511173
+Not assigned due to threshold,3EP5,0.831704283
+Not assigned due to threshold,3EP6,0.49755941
+Not assigned due to threshold,3EP7,0.492208268
+Not assigned due to threshold,3EP8,0.421874127
+Not assigned due to threshold,3EP9,0.30493875
+Not assigned due to threshold,3EP10,0.959384156
+Not assigned due to threshold,3EP11,0.52766052
+Not assigned due to threshold,3EP12,1.113017465
+Not assigned due to threshold,3EP13,0.619491454
+Not assigned due to threshold,3EP14,1.011687768
+Not assigned due to threshold,3EP15,0.596377186
+Not assigned due to threshold,3EP16,1.003161222
+Not assigned due to threshold,3EP17,0.50646335
+Not assigned due to threshold,3EP18,0.435587605
+Not assigned due to threshold,3EP19,0.412342426
+Not assigned due to threshold,3EP20,0.539148036
+Not assigned due to threshold,3EP21,0.38811111
+Not assigned due to threshold,3EP22,0.277807746
+Not assigned due to threshold,3EP23,0.237889504
+Not assigned due to threshold,3EP24,0.284932371
+Not assigned due to threshold,3EP25,0.579483701
+Not assigned due to threshold,3EP26,0.558394444
+Not assigned due to threshold,3EP27,3.104849435
+Not assigned via GI,3EP1,0
+Not assigned via GI,3EP2,0
+Not assigned via GI,3EP3,0
+Not assigned via GI,3EP4,0
+Not assigned via GI,3EP5,0
+Not assigned via GI,3EP6,0
+Not assigned via GI,3EP7,0
+Not assigned via GI,3EP8,0
+Not assigned via GI,3EP9,0
+Not assigned via GI,3EP10,0
+Not assigned via GI,3EP11,0
+Not assigned via GI,3EP12,0
+Not assigned via GI,3EP13,0
+Not assigned via GI,3EP14,0
+Not assigned via GI,3EP15,0
+Not assigned via GI,3EP16,0
+Not assigned via GI,3EP17,0
+Not assigned via GI,3EP18,0
+Not assigned via GI,3EP19,0
+Not assigned via GI,3EP20,0
+Not assigned via GI,3EP21,0
+Not assigned via GI,3EP22,0
+Not assigned via GI,3EP23,0
+Not assigned via GI,3EP24,0
+Not assigned via GI,3EP25,0
+Not assigned via GI,3EP26,0
+Not assigned via GI,3EP27,0
