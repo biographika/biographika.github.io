@@ -1,0 +1,28 @@
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.2.min.js"></script>
+    <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
+</head>
+<body>
+<script type="text/javascript">
+    var svg = dimple.newSvg("body", 800, 500);
+
+    d3.csv("data/multi_line_chart.csv", function (data) {
+
+        var chart = new dimple.chart(svg, data);
+
+        chart.addLegend(50, 10, "100%", 50);
+        chart.setMargins("60px", "50px", "110px", "70px");
+
+        var x = chart.addCategoryAxis("x", "Species");
+        x.addOrderRule("Sample");
+        var y = chart.addMeasureAxis("y", "Value");
+        y.tickFormat = ",.f%";
+        var s = chart.addSeries("Mean Group", dimple.plot.line);
+
+        chart.draw();
+    });
+
+
+</script>
+</body>

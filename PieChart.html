@@ -1,0 +1,28 @@
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.2.min.js"></script>
+    <script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
+</head>
+<body>
+<script type="text/javascript">
+    var svg = dimple.newSvg("body", 800, 600);
+
+    d3.csv("data/pie_chart.csv", function (data) {
+
+        var chart = new dimple.chart(svg, data);
+
+        chart.setBounds(20, 20, 460, 360)
+        var y = chart.addMeasureAxis("p", "Value");
+        y.tickFormat = ",.f%";
+        var s = chart.addSeries("Type", dimple.plot.pie);
+
+        chart.addLegend(500, 20, 90, 300, "left");
+
+        chart.draw();
+
+
+    });
+
+
+</script>
+</body>
