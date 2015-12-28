@@ -3,5 +3,15 @@
   "link_label_max_length":20,
   "link_labels_default_font_size":12, 
   "paper_defaul_size":{"width":800,"height":400},
-  "launch_in_read_only_mode":"true"
+  "launch_in_read_only_mode":"true",
+  "themes":{
+  	"set":[
+	  	"proteins",
+	  	"doplanning",
+		"bio4j",
+		"hospital"
+  	],
+  	"default":"bio4j"
+  },
+  "server_url":"http://54.72.39.70:7474/db/data/transaction/commit"
 }
